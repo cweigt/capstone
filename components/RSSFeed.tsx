@@ -8,6 +8,7 @@ import {
   Linking 
 } from 'react-native';
 import axios from 'axios';
+import { auth } from '@/firebase';
 
 
 interface RSSItem {
@@ -20,6 +21,16 @@ interface RSSItem {
 const RSSFeed = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<RSSItem[]>([]);
+    //managing own user state to avoid THE GLITCH
+    const [user, setUser] = useState(null); 
+
+    useEffect(() => {
+        //listens for any authentication of a user and then brings the user object into here
+        const listener = auth.onAuthStateChanged((user) => {
+            setUser(user);
+        });
+        return () => listener();
+    }, []);
 
     // Replace this with your RSS URL (use rss2json.com API)
     const feedUrl = 'https://rss2json.com/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml'; // NY Times RSS
@@ -29,27 +40,38 @@ const RSSFeed = () => {
     const feedUrl5 = 'https://rss2json.com/api.json?rss_url=https://feeds.bbci.co.uk/news/rss.xml'; // BBC RSS
     const feedUrl6 = 'https://rss2json.com/api.json?rss_url=https://mindmatters.ai/feed/podcast'; // MindMatters RSS
 
-
+    //retrieving the feed and parsing the URL through API
     useEffect(() => {
-        const fetchRSSData = async () => {
-            try {
-                const response = await axios.get(feedUrl);
-                setData(response.data.items); // Assuming response.data.items contains the RSS feed items
-            } catch (error) {
-                console.error('Error fetching RSS data:', error);
-            } finally {
-                setLoading(false);
-            }
-    };
+        if (user) {
+            const fetchRSSData = async () => {
+                try {
+                    //gets and sets the content from the API from the URL
+                    const response = await axios.get(feedUrl);
+                    setData(response.data.items);
+                } catch (error) {
+                    console.error('Error fetching RSS data:', error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchRSSData();
+        }
+    }, [user]); //this happens everytime the user object changes
 
-        fetchRSSData();
-    }, []);
+    //this is to check to see if a user is here based on the listener, then go through this
+    if (!user) {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.message}>Please sign in to view the RSS feed</Text>
+            </View>
+        );
+    }
 
     if (loading) {
         return (
-        <View style={styles.loader}>
-            <ActivityIndicator size="large" color="#0000ff" />
-        </View>
+            <View style={styles.loader}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
         );
     }
 
@@ -77,9 +99,6 @@ const RSSFeed = () => {
         </ScrollView>
     );
 };
-
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -110,7 +129,12 @@ const styles = StyleSheet.create({
       color: 'blue',
       textDecorationLine: 'underline',
     },
+    message: {
+      fontSize: 16,
+      textAlign: 'center',
+      marginTop: 20,
+      color: '#666',
+    },
 });
-
 
 export default RSSFeed;

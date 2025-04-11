@@ -6,30 +6,29 @@ import SignIn from '@/components/SignIn';
 import { ThemedView } from '@/components/ThemedView';
 import { auth } from '@/firebase';
 import { TouchableOpacity } from 'react-native';
-import HomeScreen from '.';
 
 const Sign_Up = () => {
-  //managing state here to push to component
-  const [authUser, setAuthUser] = useState(null);
-  const [showSignUp, setShowSignUp] = useState(false);
-
-  //this is for a listener so I know what user is currently authenticated
-  useEffect(() => {
-    const listener = auth.onAuthStateChanged((authUser) => {
-      console.log('Auth user in listener', authUser); //logging to terminal
-      if(authUser) {
-        setAuthUser(authUser); //updating with the current user
-      } else {
-        setAuthUser(null); //setting this to null if nothing is there
-      }
-
-    });
-    return () => listener();
-  }, []); //empty dependendace array makes it run once when component mounts
-
-  useEffect(() => {
-    console.log('Updated auth user', authUser);
-  }, [authUser]); //updates everytime auth user is updated
+      //managing state here to push to component
+      const [authUser, setAuthUser] = useState(null);
+      const [showSignUp, setShowSignUp] = useState(false);
+    
+      //this is for a listener so I know what user is currently authenticated
+      useEffect(() => {
+        const listener = auth.onAuthStateChanged((authUser) => {
+          console.log('Auth user in listener', authUser); //logging to terminal
+          if(authUser) {
+            setAuthUser(authUser); //updating with the current user
+          } else {
+            setAuthUser(null); //setting this to null if nothing is there
+          }
+    
+        });
+        return () => listener();
+      }, []); //empty dependendace array makes it run once when component mounts
+    
+      useEffect(() => {
+        console.log('Updated auth user', authUser);
+      }, [authUser]); //updates everytime auth user is updated
 
     return (
         <ParallaxScrollView 

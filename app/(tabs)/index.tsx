@@ -1,13 +1,11 @@
-import { Image, StyleSheet, Platform, View, Text } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { Image, StyleSheet } from 'react-native';
+import React from 'react';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedView } from '@/components/ThemedView';
-
 import RSSFeed from '@/components/RSSFeed';
 
 const HomeScreen = () => {
-
   return (
     <ParallaxScrollView 
       headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }}
