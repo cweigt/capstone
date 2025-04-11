@@ -7,6 +7,8 @@ import { ThemedView } from '@/components/ThemedView';
 import { auth } from '@/firebase';
 import { TouchableOpacity } from 'react-native';
 
+
+//this is actually the account page
 const Sign_Up = () => {
       //managing state here to push to component
       const [authUser, setAuthUser] = useState(null);
@@ -43,7 +45,7 @@ const Sign_Up = () => {
               {showSignUp ? (
                 <SignUp setUser={setAuthUser}/>
               ) : 
-                <SignIn setUser={setAuthUser}/>
+                <SignIn user={setAuthUser} setUser={setAuthUser}/>
               }
               {/*This will be for the sign out function using conditional rendering*/}
               {authUser ? (

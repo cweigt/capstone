@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TextInput, Button, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { auth, db } from '../firebase';
@@ -40,7 +40,7 @@ const Sign_Up = ({ setUser }) => {
     };
 
     return (
-        <ScrollView>
+        <View style={styles.container}>
             <ThemedView>
                 <View style={styles.formContainer}>
                     <Text style={styles.title}>Sign Up</Text>
@@ -80,11 +80,14 @@ const Sign_Up = ({ setUser }) => {
                     />
                 </View>
             </ThemedView>
-        </ScrollView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     formContainer: {
         padding: 16,
     },

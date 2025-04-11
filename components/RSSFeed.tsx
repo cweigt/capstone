@@ -89,8 +89,7 @@ const RSSFeed = () => {
                             onPress={() => {
                                 Linking.openURL(item.link);
                             }}
-                        >
-                            Read more
+                        >Read more
                         </Text>
                     </View>
                 )}

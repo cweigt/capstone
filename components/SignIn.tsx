@@ -1,10 +1,10 @@
-import { StyleSheet, View, Text, TextInput, Button, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
-const Sign_In = ({ setUser }) => {
+const Sign_In = ({ user, setUser }) => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 
@@ -25,7 +25,7 @@ const Sign_In = ({ setUser }) => {
     };
 
     return (
-        <ScrollView>
+        <View style={styles.container}>
             <ThemedView>
                 <View style={styles.formContainer}>
                     <Text style={styles.title}>Sign In</Text>
@@ -45,17 +45,22 @@ const Sign_In = ({ setUser }) => {
                         value={password}
                         onChangeText={setPassword}
                     />
-                    <Button
-                        title="Sign In"
-                        onPress={SignIn}
-                    />
+                    {!user ? ( //this is for conidition rendering
+                        <Button
+                            title="Sign In"
+                            onPress={SignIn}
+                        />
+                    ) : null}
                 </View>
             </ThemedView>
-        </ScrollView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     formContainer: {
         padding: 16,
     },
