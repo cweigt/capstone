@@ -1,41 +1,26 @@
 import { StyleSheet, View, Text, TextInput, Button, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
-import { auth, db } from '../firebase';
-import { set, ref } from 'firebase/database';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-const Sign_Up = ({ setUser }) => {
+const Sign_In = ({ setUser }) => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
 
-    const SignUp = async() => {
+    const SignIn = async() => {
         try {
             //creating account in Authentication
-            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+            const userCredentials = await signInWithEmailAndPassword(auth, email, password);
             setUser(userCredentials.user);
 
-            //creating the user into the Realtime Database
-            //set ref db pathname
-            await set(ref(db, 'users/' + userCredentials.user.uid), {
-                //everything that you want stored
-                email: userCredentials.user.email,
-                firstName: firstName,
-                lastName: lastName,
-                createdAt: new Date().toISOString()
-            });
-
-            window.alert('User set:' + userCredentials.user);
+            window.alert('Sign-in succesful!:' + userCredentials.user);
             //clearing the text fields
             setPassword('');
             setEmail('');
-            setFirstName('');
-            setLastName('');
 
         } catch (error) {
-            window.alert("Sign-up failed: " + error.message);
+            window.alert("Sign-in failed: " + error.message);
         }
     };
 
@@ -43,21 +28,7 @@ const Sign_Up = ({ setUser }) => {
         <ScrollView>
             <ThemedView>
                 <View style={styles.formContainer}>
-                    <Text style={styles.title}>Sign Up</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="First name..."
-                        placeholderTextColor='#000000'
-                        value={firstName}
-                        onChangeText={setFirstName}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Last name..."
-                        placeholderTextColor='#000000'
-                        value={lastName}
-                        onChangeText={setLastName}
-                    />
+                    <Text style={styles.title}>Sign In</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="Email..."
@@ -75,8 +46,8 @@ const Sign_Up = ({ setUser }) => {
                         onChangeText={setPassword}
                     />
                     <Button
-                        title="Sign Up"
-                        onPress={SignUp}
+                        title="Sign In"
+                        onPress={SignIn}
                     />
                 </View>
             </ThemedView>
@@ -102,4 +73,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Sign_Up;
+export default Sign_In;

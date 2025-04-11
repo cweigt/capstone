@@ -34,18 +34,18 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="notifs"
+        options={{
+          title: 'Notifications',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="bell" color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="signup"
         options={{
           title: 'Account',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.circle.fill" color={color} />,
         }}
-      />
-     <Tabs.Screen
-      name="notifs"
-      options={{
-        title: 'Notifications',
-        tabBarIcon: ({ color }) => <IconSymbol size={28} name="bell" color={color} />,
-      }}
       />
     </Tabs>
   );

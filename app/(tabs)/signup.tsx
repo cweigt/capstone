@@ -2,12 +2,16 @@ import { StyleSheet, View, Text, Image, Button } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import SignUp from '@/components/SignUp';
+import SignIn from '@/components/SignIn';
 import { ThemedView } from '@/components/ThemedView';
 import { auth } from '@/firebase';
+import { TouchableOpacity } from 'react-native';
+import HomeScreen from '.';
 
 const Sign_Up = () => {
   //managing state here to push to component
   const [authUser, setAuthUser] = useState(null);
+  const [showSignUp, setShowSignUp] = useState(false);
 
   //this is for a listener so I know what user is currently authenticated
   useEffect(() => {
@@ -37,7 +41,11 @@ const Sign_Up = () => {
                 />
               }>
             <ThemedView style={{backgroundColor: "white"}}>
-              <SignUp setUser={setAuthUser}/>
+              {showSignUp ? (
+                <SignUp setUser={setAuthUser}/>
+              ) : 
+                <SignIn setUser={setAuthUser}/>
+              }
               {/*This will be for the sign out function using conditional rendering*/}
               {authUser ? (
                 <Button //button tags are self closing in native
@@ -49,6 +57,14 @@ const Sign_Up = () => {
                   }} //not on click!! ]
                 />
               ) : null} {/*setting to null here if there is no user*/}
+              <TouchableOpacity onPress={() => setShowSignUp(!showSignUp)}>
+                <Text style={styles.toggleText}>
+                  {showSignUp ? 'Already have an account? Sign in.'
+                  : "Don't have an account? Sign up."}
+                </Text>
+              </TouchableOpacity>
+
+              
             </ThemedView>
         </ParallaxScrollView>
     );
@@ -63,7 +79,12 @@ const styles = StyleSheet.create({
       width: 330,
       resizeMode: 'contain',
     },
-    
+    toggleText: {
+      marginTop: 15,
+      color: '#007AFF',
+      textAlign: 'center',
+      fontWeight: '500',
+    },
   });
 
 
