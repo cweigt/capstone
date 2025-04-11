@@ -36,7 +36,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="signup"
         options={{
-          title: 'Sign Up',
+          title: 'Account',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.circle.fill" color={color} />,
         }}
       />

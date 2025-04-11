@@ -18,7 +18,6 @@ const HomeScreen = () => {
         />
       }>
 
-
       <ThemedView style={{backgroundColor: "white"}}>
           <RSSFeed />
       </ThemedView>
