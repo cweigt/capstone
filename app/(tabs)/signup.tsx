@@ -51,9 +51,9 @@ const Sign_Up = () => {
                   title="Sign Out" //declaring what will be displayed on button, not in between both tags
                   onPress={() => { //don't forget curly brace with multi-line executions
                     setAuthUser(null);
-                    auth.signOut(); //signing out user 
-                    window.alert('Auth user signed out' + authUser);
-                  }} //not on click!! ]
+                    auth.signOut();
+                    window.alert(`Auth user signed out: ${authUser.email}`);
+                  }}
                 />
               ) : null} {/*setting to null here if there is no user*/}
               <TouchableOpacity onPress={() => setShowSignUp(!showSignUp)}>

@@ -76,38 +76,43 @@ const RSSFeed = () => {
     }
 
     return (
-        <ScrollView style={styles.container}>
-          <Text style={styles.header}>Latest News</Text>
-          <FlatList
-            data={data}
-            renderItem={({ item }) => (
-              <View style={styles.item}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.date}>{new Date(item.pubDate).toLocaleString()}</Text>
-                <Text
-                  style={styles.link}
-                  onPress={() => {
-                    Linking.openURL(item.link);
-                  }}
-                >
-                  Read more
-                </Text>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </ScrollView>
+        <View style={styles.container}>
+            <Text style={styles.header}>Latest News</Text>
+            <FlatList
+                data={data}
+                renderItem={({ item }) => (
+                    <View style={styles.item}>
+                        <Text style={styles.title}>{item.title}</Text>
+                        <Text style={styles.date}>{new Date(item.pubDate).toLocaleString()}</Text>
+                        <Text
+                            style={styles.link}
+                            onPress={() => {
+                                Linking.openURL(item.link);
+                            }}
+                        >
+                            Read more
+                        </Text>
+                    </View>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+                contentContainerStyle={styles.listContent}
+            />
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-      padding: 10,
+        flex: 1,
+        padding: 10,
+    },
+    listContent: {
+        paddingBottom: 20,
     },
     loader: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     header: {
       fontSize: 24,
