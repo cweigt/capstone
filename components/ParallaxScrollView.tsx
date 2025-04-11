@@ -15,7 +15,7 @@ const HEADER_HEIGHT = 170;
 
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
-  headerBackgroundColor: { dark: string; light: string };
+  headerBackgroundColor: { light: string, dark: string };
 }>;
 
 export default function ParallaxScrollView({

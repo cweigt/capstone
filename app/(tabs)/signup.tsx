@@ -2,21 +2,23 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import SignUp from '@/components/SignUp';
+import { ThemedView } from '@/components/ThemedView';
 import { auth } from '@/firebase';
 
 const Sign_Up = () => {
 
     return (
         <ParallaxScrollView 
-            headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+            headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }} //#A1CEDC
             headerImage={
                 <Image
                   source={require('@/assets/images/aurora-wdc.png')}
                   style={styles.auroraLogo}
                 />
               }>
-            
-            <SignUp />
+            <ThemedView style={{backgroundColor: "white"}}>
+              <SignUp />
+            </ThemedView>
         </ParallaxScrollView>
     );
 };

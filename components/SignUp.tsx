@@ -27,6 +27,7 @@ const Sign_Up = () => {
                     <TextInput
                         style={styles.input}
                         placeholder="Email"
+                        placeholderTextColor='#000000'
                         value={email}
                         onChangeText={setEmail}
                         keyboardType="email-address"
@@ -34,6 +35,7 @@ const Sign_Up = () => {
                     <TextInput
                         style={styles.input}
                         placeholder="Password"
+                        placeholderTextColor='#000000'
                         secureTextEntry
                         value={password}
                         onChangeText={setPassword}

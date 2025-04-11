@@ -4,18 +4,14 @@ import { useColorScheme as useRNColorScheme } from 'react-native';
 /**
  * To support static rendering, this value needs to be re-calculated on the client side for web
  */
-export function useColorScheme() {
-  const [hasHydrated, setHasHydrated] = useState(false);
-
-  useEffect(() => {
-    setHasHydrated(true);
-  }, []);
-
+const useColorScheme = ({ light, dark}: {light: string, dark: string}, colorName: string) => {
   const colorScheme = useRNColorScheme();
 
-  if (hasHydrated) {
-    return colorScheme;
+  //always defaulting to light color
+  if(colorScheme === 'dark' || colorScheme === 'light'){
+    return 'light';
   }
 
-  return 'light';
 }
+
+export default useColorScheme;

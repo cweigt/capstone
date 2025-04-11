@@ -9,8 +9,8 @@ import RSSFeed from '@/components/RSSFeed';
 const HomeScreen = () => {
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+    <ParallaxScrollView 
+      headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }}
       headerImage={
         <Image
           source={require('@/assets/images/aurora-wdc.png')}
@@ -19,7 +19,7 @@ const HomeScreen = () => {
       }>
 
 
-      <ThemedView>
+      <ThemedView style={{backgroundColor: "white"}}>
           <RSSFeed />
       </ThemedView>
     </ParallaxScrollView>

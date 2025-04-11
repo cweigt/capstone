@@ -6,7 +6,7 @@ import { ThemedView } from '@/components/ThemedView';
 const Notifications = () => {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }}
       headerImage={
         <Image
           source={require('@/assets/images/aurora-wdc.png')}
