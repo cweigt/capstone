@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, TextInput, Button, ScrollView } from 'react-nat
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { auth } from '../firebase';
-import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const Sign_Up = () => {
     const [password, setPassword] = useState('');
