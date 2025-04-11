@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, Button } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import SignUp from '@/components/SignUp';
@@ -39,6 +39,16 @@ const Sign_Up = () => {
             <ThemedView style={{backgroundColor: "white"}}>
               <SignUp setUser={setAuthUser}/>
               {/*This will be for the sign out function using conditional rendering*/}
+              {authUser ? (
+                <Button //button tags are self closing in native
+                  title="Sign Out" //declaring what will be displayed on button, not in between both tags
+                  onPress={() => { //don't forget curly brace with multi-line executions
+                    setAuthUser(null);
+                    auth.signOut(); //signing out user 
+                    window.alert('Auth user signed out' + authUser);
+                  }} //not on click!! ]
+                />
+              ) : null} {/*setting to null here if there is no user*/}
             </ThemedView>
         </ParallaxScrollView>
     );

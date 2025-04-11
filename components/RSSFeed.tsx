@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text, FlatList, ActivityIndicator, StyleSheet, Linking } from 'react-native';
+import { 
+  View, 
+  ScrollView, 
+  Text, FlatList, 
+  ActivityIndicator, 
+  StyleSheet, 
+  Linking 
+} from 'react-native';
 import axios from 'axios';
 
 
