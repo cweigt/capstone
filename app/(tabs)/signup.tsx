@@ -17,7 +17,6 @@ const Sign_Up = () => {
       //this is for a listener so I know what user is currently authenticated
       useEffect(() => {
         const listener = auth.onAuthStateChanged((authUser) => {
-          console.log('Auth user in listener', authUser); //logging to terminal
           if(authUser) {
             setAuthUser(authUser); //updating with the current user
           } else {

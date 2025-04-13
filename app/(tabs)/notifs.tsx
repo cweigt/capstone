@@ -1,9 +1,22 @@
 import { StyleSheet, View, Text, Image } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedView } from '@/components/ThemedView';
+import { auth } from '@/firebase';
 
 const Notifications = () => {
+  const [user, setUser] = useState(null);
+
+  //this listens for the user to be changed and then will change display
+  //in this case it's better than passing user in as prop… will cause issues
+  useEffect(() => {
+    const listener = auth.onAuthStateChanged((user) => {
+      setUser(user)
+    });
+    return () => listener();
+  }, [user]);
+
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }}
@@ -13,12 +26,18 @@ const Notifications = () => {
           style={styles.auroraLogo}
         />
       }
-    >
+    > {/*end of opening ParallaxScrollView*/}
       <ThemedView>
+        {user ? (
+          <View style={styles.container}>
+            <Text style={styles.title}>Notifications</Text>
+            <Text style={styles.message}>You don't have any notifications yet.</Text>
+          </View>
+        ) : 
         <View style={styles.container}>
-          <Text style={styles.title}>Notifications</Text>
-          <Text style={styles.message}>You don't have any notifications yet.</Text>
+          <Text style={styles.message}>Please sign in to see notifications.</Text>
         </View>
+        }
       </ThemedView>
     </ParallaxScrollView>
   );

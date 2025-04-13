@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
   View, 
-  ScrollView, 
   Text, FlatList, 
   ActivityIndicator, 
   StyleSheet, 
@@ -75,6 +74,8 @@ const RSSFeed = () => {
         );
     }
 
+    //this return statement returns the items found in with the API
+    //don't move into another component unless you want to pass everything in
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Latest News</Text>
