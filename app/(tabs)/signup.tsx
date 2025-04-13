@@ -17,6 +17,7 @@ const Sign_Up = () => {
       //this is for a listener so I know what user is currently authenticated
       useEffect(() => {
         const listener = auth.onAuthStateChanged((authUser) => {
+          console.log('Auth state changed:', authUser); // Debugging output
           if(authUser) {
             setAuthUser(authUser); //updating with the current user
           } else {
@@ -41,29 +42,38 @@ const Sign_Up = () => {
                 />
               }>
             <ThemedView style={{backgroundColor: "white"}}>
-              {showSignUp ? (
-                <SignUp setUser={setAuthUser}/>
-              ) : 
-                <SignIn user={setAuthUser} setUser={setAuthUser}/>
-              }
               {/*This will be for the sign out function using conditional rendering*/}
               {authUser ? (
-                <Button //button tags are self closing in native
-                  title="Sign Out" //declaring what will be displayed on button, not in between both tags
-                  onPress={() => { //don't forget curly brace with multi-line executions
-                    setAuthUser(null);
-                    auth.signOut();
-                    window.alert(`Auth user signed out: ${authUser.email}`);
-                  }}
-                />
-              ) : null} {/*setting to null here if there is no user*/}
-              <TouchableOpacity onPress={() => setShowSignUp(!showSignUp)}>
-                <Text style={styles.toggleText}>
-                  {showSignUp ? 'Already have an account? Sign in.'
-                  : "Don't have an account? Sign up."}
-                </Text>
-              </TouchableOpacity>
-
+                <>
+                  <Text style={styles.welcomeText}>
+                    Welcome, {authUser.email}!
+                  </Text>
+                  <Button //button tags are self closing in native
+                    title="Sign Out" //declaring what will be displayed on button, not in between both tags
+                    onPress={() => { //don't forget curly brace with multi-line executions
+                      auth.signOut();
+                      setAuthUser(null);
+                      window.alert(`Auth user signed out: ${authUser.email}`);
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  {showSignUp ? (
+                    <SignUp setUser={setAuthUser}/>
+                  ) : (
+                    <SignIn setUser={setAuthUser}/>
+                  )}
+                  <TouchableOpacity onPress={() => setShowSignUp(!showSignUp)}>
+                    <Text style={styles.toggleText}>
+                      {showSignUp ? 'Already have an account? Sign in.'
+                      : "Don't have an account? Sign up."}
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              )}
+              
+              
               
             </ThemedView>
         </ParallaxScrollView>
@@ -84,6 +94,13 @@ const styles = StyleSheet.create({
       color: '#007AFF',
       textAlign: 'center',
       fontWeight: '500',
+    },
+    welcomeText: {
+      fontSize: 18,
+      fontWeight: '600',
+      textAlign: 'center',
+      marginBottom: 15,
+      marginTop: 10,
     },
   });
 

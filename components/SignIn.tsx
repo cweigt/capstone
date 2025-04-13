@@ -4,7 +4,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
-const Sign_In = ({ user, setUser }) => {
+const Sign_In = ({ setUser }) => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 

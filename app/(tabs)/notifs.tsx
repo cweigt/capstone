@@ -1,3 +1,4 @@
+
 import { StyleSheet, View, Text, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -32,11 +33,11 @@ const Notifications = () => {
           <Text style={styles.title}>Notifications</Text>
           <Text style={styles.message}>You don't have any notifications yet.</Text>
         </View>
-      ) : 
+      ) : (
         <View style={styles.container}>
             <Text style={styles.message}>Please sign in to view notifications.</Text>
         </View>
-      }
+      )};
       
     </ParallaxScrollView>
   );
