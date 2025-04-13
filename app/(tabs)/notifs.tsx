@@ -14,7 +14,7 @@ const Notifications = () => {
       setUser(user)
     });
     return () => listener();
-  }, [user]);
+  }, []);
 
 
   return (
@@ -27,18 +27,17 @@ const Notifications = () => {
         />
       }
     > {/*end of opening ParallaxScrollView*/}
-      <ThemedView>
-        {user ? (
-          <View style={styles.container}>
-            <Text style={styles.title}>Notifications</Text>
-            <Text style={styles.message}>You don't have any notifications yet.</Text>
-          </View>
-        ) : 
+      {user ? (
         <View style={styles.container}>
-          <Text style={styles.message}>Please sign in to see notifications.</Text>
+          <Text style={styles.title}>Notifications</Text>
+          <Text style={styles.message}>You don't have any notifications yet.</Text>
         </View>
-        }
-      </ThemedView>
+      ) : 
+        <View style={styles.container}>
+            <Text style={styles.message}>Please sign in to view notifications.</Text>
+        </View>
+      }
+      
     </ParallaxScrollView>
   );
 };
@@ -61,6 +60,8 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 16,
+    textAlign: 'center',
+    marginTop: 20,
     color: '#666',
   },
 });

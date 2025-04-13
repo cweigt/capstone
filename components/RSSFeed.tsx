@@ -61,7 +61,7 @@ const RSSFeed = () => {
     if (!user) {
         return (
             <View style={styles.container}>
-                <Text style={styles.message}>Please sign in to view the RSS feed</Text>
+                <Text style={styles.message}>Please sign in to view the RSS feed.</Text>
             </View>
         );
     }
