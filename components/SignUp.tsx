@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { auth, db } from '../firebase';
 import { set, ref } from 'firebase/database';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 const Sign_Up = ({ setUser }) => {
     const [password, setPassword] = useState('');
@@ -11,6 +11,12 @@ const Sign_Up = ({ setUser }) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 
+      //this is for updating user profile
+    const setDisplayName = async (user, firstName, lastName) => {
+        await updateProfile(user, {
+        displayName: `${firstName} ${lastName}`
+        });
+    };
     const SignUp = async() => {
         try {
             //creating account in Authentication
@@ -27,6 +33,7 @@ const Sign_Up = ({ setUser }) => {
                 createdAt: new Date().toISOString()
             });
 
+            await setDisplayName(userCredentials.user, firstName, lastName);
             window.alert('User set:' + userCredentials.user);
             //clearing the text fields
             setPassword('');

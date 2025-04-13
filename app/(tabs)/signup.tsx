@@ -46,7 +46,7 @@ const Sign_Up = () => {
               {authUser ? (
                 <>
                   <Text style={styles.welcomeText}>
-                    Welcome, {authUser.email}!
+                    Welcome, {authUser.email}! {/*This is the line that is breaking with displayName*/}
                   </Text>
                   <Button //button tags are self closing in native
                     title="Sign Out" //declaring what will be displayed on button, not in between both tags
