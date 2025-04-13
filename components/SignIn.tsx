@@ -45,12 +45,10 @@ const Sign_In = ({ user, setUser }) => {
                         value={password}
                         onChangeText={setPassword}
                     />
-                    {!user ? ( //this is for conidition rendering
-                        <Button
-                            title="Sign In"
-                            onPress={SignIn}
-                        />
-                    ) : null}
+                    <Button
+                        title="Sign In"
+                        onPress={SignIn}
+                    />
                 </View>
             </ThemedView>
         </View>
