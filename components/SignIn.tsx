@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { auth } from '../firebase';
@@ -6,15 +6,21 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Sign_In = ({ setUser }) => {
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
+    const [errorMessage, setErrorMessage] = ('');
 
-    const SignIn = async() => {
+    const confirmCredentials = () => {
+
+    };
+
+    const signIn = async() => {
         try {
             //creating account in Authentication
             const userCredentials = await signInWithEmailAndPassword(auth, email, password);
             setUser(userCredentials.user);
 
-            window.alert('Sign-in succesful!:' + userCredentials.user);
+            //window.alert('Sign-in succesful!:' + userCredentials.user);
             //clearing the text fields
             setPassword('');
             setEmail('');
@@ -41,13 +47,20 @@ const Sign_In = ({ setUser }) => {
                         style={styles.input}
                         placeholder="Password..."
                         placeholderTextColor='#000000'
-                        secureTextEntry
+                        secureTextEntry={!showPassword}
                         value={password}
                         onChangeText={setPassword}
                     />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                        <Text style={styles.message}>
+                            <Text style={styles.message}>
+                                {showPassword ? 'Hide' : 'Show'} Password
+                            </Text>
+                        </Text>
+                    </TouchableOpacity>
                     <Button
                         title="Sign In"
-                        onPress={SignIn}
+                        onPress={signIn}
                     />
                 </View>
             </ThemedView>
@@ -71,8 +84,20 @@ const styles = StyleSheet.create({
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
-        marginBottom: 10,
+        marginTop: 10,
         paddingLeft: 8,
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 14,
+        marginBottom: 10,
+        marginTop: 7,
+    },
+    message: {
+        fontSize: 12,
+        textAlign: 'left',
+        //marginTop: 20,
+        color: '#666',
     },
 });
 

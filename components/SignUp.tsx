@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { db } from '../firebase';
@@ -7,10 +7,14 @@ import { createUserWithEmailAndPassword, updateProfile, getAuth } from 'firebase
 
 const Sign_Up = ({ setUser }) => {
     const auth = getAuth();
-    const [password, setPassword] = useState('');
+    const [password1, setPassword1] = useState(''); //for typing in password
+    const [password2, setPassword2] = useState(''); //for confirming password
+    const [showPassword1, setShowPassword1] = useState(false); //showing password1
+    const [showPassword2, setShowPassword2] = useState(false); //show password2
     const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
 
     //this is for updating user profile
@@ -19,43 +23,44 @@ const Sign_Up = ({ setUser }) => {
             displayName: `${firstName} ${lastName}`
         });
     };
-    
-    const SignUp = async() => {
-        try {
-            //creating account in Authentication
-            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
 
-            //adding displayName
-            await setDisplayName(firstName, lastName);
-            //forcing refresh to ensure I get the displayName
-            await userCredentials.user.reload();
-            //console.log("Updated displayName in comp:", auth.currentUser.displayName); //includes displayName
-
-            const updatedUser = auth.currentUser; //get fresh data
-            //okay that is upsetting... how am I supposed to know what the spread operator does??
-            setUser({...updatedUser}); //tells React that it is a new object and to re render
-            //creating the user into the Realtime Database
-            //set ref db pathname
-            await set(ref(db, 'users/' + userCredentials.user.uid), {
-                //everything that you want stored
-                email: userCredentials.user.email,
-                firstName: firstName,
-                lastName: lastName,
-                createdAt: new Date().toISOString()
-            });
-            await userCredentials.user.reload();
-
-            //setUser(userCredentials.user);
-            window.alert('User set:' + userCredentials.user);
-            //clearing the text fields
-            setPassword('');
-            setEmail('');
-            setFirstName('');
-            setLastName('');
-
-        } catch (error) {
-            window.alert("Sign-up failed: " + error.message);
+    const confirmPassword = () => {
+        if(password1 === password2){
+            setErrorMessage(''); //using state to manage the error message
+            signUp();
+        } else {
+            setErrorMessage("Passwords do not match.");
         }
+    };
+    
+    const signUp = async() => {
+        //creating account in Authentication
+        const userCredentials = await createUserWithEmailAndPassword(auth, email, password1);
+
+        //adding displayName
+        await setDisplayName(firstName, lastName);
+        //forcing refresh to ensure I get the displayName
+        await userCredentials.user.reload();
+        //console.log("Updated displayName in comp:", auth.currentUser.displayName); //includes displayName
+
+        const updatedUser = auth.currentUser; //get fresh data
+        //okay that is upsetting... how am I supposed to know what the spread operator does??
+        setUser({...updatedUser}); //tells React that it is a new object and to re render
+        //creating the user into the Realtime Database
+        //set ref db pathname
+        await set(ref(db, 'users/' + userCredentials.user.uid), {
+            //everything that you want stored
+            email: userCredentials.user.email,
+            firstName: firstName,
+            lastName: lastName,
+            createdAt: new Date().toISOString()
+        });
+        //clearing the text fields
+        setPassword1('');
+        setPassword2('');
+        setEmail('');
+        setFirstName('');
+        setLastName('');
     };
 
     return (
@@ -86,16 +91,40 @@ const Sign_Up = ({ setUser }) => {
                         keyboardType="email-address"
                     />
                     <TextInput
+                        id='password1'
                         style={styles.input}
                         placeholder="Password..."
                         placeholderTextColor='#000000'
-                        secureTextEntry
-                        value={password}
-                        onChangeText={setPassword}
+                        secureTextEntry={!showPassword1}
+                        value={password1}
+                        onChangeText={setPassword1}
                     />
+                    <TouchableOpacity onPress={() => setShowPassword1(!showPassword1)}>
+                        <Text style={styles.message}>
+                            {showPassword1 ? 'Hide' : "Show"} Password
+                        </Text>
+                    </TouchableOpacity>
+                    <TextInput
+                        id='password2'
+                        style={styles.input}
+                        placeholder="Confirm password..."
+                        placeholderTextColor='#000000'
+                        secureTextEntry={!showPassword2}
+                        value={password2}
+                        onChangeText={setPassword2}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword2(!showPassword2)}>
+                        <Text style={styles.message}>
+                            {showPassword2 ? 'Hide' : 'Show'} Password
+                        </Text>
+                    </TouchableOpacity>
+                    {errorMessage !== '' && (
+                        <Text style={styles.errorText}>{errorMessage}</Text>
+                        //referencing the errorMessage state and what it is set to
+                    )}
                     <Button
                         title="Sign Up"
-                        onPress={SignUp}
+                        onPress={confirmPassword /*signing up user*/}
                     />
                 </View>
             </ThemedView>
@@ -119,8 +148,20 @@ const styles = StyleSheet.create({
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
-        marginBottom: 10,
+        marginTop: 10,
         paddingLeft: 8,
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 14,
+        marginBottom: 10,
+        marginTop: 7,
+    },
+    message: {
+        fontSize: 12,
+        textAlign: 'left',
+        //marginTop: 20,
+        color: '#666',
     },
 });
 

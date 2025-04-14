@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: 'left',
     marginTop: 20,
     color: '#666',
   },

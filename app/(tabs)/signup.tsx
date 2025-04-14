@@ -17,12 +17,10 @@ const Sign_Up = () => {
       //this is for a listener so I know what user is currently authenticated
       useEffect(() => {
         const listener = auth.onAuthStateChanged((authUser) => {
-          //console.log('Auth state changed (pre-reload):', authUser);
       
           if (authUser) {
             authUser.reload(); //wait for reload
             const refreshedUser = auth.currentUser; //this will now include displayName
-            //console.log('Refreshed user:', refreshedUser.displayName);
             setAuthUser(refreshedUser);
           } else {
             setAuthUser(null);
@@ -58,7 +56,7 @@ const Sign_Up = () => {
                     onPress={() => { //don't forget curly brace with multi-line executions
                       auth.signOut();
                       setAuthUser(null);
-                      window.alert(`Auth user signed out: ${authUser.email}`);
+                      //window.alert(`Auth user signed out: ${authUser.email}`);
                     }}
                   />
                 </>
