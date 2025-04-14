@@ -1,4 +1,10 @@
-import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
+import { 
+    StyleSheet, 
+    View, 
+    Text, 
+    TextInput, 
+    Button, 
+    TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { auth } from '../firebase';
@@ -16,8 +22,6 @@ const Sign_In = ({ setUser }) => {
             const userCredentials = await signInWithEmailAndPassword(auth, email, password);
             setUser(userCredentials.user);
             setErrorMessage('');
-
-            //window.alert('Sign-in succesful!:' + userCredentials.user);
             //clearing the text fields
             setPassword('');
             setEmail('');
