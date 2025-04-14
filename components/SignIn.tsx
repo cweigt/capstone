@@ -8,17 +8,14 @@ const Sign_In = ({ setUser }) => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
-    const [errorMessage, setErrorMessage] = ('');
-
-    const confirmCredentials = () => {
-
-    };
+    const [errorMessage, setErrorMessage] = useState('');
 
     const signIn = async() => {
         try {
             //creating account in Authentication
             const userCredentials = await signInWithEmailAndPassword(auth, email, password);
             setUser(userCredentials.user);
+            setErrorMessage('');
 
             //window.alert('Sign-in succesful!:' + userCredentials.user);
             //clearing the text fields
@@ -26,7 +23,7 @@ const Sign_In = ({ setUser }) => {
             setEmail('');
 
         } catch (error) {
-            window.alert("Sign-in failed: " + error.message);
+            setErrorMessage('Invalid email or password.');
         }
     };
 
@@ -58,6 +55,9 @@ const Sign_In = ({ setUser }) => {
                             </Text>
                         </Text>
                     </TouchableOpacity>
+                    {errorMessage !== '' && (
+                        <Text style={styles.errorText}>{errorMessage}</Text>
+                    )}
                     <Button
                         title="Sign In"
                         onPress={signIn}
