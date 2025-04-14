@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   View, 
-  Text, FlatList, 
+  Text, 
+  FlatList, 
   ActivityIndicator, 
   StyleSheet, 
   Linking 

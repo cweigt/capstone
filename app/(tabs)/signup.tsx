@@ -3,10 +3,7 @@ import {
   Text, 
   Image, 
   Button, 
-  KeyboardAvoidingView, 
-  Platform, 
   TouchableOpacity,
-  View
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import ParallaxScrollView from '@/components/ParallaxScrollView';

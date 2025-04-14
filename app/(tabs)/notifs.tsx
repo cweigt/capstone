@@ -1,8 +1,12 @@
 
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { 
+  StyleSheet, 
+  View, 
+  Text, 
+  Image 
+} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedView } from '@/components/ThemedView';
 import { auth } from '@/firebase';
 
 const Notifications = () => {

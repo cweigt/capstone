@@ -4,7 +4,8 @@ import {
     Text, 
     TextInput, 
     Button, 
-    TouchableOpacity } from 'react-native';
+    TouchableOpacity 
+} from 'react-native';
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { auth } from '../firebase';
