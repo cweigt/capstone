@@ -17,19 +17,24 @@ const Sign_Up = () => {
       //this is for a listener so I know what user is currently authenticated
       useEffect(() => {
         const listener = auth.onAuthStateChanged((authUser) => {
-          console.log('Auth state changed:', authUser); // Debugging output
-          if(authUser) {
-            setAuthUser(authUser); //updating with the current user
+          //console.log('Auth state changed (pre-reload):', authUser);
+      
+          if (authUser) {
+            authUser.reload(); //wait for reload
+            const refreshedUser = auth.currentUser; //this will now include displayName
+            //console.log('Refreshed user:', refreshedUser.displayName);
+            setAuthUser(refreshedUser);
           } else {
-            setAuthUser(null); //setting this to null if nothing is there
+            setAuthUser(null);
           }
-    
         });
-        return () => listener();
-      }, []); //empty dependendace array makes it run once when component mounts
+      
+        return () => listener(); // cleanup
+      }, []);
+      
     
       useEffect(() => {
-        console.log('Updated auth user', authUser);
+        console.log('Updated auth user', authUser); //undefined
       }, [authUser]); //updates everytime auth user is updated
 
     return (
@@ -46,7 +51,7 @@ const Sign_Up = () => {
               {authUser ? (
                 <>
                   <Text style={styles.welcomeText}>
-                    Welcome, {authUser.email}! {/*This is the line that is breaking with displayName*/}
+                    Welcome, {authUser.displayName}! {/*This is the line that is breaking with displayName*/}
                   </Text>
                   <Button //button tags are self closing in native
                     title="Sign Out" //declaring what will be displayed on button, not in between both tags

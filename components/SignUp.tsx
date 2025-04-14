@@ -1,28 +1,39 @@
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
-import { auth, db } from '../firebase';
+import { db } from '../firebase';
 import { set, ref } from 'firebase/database';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile, getAuth } from 'firebase/auth';
 
 const Sign_Up = ({ setUser }) => {
+    const auth = getAuth();
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 
-      //this is for updating user profile
-    const setDisplayName = async (user, firstName, lastName) => {
-        await updateProfile(user, {
-        displayName: `${firstName} ${lastName}`
+
+    //this is for updating user profile
+    const setDisplayName = async (firstName, lastName) => {
+        await updateProfile(auth.currentUser, {
+            displayName: `${firstName} ${lastName}`
         });
     };
+    
     const SignUp = async() => {
         try {
             //creating account in Authentication
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-            setUser(userCredentials.user);
 
+            //adding displayName
+            await setDisplayName(firstName, lastName);
+            //forcing refresh to ensure I get the displayName
+            await userCredentials.user.reload();
+            //console.log("Updated displayName in comp:", auth.currentUser.displayName); //includes displayName
+
+            const updatedUser = auth.currentUser; //get fresh data
+            //okay that is upsetting... how am I supposed to know what the spread operator does??
+            setUser({...updatedUser}); //tells React that it is a new object and to re render
             //creating the user into the Realtime Database
             //set ref db pathname
             await set(ref(db, 'users/' + userCredentials.user.uid), {
@@ -32,8 +43,9 @@ const Sign_Up = ({ setUser }) => {
                 lastName: lastName,
                 createdAt: new Date().toISOString()
             });
+            await userCredentials.user.reload();
 
-            await setDisplayName(userCredentials.user, firstName, lastName);
+            //setUser(userCredentials.user);
             window.alert('User set:' + userCredentials.user);
             //clearing the text fields
             setPassword('');
