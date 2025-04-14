@@ -91,7 +91,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   toggleText: {
-    marginTop: 15,
+    marginTop: 0,
+    marginBottom: 10,
     color: '#007AFF',
     textAlign: 'center',
     fontWeight: '500',

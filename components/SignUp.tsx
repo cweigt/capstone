@@ -32,19 +32,12 @@ const Sign_Up = ({ setUser }) => {
             displayName: `${firstName} ${lastName}`
         });
     };
-
-    const confirmPassword = () => {
-        if(password1 === password2){
-            setErrorMessage(''); //using state to manage the error message
-            signUp();
-        } else {
-            setErrorMessage("Passwords do not match.");
-        }
-    };
-    
     const signUp = async() => {
         if(password1.length < 10){
             setErrorMessage("Password must be at least 10 characters long.");
+        }
+        if(password1 !== password2){
+            setErrorMessage("Passwords do not match.");
         }
         try {
             //creating account in Authentication
@@ -80,7 +73,7 @@ const Sign_Up = ({ setUser }) => {
             } else if(error.code === "auth/email-already-in-use"){
                 setErrorMessage("Sorry! Email already in use");
             } else {
-                setErrorMessage("An error occured. Please try again");
+                //setErrorMessage("An error occured. Please try again.");
             }
         }
        
@@ -155,7 +148,7 @@ const Sign_Up = ({ setUser }) => {
                 )}
                 <Button
                     title="Sign Up"
-                    onPress={confirmPassword /*signing up user*/}
+                    onPress={signUp}
                 />
             </View>
         </ThemedView>
