@@ -25,6 +25,22 @@ const Sign_Up = ({ setUser }) => {
     const [lastName, setLastName] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
+    //this is to require all the fields to be filled out before the user signs up
+    const validatingForm = () => {
+        if(!password1 || !password2 || !email || !firstName || !lastName){
+            setErrorMessage("Please fill in all fields");
+            return false;
+        }
+        if(password1.length < 10){
+            setErrorMessage("Password must be at least 10 characters long.");
+            return false;
+        }
+        if(password1 !== password2){
+            setErrorMessage("Passwords do not match.");
+            return false;
+        }
+        return true; //returning true if everything follows requirements
+    };
 
     //this is for updating user profile
     const setDisplayName = async (firstName, lastName) => {
@@ -33,12 +49,11 @@ const Sign_Up = ({ setUser }) => {
         });
     };
     const signUp = async() => {
-        if(password1.length < 10){
-            setErrorMessage("Password must be at least 10 characters long.");
-        }
-        if(password1 !== password2){
-            setErrorMessage("Passwords do not match.");
-        }
+        //stopping signUp function if validating form returns false
+        if(!validatingForm()){
+            return;
+        } 
+
         try {
             //creating account in Authentication
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password1);
