@@ -1,5 +1,11 @@
+//this is the ideal template for ParallaxScrollView comop
+//it previously did not take into account the keyboard and would break the code
+//when combined with KeyboardAvoidingView
+//this is the solution to that, and is the IDEAL TEMPLATE
+
 import type { PropsWithChildren, ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Keyboard } from 'react-native';
+import { useEffect, useState } from 'react';
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -18,15 +24,33 @@ type Props = PropsWithChildren<{
   headerBackgroundColor: { light: string, dark: string };
 }>;
 
-export default function ParallaxScrollView({
+const ParallaxScrollView = ({
   children,
   headerImage,
   headerBackgroundColor,
-}: Props) {
+}: Props) => {
   const colorScheme = useColorScheme() ?? 'light';
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
   const bottom = useBottomTabOverflow();
+
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  useEffect(() => {
+    const showSub = Keyboard.addListener('keyboardWillShow', (e) => {
+      setKeyboardHeight(e.endCoordinates.height);
+    });
+    const hideSub = Keyboard.addListener('keyboardWillHide', () => {
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
+
+  //@ts-ignore: Suppress the error for this line
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -50,11 +74,14 @@ export default function ParallaxScrollView({
         ref={scrollRef}
         scrollEventThrottle={16}
         scrollIndicatorInsets={{ bottom }}
-        contentContainerStyle={{ paddingBottom: bottom }}>
+        contentContainerStyle={{
+          paddingBottom: bottom + keyboardHeight,
+        }}>
         <Animated.View
           style={[
             styles.header,
             { backgroundColor: headerBackgroundColor[colorScheme] },
+            //@ts-ignore: Suppress the error for this line
             headerAnimatedStyle,
           ]}>
           {headerImage}
@@ -80,3 +107,5 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 });
+
+export default ParallaxScrollView;
