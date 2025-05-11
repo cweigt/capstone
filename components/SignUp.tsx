@@ -130,7 +130,6 @@ const Sign_Up = ({ setUser }) => {
                     keyboardType="email-address"
                 />
                 <TextInput
-                    id='password1'
                     style={styles.input}
                     placeholder="Password..."
                     placeholderTextColor='#000000'
@@ -144,7 +143,6 @@ const Sign_Up = ({ setUser }) => {
                     </Text>
                 </TouchableOpacity>
                 <TextInput
-                    id='password2'
                     style={styles.input}
                     placeholder="Confirm password..."
                     placeholderTextColor='#000000'
