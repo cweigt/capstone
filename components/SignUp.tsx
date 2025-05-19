@@ -9,13 +9,12 @@ import {
  } from 'react-native';
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
-import { db } from '../firebase';
+//import { auth, db } from '@/firebase';
 import { set, ref } from 'firebase/database';
-import { createUserWithEmailAndPassword, updateProfile, getAuth } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 
 const Sign_Up = ({ setUser }) => {
-    const auth = getAuth();
     const [password1, setPassword1] = useState(''); //for typing in password
     const [password2, setPassword2] = useState(''); //for confirming password
     const [showPassword1, setShowPassword1] = useState(false); //showing password1
@@ -43,11 +42,12 @@ const Sign_Up = ({ setUser }) => {
     };
 
     //this is for updating user profile
-    const setDisplayName = async (firstName, lastName) => {
+    /*const setDisplayName = async (firstName, lastName) => {
         await updateProfile(auth.currentUser, {
             displayName: `${firstName} ${lastName}`
         });
-    };
+    };*/
+
     const signUp = async() => {
         //stopping signUp function if validating form returns false
         if(!validatingForm()){
@@ -56,26 +56,29 @@ const Sign_Up = ({ setUser }) => {
 
         try {
             //creating account in Authentication
-            const userCredentials = await createUserWithEmailAndPassword(auth, email, password1);
+            //const userCredentials = await createUserWithEmailAndPassword(auth, email, password1);
 
             //adding displayName
-            await setDisplayName(firstName, lastName);
+            //await setDisplayName(firstName, lastName);
+
             //forcing refresh to ensure I get the displayName
-            await userCredentials.user.reload();
+            //await userCredentials.user.reload();
             //console.log("Updated displayName in comp:", auth.currentUser.displayName); //includes displayName
 
-            const updatedUser = auth.currentUser; //get fresh data
-            //okay that is upsetting... how am I supposed to know what the spread operator does??
-            setUser({...updatedUser}); //tells React that it is a new object and to re render
+            //const updatedUser = auth.currentUser; //get fresh data
+            
+            //setUser({...updatedUser}); //tells React that it is a new object and to re render
             //creating the user into the Realtime Database
+
             //set ref db pathname
-            await set(ref(db, 'users/' + userCredentials.user.uid), {
+            /*await set(ref(db, 'users/' + userCredentials.user.uid), {
                 //everything that you want stored
                 email: userCredentials.user.email,
                 firstName: firstName,
                 lastName: lastName,
                 createdAt: new Date().toISOString()
-            });
+            });*/
+
             //clearing the text fields
             setPassword1('');
             setPassword2('');

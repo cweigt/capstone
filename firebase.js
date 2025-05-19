@@ -8,7 +8,7 @@ import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: "AIzaSyB7N-BOm26nyeju-fWIr3eFfGV8-l3L4RA",
     authDomain: "aurorawdc.firebaseapp.com",
     projectId: "aurorawdc",
@@ -16,11 +16,18 @@ const firebaseConfig = {
     messagingSenderId: "1085205837895",
     appId: "1:1085205837895:web:094fba8340806ac671d962",
     measurementId: "G-0DVN9242ZF"
-  };
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase();
 
-export { auth, db };
+// Initialize Auth and Database
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+// Ensure Firebase is initialized
+if (!app) {
+    throw new Error('Firebase failed to initialize');
+}
+
+//export { auth, db };

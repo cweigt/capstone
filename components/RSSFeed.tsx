@@ -8,7 +8,7 @@ import {
   Linking 
 } from 'react-native';
 import axios from 'axios';
-import { auth } from '@/firebase';
+//import { auth } from '@/firebase';
 
 
 interface RSSItem {
@@ -24,13 +24,13 @@ const RSSFeed = () => {
     //managing own user state to avoid THE GLITCH
     const [user, setUser] = useState(null); 
 
-    useEffect(() => {
+    /*useEffect(() => {
         //listens for any authentication of a user and then brings the user object into here
         const listener = auth.onAuthStateChanged((user) => {
             setUser(user);
         });
         return () => listener();
-    }, []);
+    }, []);*/
 
     // Replace this with your RSS URL (use rss2json.com API)
     const feedUrl = 'https://rss2json.com/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml'; // NY Times RSS
