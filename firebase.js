@@ -31,4 +31,3 @@ if (!app) {
 }
 
 //export { auth, db };
-export { auth, db };
