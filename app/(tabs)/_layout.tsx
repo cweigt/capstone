@@ -10,7 +10,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 
 const TabLayout = () => {
   const colorScheme = useColorScheme();
-  //const deezNuts = 1;
+  
   return (
     <Tabs
       screenOptions={{
