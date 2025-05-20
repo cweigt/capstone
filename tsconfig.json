@@ -7,13 +7,13 @@
       ]
     },
     "jsx": "react-native",
-    "types": ["react-native", "node"],
     "allowJs": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "moduleResolution": "node16",
-    "module": "Node16"
+    "module": "Node16",
+    "typeRoots": ["./node_modules/@types"]
   },
   "include": [
     "**/*.ts",
