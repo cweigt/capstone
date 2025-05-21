@@ -9,7 +9,7 @@ import {
  } from 'react-native';
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
-//import { auth, db } from '@/firebase';
+import { auth, db } from '@/firebase';
 import { set, ref } from 'firebase/database';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
@@ -42,11 +42,11 @@ const Sign_Up = ({ setUser }) => {
     };
 
     //this is for updating user profile
-    /*const setDisplayName = async (firstName, lastName) => {
+    const setDisplayName = async (firstName, lastName) => {
         await updateProfile(auth.currentUser, {
             displayName: `${firstName} ${lastName}`
         });
-    };*/
+    };
 
     const signUp = async() => {
         //stopping signUp function if validating form returns false
@@ -56,28 +56,28 @@ const Sign_Up = ({ setUser }) => {
 
         try {
             //creating account in Authentication
-            //const userCredentials = await createUserWithEmailAndPassword(auth, email, password1);
+            const userCredentials = await createUserWithEmailAndPassword(auth, email, password1);
 
             //adding displayName
-            //await setDisplayName(firstName, lastName);
+            await setDisplayName(firstName, lastName);
 
             //forcing refresh to ensure I get the displayName
-            //await userCredentials.user.reload();
-            //console.log("Updated displayName in comp:", auth.currentUser.displayName); //includes displayName
+            await userCredentials.user.reload();
+            console.log("Updated displayName in comp:", auth.currentUser.displayName); //includes displayName
 
-            //const updatedUser = auth.currentUser; //get fresh data
+            const updatedUser = auth.currentUser; //get fresh data
             
-            //setUser({...updatedUser}); //tells React that it is a new object and to re render
+            setUser({...updatedUser}); //tells React that it is a new object and to re render
             //creating the user into the Realtime Database
 
             //set ref db pathname
-            /*await set(ref(db, 'users/' + userCredentials.user.uid), {
+            await set(ref(db, 'users/' + userCredentials.user.uid), {
                 //everything that you want stored
                 email: userCredentials.user.email,
                 firstName: firstName,
                 lastName: lastName,
                 createdAt: new Date().toISOString()
-            });*/
+            });
 
             //clearing the text fields
             setPassword1('');
@@ -91,7 +91,7 @@ const Sign_Up = ({ setUser }) => {
             } else if(error.code === "auth/email-already-in-use"){
                 setErrorMessage("Sorry! Email already in use");
             } else {
-                //setErrorMessage("An error occured. Please try again.");
+                setErrorMessage("An error occured. Please try again.");
             }
         }
        

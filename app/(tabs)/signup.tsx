@@ -10,13 +10,13 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import SignUp from '@/components/SignUp';
 import SignIn from '@/components/SignIn';
 import { ThemedView } from '@/components/ThemedView';
-//import { auth } from '@/firebase';
+import { auth } from '@/firebase';
 
 const Sign_Up = () => {
     const [authUser, setAuthUser] = useState(null);
     const [showSignUp, setShowSignUp] = useState(false);
   
-    /*useEffect(() => {
+    useEffect(() => {
         const listener = auth.onAuthStateChanged((authUser) => {
             if (authUser) {
                 authUser.reload();
@@ -27,7 +27,7 @@ const Sign_Up = () => {
             }
         });
         return () => listener();
-    }, []);*/
+    }, []);
   
     useEffect(() => {
         console.log('Updated auth user', authUser);
@@ -52,9 +52,9 @@ const Sign_Up = () => {
                 <Button //button tags are self closing in native
                   title="Sign Out" //declaring what will be displayed on button, not in between both tags
                   onPress={() => { //don't forget curly brace with multi-line executions
-                    //auth.signOut();
+                    auth.signOut();
                     setAuthUser(null);
-                    //window.alert(`Auth user signed out: ${authUser.email}`);
+                    window.alert(`Auth user signed out: ${authUser.email}`);
                   }}
                 />
               </>

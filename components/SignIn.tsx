@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
-//import { auth } from '@/firebase';
+import { auth } from '@/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Sign_In = ({ setUser }) => {
@@ -20,10 +20,10 @@ const Sign_In = ({ setUser }) => {
     const signIn = async() => {
         try {
             //creating account in Authentication
-            //const userCredentials = await signInWithEmailAndPassword(auth, email, password);
-            //setUser(userCredentials.user);
-            setErrorMessage('');
+            const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+            setUser(userCredentials.user);
             //clearing the text fields
+            setErrorMessage('');
             setPassword('');
             setEmail('');
 
