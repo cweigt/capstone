@@ -7,9 +7,9 @@ import {
     TouchableOpacity 
 } from 'react-native';
 import React, { useState } from 'react';
-import { ThemedView } from '@/components/ThemedView';
 import { auth } from '@/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+// import { ThemedView } from '@/components/ThemedView';
 
 const Sign_In = ({ setUser }) => {
     const [password, setPassword] = useState('');
@@ -34,7 +34,7 @@ const Sign_In = ({ setUser }) => {
 
     return (
         <View style={styles.container}>
-            <ThemedView>
+            <View style={{ backgroundColor: 'white' }}>
                 <View style={styles.formContainer}>
                     <Text style={styles.title}>Sign In</Text>
                     <TextInput
@@ -66,7 +66,7 @@ const Sign_In = ({ setUser }) => {
                         onPress={signIn}
                     />
                 </View>
-            </ThemedView>
+            </View>
         </View>
     );
 };

@@ -4,12 +4,13 @@ import {
   Image, 
   Button, 
   TouchableOpacity,
+  View
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { ParallaxScrollView } from '@/components/ParallaxScrollView';
 import SignUp from '@/components/SignUp';
 import SignIn from '@/components/SignIn';
-import { ThemedView } from '@/components/ThemedView';
+// import { ThemedView } from '@/components/ThemedView';
 import { auth } from '@/firebase';
 
 const Sign_Up = () => {
@@ -36,13 +37,14 @@ const Sign_Up = () => {
     return (
       <ParallaxScrollView 
           headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }} //#A1CEDC
+          headerHeight={175}
           headerImage={
               <Image
                 source={require('@/assets/images/aurora-wdc.png')}
                 style={styles.auroraLogo}
               />
             }>
-          <ThemedView style={{backgroundColor: "white"}}>
+          <View style={{backgroundColor: "white"}}>
             {/*This will be for the sign out function using conditional rendering*/}
             {authUser ? (
               <>
@@ -76,7 +78,7 @@ const Sign_Up = () => {
             
             
             
-          </ThemedView>
+          </View>
       </ParallaxScrollView>
   );
 
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
   auroraLogo: {
     marginTop: 1,
     marginLeft: 33,
-    height: 250,
+    height: 175,
     width: 330,
     resizeMode: 'contain',
   },
