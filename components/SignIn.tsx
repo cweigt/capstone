@@ -7,8 +7,7 @@ import {
     TouchableOpacity 
 } from 'react-native';
 import React, { useState } from 'react';
-import { auth } from '@/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, getAuth, sendPasswordResetEmail } from 'firebase/auth';
 // import { ThemedView } from '@/components/ThemedView';
 
 const Sign_In = ({ setUser }) => {
@@ -16,6 +15,7 @@ const Sign_In = ({ setUser }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const auth = getAuth();
 
     const signIn = async() => {
         try {
@@ -32,11 +32,25 @@ const Sign_In = ({ setUser }) => {
         }
     };
 
+    const sendPasswordEmail = async() => {
+        try {
+            //sending password reset email
+            await sendPasswordResetEmail(auth, email);
+            window.alert('Password reset email sent! Please check your inbox.');
+            setErrorMessage('');
+        } catch (error) {
+            setErrorMessage('Error sending reset email. Please try again.');
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={{ backgroundColor: 'white' }}>
                 <View style={styles.formContainer}>
                     <Text style={styles.title}>Sign In</Text>
+                    <Text style={styles.requirements}>
+                        To reset your password, enter your email address and click, "Reset Password".
+                    </Text>
                     <TextInput
                         style={styles.input}
                         placeholder="Email..."
@@ -64,6 +78,10 @@ const Sign_In = ({ setUser }) => {
                     <Button
                         title="Sign In"
                         onPress={signIn}
+                    />
+                    <Button
+                        title="Reset Password"
+                        onPress={sendPasswordEmail}
                     />
                 </View>
             </View>
@@ -101,6 +119,11 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         //marginTop: 20,
         color: '#666',
+    },
+    requirements: {
+        fontSize: 12,
+        color: '#666',
+        marginBottom: 10,
     },
 });
 
