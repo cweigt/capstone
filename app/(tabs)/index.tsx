@@ -1,26 +1,30 @@
 import { 
   Image, 
-  StyleSheet 
+  StyleSheet,
+  View 
 } from 'react-native';
 import React from 'react';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedView } from '@/components/ThemedView';
+import { ParallaxScrollView } from '@/components/ParallaxScrollView';
+// import { ThemedView } from '@/components/ThemedView';
 import RSSFeed from '@/components/RSSFeed';
 
 const HomeScreen = () => {
   return (
     <ParallaxScrollView 
       headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }}
+      headerHeight={175}
       headerImage={
-        <Image
-          source={require('@/assets/images/aurora-wdc.png')}
-          style={styles.auroraLogo}
-        />
+        <View style={styles.headerContainer}>
+          <Image
+            source={require('@/assets/images/aurora-wdc.png')}
+            style={styles.auroraLogo}
+          />
+        </View>
       }>
 
-      <ThemedView style={{backgroundColor: "white"}}>
+      <View style={{backgroundColor: "white"}}>
           <RSSFeed />
-      </ThemedView>
+      </View>
     </ParallaxScrollView>
   );
 }
@@ -35,10 +39,13 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 8,
   },
+  headerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   auroraLogo: {
-    marginTop: 1,
-    marginLeft: 33,
-    height: 250,
+    height: 175,
     width: 330,
     resizeMode: 'contain',
   },
