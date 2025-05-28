@@ -55,9 +55,7 @@ const Sign_In = ({ setUser }) => {
                     />
                     <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                         <Text style={styles.message}>
-                            <Text style={styles.message}>
-                                {showPassword ? 'Hide' : 'Show'} Password
-                            </Text>
+                            {showPassword ? 'Hide' : 'Show'} Password
                         </Text>
                     </TouchableOpacity>
                     {errorMessage !== '' && (

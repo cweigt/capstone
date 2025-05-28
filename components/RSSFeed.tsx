@@ -80,10 +80,9 @@ const RSSFeed = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Latest News</Text>
-            <FlatList
-                data={data}
-                renderItem={({ item }) => (
-                    <View style={styles.item}>
+            <View style={styles.listContent}>
+                {data.map((item, index) => (
+                    <View key={index} style={styles.item}>
                         <Text style={styles.title}>{item.title}</Text>
                         <Text style={styles.date}>{new Date(item.pubDate).toLocaleString()}</Text>
                         <Text
@@ -94,10 +93,8 @@ const RSSFeed = () => {
                         >Read more
                         </Text>
                     </View>
-                )}
-                keyExtractor={(item, index) => index.toString()}
-                contentContainerStyle={styles.listContent}
-            />
+                ))}
+            </View>
         </View>
     );
 };
