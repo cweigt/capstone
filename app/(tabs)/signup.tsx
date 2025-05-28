@@ -10,6 +10,7 @@ import React, { useState, useEffect } from 'react';
 import { ParallaxScrollView } from '@/components/ParallaxScrollView';
 import SignUp from '@/components/SignUp';
 import SignIn from '@/components/SignIn';
+import ResetPassword from '@/components/ResetPassword';
 // import { ThemedView } from '@/components/ThemedView';
 import { auth } from '@/firebase';
 
@@ -30,9 +31,6 @@ const Sign_Up = () => {
         return () => listener();
     }, []);
   
-    useEffect(() => {
-        console.log('Updated auth user', authUser);
-    }, [authUser]);
 
     return (
       <ParallaxScrollView 
@@ -56,9 +54,9 @@ const Sign_Up = () => {
                   onPress={() => { //don't forget curly brace with multi-line executions
                     auth.signOut();
                     setAuthUser(null);
-                    window.alert(`Auth user signed out: ${authUser.email}`);
                   }}
                 />
+                <ResetPassword />
               </>
             ) : (
               <>
