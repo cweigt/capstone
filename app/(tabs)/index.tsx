@@ -14,10 +14,12 @@ const HomeScreen = () => {
       headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }}
       headerHeight={175}
       headerImage={
-        <Image
-          source={require('@/assets/images/aurora-wdc.png')}
-          style={styles.auroraLogo}
-        />
+        <View style={styles.headerContainer}>
+          <Image
+            source={require('@/assets/images/aurora-wdc.png')}
+            style={styles.auroraLogo}
+          />
+        </View>
       }>
 
       <View style={{backgroundColor: "white"}}>
@@ -37,9 +39,12 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 8,
   },
+  headerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   auroraLogo: {
-    marginTop: 1,
-    marginLeft: 33,
     height: 175,
     width: 330,
     resizeMode: 'contain',
