@@ -16,7 +16,7 @@ import Animated, {
     useAnimatedStyle, 
     useSharedValue,
     useAnimatedScrollHandler,
-    interpolate
+    interpolate,
 } from 'react-native-reanimated';
 // import { ThemedView } from '@/components/ThemedView';
 
@@ -62,24 +62,10 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
     }, []);
 
     const headerAnimatedStyle = useAnimatedStyle<ViewStyle>(() => {
-        const translateY = interpolate(
-            scrollY.value,
-            [-headerHeight, 0, headerHeight],
-            [headerHeight / 2, 0, -headerHeight / 2],
-            
-        );
-
-        const scale = interpolate(
-            scrollY.value,
-            [-headerHeight, 0, headerHeight],
-            [1.5, 1, 1],
-            
-        );
-
         return {
             transform: [
-                { translateY: translateY },
-                { scale: scale },
+                { translateY: 0 },
+                { scale: 1 },
             ] as const,
         };
     });
