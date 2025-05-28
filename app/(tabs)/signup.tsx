@@ -57,11 +57,7 @@ const Sign_Up = () => {
                   }}
                 />
                 <ResetPassword />
-                <TouchableOpacity> {/*placeholder for Edit Information section*/}
-                  <Text style={styles.toggleText}>
-                      Edit account information
-                  </Text>
-                </TouchableOpacity>
+                {/*this is placeholder for the account information component*/}
               </>
             ) : (
               <>
