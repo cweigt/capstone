@@ -25,19 +25,19 @@ export const Collapsible: React.FC<CollapsibleProps> = ({ title, children }) => 
         outputRange: [0, 500],
     });
 
-    return (
+  return (
         <View style={styles.container}>
             <TouchableOpacity onPress={toggleExpand} style={styles.header}>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.icon}>{isExpanded ? '▼' : '▶'}</Text>
-            </TouchableOpacity>
+      </TouchableOpacity>
             <Animated.View style={[styles.content, { maxHeight }]}>
                 <View style={{ backgroundColor: 'white' }}>
                     {children}
                 </View>
             </Animated.View>
         </View>
-    );
+  );
 };
 
 const styles = StyleSheet.create({
@@ -47,9 +47,9 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     header: {
-        flexDirection: 'row',
+    flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+    alignItems: 'center',
         padding: 15,
         backgroundColor: '#f0f0f0',
     },
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     },
     icon: {
         fontSize: 12,
-    },
-    content: {
+  },
+  content: {
         overflow: 'hidden',
-    },
+  },
 });

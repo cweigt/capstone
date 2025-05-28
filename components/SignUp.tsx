@@ -51,8 +51,8 @@ const Sign_Up = ({ setUser }) => {
 
             if (!/[!@#$%^&*(),.?":{}|<>]/.test(password1)) {
                 setErrorMessage('Password must contain at least one special character.');
-                return;
-            }
+            return;
+        } 
 
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password1);
             await updateProfile(userCredentials.user, {
@@ -67,80 +67,80 @@ const Sign_Up = ({ setUser }) => {
             setLastName('');
         } catch (error) {
             setErrorMessage('Error creating account. Please try again.');
-        }
+            }
     };
 
     return (
         <ScrollView style={styles.container}>
             <View style={{ backgroundColor: 'white' }}>
-                <View style={styles.formContainer}>
-                    <Text style={styles.title}>Sign Up</Text>
-                    <Text style={styles.requirements}>
-                        Password must be:
+            <View style={styles.formContainer}>
+                <Text style={styles.title}>Sign Up</Text>
+                <Text style={styles.requirements}>
+                    Password must be:
                         At least 10 characters long.
                         At least one uppercase letter.
                         At least one lowercase letter.
                         At least one number.
                         At least one special character.
+                </Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="First name..."
+                    placeholderTextColor='#000000'
+                    value={firstName}
+                    onChangeText={setFirstName}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Last name..."
+                    placeholderTextColor='#000000'
+                    value={lastName}
+                    onChangeText={setLastName}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email..."
+                    placeholderTextColor='#000000'
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Password..."
+                    placeholderTextColor='#000000'
+                    secureTextEntry={!showPassword1}
+                    value={password1}
+                    onChangeText={setPassword1}
+                />
+                <TouchableOpacity onPress={() => setShowPassword1(!showPassword1)}>
+                    <Text style={styles.message}>
+                        {showPassword1 ? 'Hide' : "Show"} Password
                     </Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="First name..."
-                        placeholderTextColor='#000000'
-                        value={firstName}
-                        onChangeText={setFirstName}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Last name..."
-                        placeholderTextColor='#000000'
-                        value={lastName}
-                        onChangeText={setLastName}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Email..."
-                        placeholderTextColor='#000000'
-                        value={email}
-                        onChangeText={setEmail}
-                        keyboardType="email-address"
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Password..."
-                        placeholderTextColor='#000000'
-                        secureTextEntry={!showPassword1}
-                        value={password1}
-                        onChangeText={setPassword1}
-                    />
-                    <TouchableOpacity onPress={() => setShowPassword1(!showPassword1)}>
-                        <Text style={styles.message}>
-                            {showPassword1 ? 'Hide' : "Show"} Password
-                        </Text>
-                    </TouchableOpacity>
-                    <TextInput
-                        style={styles.input}
+                </TouchableOpacity>
+                <TextInput
+                    style={styles.input}
                         placeholder="Confirm Password..."
-                        placeholderTextColor='#000000'
-                        secureTextEntry={!showPassword2}
-                        value={password2}
-                        onChangeText={setPassword2}
-                    />
-                    <TouchableOpacity onPress={() => setShowPassword2(!showPassword2)}>
-                        <Text style={styles.message}>
+                    placeholderTextColor='#000000'
+                    secureTextEntry={!showPassword2}
+                    value={password2}
+                    onChangeText={setPassword2}
+                />
+                <TouchableOpacity onPress={() => setShowPassword2(!showPassword2)}>
+                    <Text style={styles.message}>
                             {showPassword2 ? 'Hide' : "Show"} Password
-                        </Text>
-                    </TouchableOpacity>
-                    {errorMessage !== '' && (
-                        <Text style={styles.errorText}>{errorMessage}</Text>
-                    )}
-                    <Button
-                        title="Sign Up"
-                        onPress={signUp}
-                    />
-                </View>
+                    </Text>
+                </TouchableOpacity>
+                {errorMessage !== '' && (
+                    <Text style={styles.errorText}>{errorMessage}</Text>
+                )}
+                <Button
+                    title="Sign Up"
+                    onPress={signUp}
+                />
             </View>
-        </ScrollView>
+            </View>
+    </ScrollView>
     );
 };
 
