@@ -14,7 +14,10 @@ const DisplayImage = () => {
   
   return (
     <View style={[imageStyles.container, { alignSelf: 'center' }]}>
-        {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
+        <Image 
+          source={{ uri: image }} 
+          style={{ width: 150, height: 150 }} 
+        />
     </View>
   );
 }

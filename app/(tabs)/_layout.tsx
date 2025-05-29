@@ -8,10 +8,12 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useImage } from '@/context/ImageContext';
+import { useAuth } from '@/context/AuthContext';
 
 const TabLayout = () => {
   const colorScheme = useColorScheme();
   const { image } = useImage();
+  const { user } = useAuth();
   
   return (
     <Tabs
@@ -47,7 +49,7 @@ const TabLayout = () => {
         options={{
           title: 'Account',
           tabBarIcon: ({ color }) => (
-            image ? (
+            user && image ? (
               <Image 
                 source={{ uri: image }} 
                 style={{ 
@@ -69,6 +71,7 @@ const TabLayout = () => {
         options={{
           title: 'Settings',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
+          href: user ? undefined : null,
         }}
       />
     </Tabs>

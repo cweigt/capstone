@@ -10,6 +10,7 @@ import {
 import React, { useState } from 'react';
 import { auth } from '@/firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { getDatabase, ref, set } from 'firebase/database';
 // import { ThemedView } from '@/components/ThemedView';
 
 const Sign_Up = ({ setUser }) => {
@@ -21,6 +22,7 @@ const Sign_Up = ({ setUser }) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const database = getDatabase();
 
     const signUp = async() => {
         try {
@@ -51,13 +53,26 @@ const Sign_Up = ({ setUser }) => {
 
             else if(!/[!@#$%^&*(),.?":{}|<>]/.test(password1)) {
                 setErrorMessage('Password must contain at least one special character.');
-            return;
-        } 
+                return;
+            } 
 
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password1);
+            
+            // Update user profile
             await updateProfile(userCredentials.user, {
                 displayName: `${firstName} ${lastName}`
             });
+
+            // Store user data in Realtime Database
+            await set(ref(database, `users/${userCredentials.user.uid}`), {
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                displayName: `${firstName} ${lastName}`,
+                createdAt: new Date().toISOString(),
+                photoURL: null
+            });
+
             setUser(userCredentials.user);
             setErrorMessage('');
             setPassword1('');
@@ -67,7 +82,7 @@ const Sign_Up = ({ setUser }) => {
             setLastName('');
         } catch (error) {
             setErrorMessage('Error creating account. Please try again.');
-            }
+        }
     };
 
     return (

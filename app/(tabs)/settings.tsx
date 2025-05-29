@@ -59,6 +59,7 @@ const Settings = () => {
         />
       }
     >
+      {}
       <View style={styles.container}>
         <Text style={styles.title}>
           Settings
