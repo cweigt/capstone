@@ -18,7 +18,6 @@ import { useAuth } from '@/context/AuthContext';
 
 const Sign_Up = () => {
     const [showSignUp, setShowSignUp] = useState(false);
-    const [image, setImage] = useState(null);
     const {user} = useAuth();
 
     return (
@@ -38,7 +37,7 @@ const Sign_Up = () => {
                 <Text style={styles.welcomeText}>
                   Welcome, {user.displayName}! {/*This is the line that is breaking with displayName*/}
                 </Text>
-                <DisplayImage image={image} setImage={setImage}/>
+                <DisplayImage />
                 <Button //button tags are self closing in native
                   title="Sign Out" //declaring what will be displayed on button, not in between both tags
                   onPress={() => { //don't forget curly brace with multi-line executions

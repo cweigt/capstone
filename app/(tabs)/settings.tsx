@@ -20,7 +20,6 @@ const Settings = () => {
   const database = getDatabase();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [image, setImage] = useState(null);
 
   const changeName = async() => {
     try {
@@ -83,7 +82,7 @@ const Settings = () => {
                 title="Save changes"
                 onPress={() => changeName()}
             />
-            <UploadImage image={image} setImage={setImage}/>
+            <UploadImage />
         </View>
       </View>
     </ParallaxScrollView>

@@ -1,31 +1,17 @@
 import { Tabs } from 'expo-router';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Platform, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useImage } from '@/context/ImageContext';
 
 const TabLayout = () => {
   const colorScheme = useColorScheme();
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-
-  useEffect(() => {
-    const loadImage = async () => {
-      try {
-        const savedImage = await AsyncStorage.getItem('userImage');
-        if (savedImage) {
-          setProfileImage(savedImage);
-        }
-      } catch (error) {
-        console.error('Error loading image:', error);
-      }
-    };
-    loadImage();
-  }, []);
+  const { image } = useImage();
   
   return (
     <Tabs
@@ -61,9 +47,9 @@ const TabLayout = () => {
         options={{
           title: 'Account',
           tabBarIcon: ({ color }) => (
-            profileImage ? (
+            image ? (
               <Image 
-                source={{ uri: profileImage }} 
+                source={{ uri: image }} 
                 style={{ 
                   width: 28, 
                   height: 28, 

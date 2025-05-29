@@ -1,29 +1,16 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { 
     Image, 
     View, 
     StyleSheet 
 } from 'react-native';
+import { useImage } from '@/context/ImageContext';
 
 //this component contains the logic and rendering for the image itself
 //also includes persistence
 //"partial functionality"
-const DisplayImage = ({ image, setImage }) => {
-
-  useEffect(() => {
-    const loadImage = async () => {
-      try {
-        const savedImage = await AsyncStorage.getItem('userImage');
-        if (savedImage) {
-          setImage(savedImage);
-        }
-      } catch (error) {
-        console.error('Error loading image:', error);
-      }
-    };
-    loadImage();
-  }, [image]);
+const DisplayImage = () => {
+  const { image } = useImage();
   
   return (
     <View style={[imageStyles.container, { alignSelf: 'center' }]}>

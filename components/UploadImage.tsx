@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { 
     Image, 
     View, 
@@ -9,14 +9,15 @@ import {
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import DisplayImage from '@/components/DisplayImage';
+import { useImage } from '@/context/ImageContext';
 
 //this component includes a call to the other component for the image
 //also includes the logic and rendering for the Edit Image thing and Image Picker
 //allows user to change their image
 //"fuller functionality"
-const UploadImage = ({ image, setImage }) => {
+const UploadImage = () => {
+  const { image, setImage } = useImage();
 
   const addImage = async () => {
     const profile = await ImagePicker.launchImageLibraryAsync({
@@ -29,13 +30,12 @@ const UploadImage = ({ image, setImage }) => {
     if (!profile.canceled) {
       const imageUri = profile.assets[0].uri;
       setImage(imageUri);
-      await AsyncStorage.setItem('userImage', imageUri);
     }
   };
 
   return (
     <View style={{ alignSelf: 'center', alignItems: 'center' }}>
-        <DisplayImage image={image} setImage={setImage} />
+        <DisplayImage />
         <TouchableOpacity onPress={addImage} style={imageUploaderStyles.uploadBtn}>
             <Text style={{ color: 'black' }}>{image ? 'Edit' : 'Upload'} Image</Text>
             <AntDesign name="camera" size={20} color="black" />
