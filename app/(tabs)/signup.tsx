@@ -19,7 +19,7 @@ import { useAuth } from '@/context/AuthContext';
 const Sign_Up = () => {
     const [showSignUp, setShowSignUp] = useState(false);
     const [image, setImage] = useState(null);
-    const { user } = useAuth();
+    const {user} = useAuth();
 
     return (
       <ParallaxScrollView 
