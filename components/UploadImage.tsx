@@ -5,12 +5,15 @@ import {
     Platform, 
     TouchableOpacity, 
     Text, 
-    StyleSheet 
+    StyleSheet,
+    Alert
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import DisplayImage from '@/components/DisplayImage';
 import { useImage } from '@/context/ImageContext';
+import { getAuth, updateProfile } from 'firebase/auth';
+import { getDatabase, ref, set } from 'firebase/database';
 
 //this component includes a call to the other component for the image
 //also includes the logic and rendering for the Edit Image thing and Image Picker
@@ -18,18 +21,37 @@ import { useImage } from '@/context/ImageContext';
 //"fuller functionality"
 const UploadImage = () => {
   const { image, setImage } = useImage();
+  const auth = getAuth();
+  const database = getDatabase();
 
   const addImage = async () => {
-    const profile = await ImagePicker.launchImageLibraryAsync({
+    try {
+      const profile = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: 'images',
         allowsEditing: true,
-        aspect: [4,3],
+        aspect: [1, 1],
         quality: 1
-    });
-    
-    if (!profile.canceled) {
-      const imageUri = profile.assets[0].uri;
-      setImage(imageUri);
+      });
+      
+      if (!profile.canceled) {
+        const imageUri = profile.assets[0].uri;
+        
+        // First update Firebase Auth profile
+        await updateProfile(auth.currentUser, {
+          photoURL: imageUri
+        });
+        
+        // Then update Realtime Database
+        await set(ref(database, `users/${auth.currentUser.uid}/photoURL`), imageUri);
+        
+        // Finally update local state
+        setImage(imageUri);
+        
+        Alert.alert('Success', 'Profile image updated successfully!');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      Alert.alert('Error', 'Failed to update profile image. Please try again.');
     }
   };
 
