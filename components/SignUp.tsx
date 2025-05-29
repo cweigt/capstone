@@ -29,27 +29,27 @@ const Sign_Up = ({ setUser }) => {
                 return;
             }
 
-            if (password1.length < 10) {
+            else if(password1.length < 10) {
                 setErrorMessage('Password must be at least 10 characters long.');
                 return;
             }
 
-            if (!/[A-Z]/.test(password1)) {
+            else if(!/[A-Z]/.test(password1)) {
                 setErrorMessage('Password must contain at least one uppercase letter.');
                 return;
             }
 
-            if (!/[a-z]/.test(password1)) {
+            else if(!/[a-z]/.test(password1)) {
                 setErrorMessage('Password must contain at least one lowercase letter.');
                 return;
             }
 
-            if (!/[0-9]/.test(password1)) {
+            else if(!/[0-9]/.test(password1)) {
                 setErrorMessage('Password must contain at least one number.');
                 return;
             }
 
-            if (!/[!@#$%^&*(),.?":{}|<>]/.test(password1)) {
+            else if(!/[!@#$%^&*(),.?":{}|<>]/.test(password1)) {
                 setErrorMessage('Password must contain at least one special character.');
             return;
         } 
