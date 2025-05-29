@@ -5,16 +5,16 @@ import {
   FlatList, 
   ActivityIndicator, 
   StyleSheet, 
-  Linking 
+  Linking, 
+  ScrollView
 } from 'react-native';
+import { Card } from '@rneui/themed';
 import axios from 'axios';
 import { auth } from '@/firebase';
 import { useAuth } from '@/context/AuthContext';
-
-
 interface RSSItem {
     title: string;
-    link: string;
+    link: string;   
     pubDate: string;
 }
 
@@ -58,7 +58,7 @@ const RSSFeed = () => {
             </View>
         );
     }
-
+    
     if (loading) {
         return (
             <View style={styles.loader}>
@@ -74,8 +74,8 @@ const RSSFeed = () => {
             <Text style={styles.header}>Latest News</Text>
             <View style={styles.listContent}>
                 {data.map((item, index) => (
-                    <View key={index} style={styles.item}>
-                        <Text style={styles.title}>{item.title}</Text>
+                    <Card key={index} containerStyle={styles.card}>
+                        <Card.Title>{item.title}</Card.Title>
                         <Text style={styles.date}>{new Date(item.pubDate).toLocaleString()}</Text>
                         <Text
                             style={styles.link}
@@ -84,7 +84,8 @@ const RSSFeed = () => {
                             }}
                         >Read more
                         </Text>
-                    </View>
+                        {/*<Card.Divider />*/}
+                    </Card>
                 ))}
             </View>
         </View>
@@ -97,7 +98,8 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     listContent: {
-        paddingBottom: 20,
+        paddingBottom: 80,
+        flex: 1,
     },
     loader: {
         flex: 1,
@@ -129,6 +131,10 @@ const styles = StyleSheet.create({
       textAlign: 'left',
       marginTop: 20,
       color: '#666',
+    },
+    card: {
+        borderRadius: 8,
+        marginBottom: 15,
     },
 });
 
