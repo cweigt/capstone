@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Platform, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
@@ -10,6 +11,21 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 
 const TabLayout = () => {
   const colorScheme = useColorScheme();
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadImage = async () => {
+      try {
+        const savedImage = await AsyncStorage.getItem('userImage');
+        if (savedImage) {
+          setProfileImage(savedImage);
+        }
+      } catch (error) {
+        console.error('Error loading image:', error);
+      }
+    };
+    loadImage();
+  }, []);
   
   return (
     <Tabs
@@ -44,7 +60,22 @@ const TabLayout = () => {
         name="signup"
         options={{
           title: 'Account',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.circle.fill" color={color} />,
+          tabBarIcon: ({ color }) => (
+            profileImage ? (
+              <Image 
+                source={{ uri: profileImage }} 
+                style={{ 
+                  width: 28, 
+                  height: 28, 
+                  borderRadius: 14,
+                  borderWidth: 1,
+                  borderColor: color
+                }} 
+              />
+            ) : (
+              <IconSymbol size={28} name="person.circle.fill" color={color} />
+            )
+          ),
         }}
       />
       <Tabs.Screen

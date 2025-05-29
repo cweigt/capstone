@@ -7,7 +7,8 @@ import {
     TouchableOpacity 
 } from 'react-native';
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword, getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '@/firebase';
 // import { ThemedView } from '@/components/ThemedView';
 
 const Sign_In = ({ setUser }) => {
@@ -15,7 +16,6 @@ const Sign_In = ({ setUser }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const auth = getAuth();
 
     const signIn = async() => {
         try {

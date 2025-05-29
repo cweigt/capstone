@@ -13,12 +13,14 @@ import {
     updateProfile,
  } from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
+import UploadImage from '@/components/UploadImage';
 
 const Settings = () => {
   const auth = getAuth();
   const database = getDatabase();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [image, setImage] = useState(null);
 
   const changeName = async() => {
     try {
@@ -81,6 +83,7 @@ const Settings = () => {
                 title="Save changes"
                 onPress={() => changeName()}
             />
+            <UploadImage image={image} setImage={setImage}/>
         </View>
       </View>
     </ParallaxScrollView>
