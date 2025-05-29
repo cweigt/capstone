@@ -79,7 +79,7 @@ const Settings = () => {
                 onChangeText={setLastName}
             />
             <Button
-                title="Save changes"
+                title="Save name"
                 onPress={() => changeName()}
             />
             <UploadImage />
