@@ -6,31 +6,20 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ParallaxScrollView } from '@/components/ParallaxScrollView';
 import SignUp from '@/components/SignUp';
 import SignIn from '@/components/SignIn';
 import ResetPassword from '@/components/ResetPassword';
+import DisplayImage from '@/components/DisplayImage';
 // import { ThemedView } from '@/components/ThemedView';
 import { auth } from '@/firebase';
+import { useAuth } from '@/context/AuthContext';
 
 const Sign_Up = () => {
-    const [authUser, setAuthUser] = useState(null);
     const [showSignUp, setShowSignUp] = useState(false);
-  
-    useEffect(() => {
-        const listener = auth.onAuthStateChanged((authUser) => {
-            if (authUser) {
-                authUser.reload();
-                const refreshedUser = auth.currentUser;
-                setAuthUser(refreshedUser);
-            } else {
-                setAuthUser(null);
-            }
-        });
-        return () => listener();
-    }, []);
-  
+    const [image, setImage] = useState(null);
+    const { user } = useAuth();
 
     return (
       <ParallaxScrollView 
@@ -44,16 +33,16 @@ const Sign_Up = () => {
             }>
           <View style={{backgroundColor: "white"}}>
             {/*This will be for the sign out function using conditional rendering*/}
-            {authUser ? (
+            {user ? (
               <>
                 <Text style={styles.welcomeText}>
-                  Welcome, {authUser.displayName}! {/*This is the line that is breaking with displayName*/}
+                  Welcome, {user.displayName}! {/*This is the line that is breaking with displayName*/}
                 </Text>
+                <DisplayImage image={image} setImage={setImage}/>
                 <Button //button tags are self closing in native
                   title="Sign Out" //declaring what will be displayed on button, not in between both tags
                   onPress={() => { //don't forget curly brace with multi-line executions
                     auth.signOut();
-                    setAuthUser(null);
                   }}
                 />
                 <ResetPassword />
@@ -62,9 +51,9 @@ const Sign_Up = () => {
             ) : (
               <>
                 {showSignUp ? (
-                  <SignUp setUser={setAuthUser}/>
+                  <SignUp setUser={setShowSignUp} />
                 ) : (
-                  <SignIn setUser={setAuthUser}/>
+                  <SignIn setUser={setShowSignUp} />
                 )}
                 <TouchableOpacity onPress={() => setShowSignUp(!showSignUp)}>
                   <Text style={styles.toggleText}>
