@@ -11,43 +11,81 @@ import axios from 'axios';
 import { auth } from '@/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { Dropdown } from 'react-native-element-dropdown';
+
 interface RSSItem {
     title: string;
     link: string;   
     pubDate: string;
+    description?: string;
 }
-
 
 const RSSFeed = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<RSSItem[]>([]);
     const { user } = useAuth();
-    const [selectedFeed, setSelectedFeed] = useState('https://rss2json.com/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml');
+    const [selectedFeed, setSelectedFeed] = useState('https://waleed.firstlight.am/aylienV2/proxyEndpoint/313');
     
     const feedOptions = [
-        { label: 'NY Times', value: 'https://rss2json.com/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml' },
-        { label: 'Axios', value: 'https://rss2json.com/api.json?rss_url=https://api.axios.com/feed/top/' },
-        { label: 'BBC', value: 'https://rss2json.com/api.json?rss_url=https://feeds.bbci.co.uk/news/rss.xml' },
-        { label: 'MindMatters', value: 'https://rss2json.com/api.json?rss_url=https://mindmatters.ai/feed/podcast' },
+        { label: 'Quantum Computing News', value: 'https://waleed.firstlight.am/aylienV2/proxyEndpoint/313' },
+        { label: 'Quantum Patents', value: 'https://waleed.firstlight.am//patents//proxyEndpoint//320' },
     ];
 
-    //retrieving the feed and parsing the URL through API
+    const extractContent = (xml: string, tag: string): string => {
+        const start = xml.indexOf(`<${tag}>`) + tag.length + 2;
+        const end = xml.indexOf(`</${tag}>`);
+        return start > tag.length + 1 && end > start ? xml.substring(start, end) : '';
+    };
+
     useEffect(() => {
         if (user) {
             const fetchRSSData = async () => {
                 try {
-                    //gets and sets the content from the API from the URL
                     const response = await axios.get(selectedFeed);
-                    setData(response.data.items);
+                    
+                    if (selectedFeed.includes('waleed.firstlight.am')) {
+                        const xmlString = response.data;
+                        const items: RSSItem[] = [];
+                        let currentIndex = 0;
+                        
+                        while (true) {
+                            const itemStart = xmlString.indexOf('<item>', currentIndex);
+                            if (itemStart === -1) break;
+                            
+                            const itemEnd = xmlString.indexOf('</item>', itemStart);
+                            if (itemEnd === -1) break;
+                            
+                            const itemXml = xmlString.substring(itemStart, itemEnd + 7);
+                            
+                            const title = extractContent(itemXml, 'title');
+                            const link = extractContent(itemXml, 'link');
+                            const pubDate = extractContent(itemXml, 'pubDate');
+                            const description = extractContent(itemXml, 'description');
+                            
+                            if (title && link && pubDate) {
+                                items.push({
+                                    title,
+                                    link,
+                                    pubDate,
+                                    description: description || undefined
+                                });
+                            }
+                            
+                            currentIndex = itemEnd + 7;
+                        }
+                        
+                        setData(items);
+                    } else {
+                        setData(response.data.items || []);
+                    }
                 } catch (error) {
-                    console.error('Error fetching RSS data:', error);
+                    setData([]);
                 } finally {
                     setLoading(false);
                 }
             };
             fetchRSSData();
         }
-    }, [user, selectedFeed]); //this happens everytime the user object changes
+    }, [user, selectedFeed]);
 
     //this is to check to see if a user is here based on the listener, then go through this
     if (!user) {
@@ -83,19 +121,31 @@ const RSSFeed = () => {
             </View>
             <View style={styles.container}>
                 <View style={styles.listContent}>
-                    {data.map((item, index) => (
-                        <Card key={index} containerStyle={styles.card}>
-                            <Card.Title>{item.title}</Card.Title>
-                            <Text style={styles.date}>{new Date(item.pubDate).toLocaleString()}</Text>
-                            <Text
-                                style={styles.link}
-                                onPress={() => {
-                                    Linking.openURL(item.link);
-                                }}
-                            >Read more
-                            </Text>
-                        </Card>
-                    ))}
+                    {Array.isArray(data) && data.length > 0 ? (
+                        data.map((item, index) => (
+                            <Card key={index} containerStyle={styles.card}>
+                                <Card.Title>{item.title}</Card.Title>
+                                <Text style={styles.date}>
+                                    {new Date(item.pubDate).toLocaleString()}
+                                </Text>
+                                {item.description && (
+                                    <Text style={styles.description} numberOfLines={3}>
+                                        {item.description}
+                                    </Text>
+                                )}
+                                <Text
+                                    style={styles.link}
+                                    onPress={() => {
+                                        Linking.openURL(item.link);
+                                    }}
+                                >
+                                    Read more
+                                </Text>
+                            </Card>
+                        ))
+                    ) : (
+                        <Text style={styles.message}>No articles available</Text>
+                    )}
                 </View>
             </View>
         </>
@@ -167,6 +217,10 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,        
+    },
+    description: {
+        fontSize: 14,
+        color: '#555',
     },
 });
 
