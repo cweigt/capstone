@@ -46,8 +46,7 @@ const UploadImage = () => {
         
         // Finally update local state
         setImage(imageUri);
-        
-        Alert.alert('Success', 'Profile image updated successfully!');
+      
       }
     } catch (error) {
       console.error('Error updating profile:', error);
