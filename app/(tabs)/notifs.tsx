@@ -6,20 +6,10 @@ import {
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { ParallaxScrollView } from '@/components/ParallaxScrollView';
-import { auth } from '@/firebase';
+import { useAuth } from '@/context/AuthContext';
 
 const Notifications = () => {
-  const [user, setUser] = useState(null);
-
-  //this listens for the user to be changed and then will change display
-  //in this case it's better than passing user in as prop… will cause issues
-  useEffect(() => {
-    const listener = auth.onAuthStateChanged((user) => {
-      setUser(user)
-    });
-    return () => listener();
-  }, []);
-
+  const {user} = useAuth(); //this also holds any sort of listener
 
   return (
     <ParallaxScrollView
