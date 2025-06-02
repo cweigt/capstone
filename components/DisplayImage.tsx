@@ -1,10 +1,10 @@
 import React from 'react';
 import { 
     Image, 
-    View, 
-    StyleSheet 
+    View
 } from 'react-native';
 import { useImage } from '@/context/ImageContext';
+import { DisplayImageStyles as styles } from '../styles/DisplayImage.styles';
 
 //this component contains the logic and rendering for the image itself
 //also includes persistence
@@ -13,26 +13,13 @@ const DisplayImage = () => {
   const { image } = useImage();
   
   return (
-    <View style={[imageStyles.container, { alignSelf: 'center' }]}>
+    <View style={styles.container}>
         <Image 
           source={{ uri: image }} 
-          style={{ width: 150, height: 150 }} 
+          style={styles.image}
         />
     </View>
   );
 }
-
-const imageStyles = StyleSheet.create({
-  container:{
-    elevation:2,
-    height:150,
-    width:150,
-    backgroundColor:'#efefef',
-    position:'relative',
-    borderRadius:999,
-    overflow:'hidden',
-    marginVertical: 10,
-  },
-});
 
 export default DisplayImage; 

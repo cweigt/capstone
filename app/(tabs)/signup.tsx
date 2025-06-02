@@ -1,5 +1,4 @@
 import { 
-  StyleSheet, 
   Text, 
   Image, 
   Button, 
@@ -12,9 +11,9 @@ import SignUp from '@/components/SignUp';
 import SignIn from '@/components/SignIn';
 import ResetPassword from '@/components/ResetPassword';
 import DisplayImage from '@/components/DisplayImage';
-// import { ThemedView } from '@/components/ThemedView';
 import { auth } from '@/firebase';
 import { useAuth } from '@/context/AuthContext';
+import { SignUpPageStyles as styles } from '../../styles/SignUpPage.styles';
 
 const Sign_Up = () => {
     const [showSignUp, setShowSignUp] = useState(false);
@@ -62,38 +61,9 @@ const Sign_Up = () => {
                 </TouchableOpacity>
               </>
             )}
-            
-            
-            
           </View>
       </ParallaxScrollView>
   );
-
 };
-
-const styles = StyleSheet.create({
-  auroraLogo: {
-    marginTop: 1,
-    marginLeft: 33,
-    height: 175,
-    width: 330,
-    resizeMode: 'contain',
-  },
-  toggleText: {
-    marginTop: 0,
-    marginBottom: 10,
-    color: '#007AFF',
-    textAlign: 'center',
-    fontWeight: '500',
-  },
-  welcomeText: {
-    fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginBottom: 15,
-    marginTop: 10,
-  },
-});
-
 
 export default Sign_Up;

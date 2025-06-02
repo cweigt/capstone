@@ -1,5 +1,4 @@
 import { 
-    StyleSheet, 
     View, 
     Text, 
     TextInput, 
@@ -9,6 +8,7 @@ import {
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '@/firebase';
+import { SignInStyles as styles } from '../styles/SignIn.styles';
 // import { ThemedView } from '@/components/ThemedView';
 
 const Sign_In = ({ setUser }) => {
@@ -88,43 +88,5 @@ const Sign_In = ({ setUser }) => {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    formContainer: {
-        padding: 16,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginTop: 10,
-        paddingLeft: 8,
-    },
-    errorText: {
-        color: 'red',
-        fontSize: 14,
-        marginBottom: 10,
-        marginTop: 7,
-    },
-    message: {
-        fontSize: 12,
-        textAlign: 'left',
-        //marginTop: 20,
-        color: '#666',
-    },
-    requirements: {
-        fontSize: 12,
-        color: '#666',
-        marginBottom: 10,
-    },
-});
 
 export default Sign_In;

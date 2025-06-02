@@ -1,5 +1,4 @@
 import { 
-    StyleSheet, 
     View, 
     Text,
     Image,
@@ -11,9 +10,10 @@ import React, { useState } from 'react';
 import { 
     getAuth,
     updateProfile,
- } from 'firebase/auth';
+} from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
 import UploadImage from '@/components/UploadImage';
+import { SettingsStyles as styles } from '../../styles/Settings.styles';
 
 const Settings = () => {
   const auth = getAuth();
@@ -59,7 +59,6 @@ const Settings = () => {
         />
       }
     >
-      {}
       <View style={styles.container}>
         <Text style={styles.title}>
           Settings
@@ -89,30 +88,5 @@ const Settings = () => {
     </ParallaxScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-   container: {
-    padding: 16,
-   },
-   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 12,
-   },
-  auroraLogo: {
-    marginTop: 1,
-    marginLeft: 33,
-    height: 175,
-    width: 330,
-    resizeMode: 'contain',
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginTop: 10,
-    paddingLeft: 8,
-},
-});
 
 export default Settings;

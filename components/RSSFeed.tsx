@@ -3,7 +3,6 @@ import {
   View, 
   Text, 
   ActivityIndicator, 
-  StyleSheet, 
   Linking, 
 } from 'react-native';
 import { Card } from '@rneui/themed';
@@ -11,6 +10,8 @@ import axios from 'axios';
 import { auth } from '@/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { Dropdown } from 'react-native-element-dropdown';
+import { RSSFeedStyles as styles } from '../styles/RSSFeed.styles';
+import { colors } from '../styles/theme';
 
 interface RSSItem {
     title: string;
@@ -155,22 +156,22 @@ const RSSFeed = () => {
     if (!user) {
         return (
             <View style={styles.container}>
-                <Text style={styles.message}>Please sign in to view the RSS feed.</Text>
+                <Text style={styles.headerText}>Please sign in to view the RSS feed.</Text>
             </View>
         );
     }
     
     if (loading) {
         return (
-            <View style={styles.loader}>
-                <ActivityIndicator size="large" color="#0000ff" />
+            <View style={[styles.container, styles.center]}>
+                <ActivityIndicator size="large" color={colors.primary} />
             </View>
         );
     }
 
     return (
         <>
-            <View style={styles.headerContainer}>
+            <View style={styles.dropdownContainer}>
                 <Dropdown
                     style={styles.dropdown}
                     data={feedOptions}
@@ -186,7 +187,7 @@ const RSSFeed = () => {
                     {Array.isArray(data) && data.length > 0 ? (
                         data.map((item, index) => (
                             <Card key={index} containerStyle={styles.card}>
-                                <Card.Title>{item.title}</Card.Title>
+                                <Card.Title style={styles.cardTitle}>{item.title}</Card.Title>
                                 <Text style={styles.date}>
                                     {new Date(item.pubDate).toLocaleString()}
                                 </Text>
@@ -201,89 +202,17 @@ const RSSFeed = () => {
                                         Linking.openURL(item.link);
                                     }}
                                 >
-                                    Read more
+                                    Read More
                                 </Text>
                             </Card>
                         ))
                     ) : (
-                        <Text style={styles.message}>No articles available</Text>
+                        <Text style={styles.message}>No items available</Text>
                     )}
                 </View>
             </View>
         </>
     );
 };
-
-const styles = StyleSheet.create({
-    headerContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: 'white',
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        padding: 10,
-    },
-    container: {
-        flex: 1,
-        padding: 10,
-        marginTop: 70,
-    },
-    listContent: {
-        paddingBottom: 80,
-        flex: 1,
-    },
-    loader: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    header: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 10,
-      paddingVertical: 10,
-    },
-    item: {
-      marginBottom: 15,
-    },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-    date: {
-      fontSize: 14,
-      color: '#555',
-    },
-    link: {
-      color: 'blue',
-      textDecorationLine: 'underline',
-    },
-    message: {
-      fontSize: 16,
-      textAlign: 'left',
-      marginTop: 20,
-      color: '#666',
-    },
-    card: {
-        borderRadius: 8,
-        marginBottom: 15,
-    },
-    dropdown: {
-        height: 50,
-        borderColor: 'gray',
-        borderWidth: 0.5,
-        borderRadius: 8,
-        paddingHorizontal: 8,        
-    },
-    description: {
-        fontSize: 14,
-        color: '#555',
-    },
-});
 
 export default RSSFeed;

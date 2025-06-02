@@ -1,12 +1,12 @@
 import { 
-  StyleSheet, 
   View, 
   Text, 
   Image 
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ParallaxScrollView } from '@/components/ParallaxScrollView';
 import { useAuth } from '@/context/AuthContext';
+import { NotificationsStyles as styles } from '../../styles/Notifications.styles';
 
 const Notifications = () => {
   const {user} = useAuth(); //this also holds any sort of listener
@@ -37,29 +37,5 @@ const Notifications = () => {
     </ParallaxScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  auroraLogo: {
-    marginTop: 1,
-    marginLeft: 33,
-    height: 175,
-    width: 330,
-    resizeMode: 'contain',
-  },
-  container: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  message: {
-    fontSize: 16,
-    textAlign: 'left',
-    marginTop: 20,
-    color: '#666',
-  },
-});
 
 export default Notifications;

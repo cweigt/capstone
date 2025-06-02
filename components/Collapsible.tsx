@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import { CollapsibleStyles as styles } from '../styles/Collapsible.styles';
 // import { ThemedView } from '@/components/ThemedView';
 
 interface CollapsibleProps {
@@ -25,42 +26,17 @@ export const Collapsible: React.FC<CollapsibleProps> = ({ title, children }) => 
         outputRange: [0, 500],
     });
 
-  return (
+    return (
         <View style={styles.container}>
             <TouchableOpacity onPress={toggleExpand} style={styles.header}>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.icon}>{isExpanded ? '▼' : '▶'}</Text>
-      </TouchableOpacity>
+            </TouchableOpacity>
             <Animated.View style={[styles.content, { maxHeight }]}>
                 <View style={{ backgroundColor: 'white' }}>
                     {children}
                 </View>
             </Animated.View>
         </View>
-  );
+    );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        marginVertical: 5,
-        borderRadius: 5,
-        overflow: 'hidden',
-    },
-    header: {
-    flexDirection: 'row',
-        justifyContent: 'space-between',
-    alignItems: 'center',
-        padding: 15,
-        backgroundColor: '#f0f0f0',
-    },
-    title: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    icon: {
-        fontSize: 12,
-  },
-  content: {
-        overflow: 'hidden',
-  },
-});

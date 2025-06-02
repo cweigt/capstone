@@ -1,5 +1,4 @@
 import { 
-    StyleSheet, 
     ScrollView, 
     View, 
     Text, 
@@ -11,6 +10,7 @@ import React, { useState } from 'react';
 import { auth } from '@/firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
+import { SignUpStyles as styles } from '../styles/SignUp.styles';
 // import { ThemedView } from '@/components/ThemedView';
 
 const Sign_Up = ({ setUser }) => {
@@ -88,113 +88,75 @@ const Sign_Up = ({ setUser }) => {
     return (
         <ScrollView style={styles.container}>
             <View style={{ backgroundColor: 'white' }}>
-            <View style={styles.formContainer}>
-                <Text style={styles.title}>Sign Up</Text>
-                <Text style={styles.requirements}>
-                    Password must be:
+                <View style={styles.formContainer}>
+                    <Text style={styles.title}>Sign Up</Text>
+                    <Text style={styles.requirements}>
+                        Password must be:
                         At least 10 characters long.
                         At least one uppercase letter.
                         At least one lowercase letter.
                         At least one number.
                         At least one special character.
-                </Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="First name..."
-                    placeholderTextColor='#000000'
-                    value={firstName}
-                    onChangeText={setFirstName}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Last name..."
-                    placeholderTextColor='#000000'
-                    value={lastName}
-                    onChangeText={setLastName}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Email..."
-                    placeholderTextColor='#000000'
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Password..."
-                    placeholderTextColor='#000000'
-                    secureTextEntry={!showPassword1}
-                    value={password1}
-                    onChangeText={setPassword1}
-                />
-                <TouchableOpacity onPress={() => setShowPassword1(!showPassword1)}>
-                    <Text style={styles.message}>
-                        {showPassword1 ? 'Hide' : "Show"} Password
                     </Text>
-                </TouchableOpacity>
-                <TextInput
-                    style={styles.input}
+                    <TextInput
+                        style={styles.input}
+                        placeholder="First name..."
+                        placeholderTextColor='#000000'
+                        value={firstName}
+                        onChangeText={setFirstName}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Last name..."
+                        placeholderTextColor='#000000'
+                        value={lastName}
+                        onChangeText={setLastName}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email..."
+                        placeholderTextColor='#000000'
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Password..."
+                        placeholderTextColor='#000000'
+                        secureTextEntry={!showPassword1}
+                        value={password1}
+                        onChangeText={setPassword1}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword1(!showPassword1)}>
+                        <Text style={styles.message}>
+                            {showPassword1 ? 'Hide' : "Show"} Password
+                        </Text>
+                    </TouchableOpacity>
+                    <TextInput
+                        style={styles.input}
                         placeholder="Confirm Password..."
-                    placeholderTextColor='#000000'
-                    secureTextEntry={!showPassword2}
-                    value={password2}
-                    onChangeText={setPassword2}
-                />
-                <TouchableOpacity onPress={() => setShowPassword2(!showPassword2)}>
-                    <Text style={styles.message}>
+                        placeholderTextColor='#000000'
+                        secureTextEntry={!showPassword2}
+                        value={password2}
+                        onChangeText={setPassword2}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword2(!showPassword2)}>
+                        <Text style={styles.message}>
                             {showPassword2 ? 'Hide' : "Show"} Password
-                    </Text>
-                </TouchableOpacity>
-                {errorMessage !== '' && (
-                    <Text style={styles.errorText}>{errorMessage}</Text>
-                )}
-                <Button
-                    title="Sign Up"
-                    onPress={signUp}
-                />
+                        </Text>
+                    </TouchableOpacity>
+                    {errorMessage !== '' && (
+                        <Text style={styles.errorText}>{errorMessage}</Text>
+                    )}
+                    <Button
+                        title="Sign Up"
+                        onPress={signUp}
+                    />
+                </View>
             </View>
-            </View>
-    </ScrollView>
+        </ScrollView>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    formContainer: {
-        padding: 16,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginTop: 10,
-        paddingLeft: 8,
-    },
-    errorText: {
-        color: 'red',
-        fontSize: 14,
-        marginBottom: 10,
-        marginTop: 7,
-    },
-    message: {
-        fontSize: 12,
-        textAlign: 'left',
-        //marginTop: 20,
-        color: '#666',
-    },
-    requirements: {
-        fontSize: 12,
-        color: '#666',
-        marginBottom: 10,
-    },
-});
 
 export default Sign_Up;
