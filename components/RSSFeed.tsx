@@ -19,16 +19,17 @@ interface RSSItem {
     description?: string;
 }
 
+interface FeedOption {
+    label: string;
+    value: string;
+}
+
 const RSSFeed = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<RSSItem[]>([]);
     const { user } = useAuth();
-    const [selectedFeed, setSelectedFeed] = useState('https://waleed.firstlight.am/aylienV2/proxyEndpoint/313');
-    
-    const feedOptions = [
-        { label: 'Quantum Computing News', value: 'https://waleed.firstlight.am/aylienV2/proxyEndpoint/313' },
-        { label: 'Quantum Patents', value: 'https://waleed.firstlight.am//patents//proxyEndpoint//320' },
-    ];
+    const [feedOptions, setFeedOptions] = useState<FeedOption[]>([]);
+    const [selectedFeed, setSelectedFeed] = useState<string>('');
 
     const extractContent = (xml: string, tag: string): string => {
         const start = xml.indexOf(`<${tag}>`) + tag.length + 2;
@@ -36,11 +37,71 @@ const RSSFeed = () => {
         return start > tag.length + 1 && end > start ? xml.substring(start, end) : '';
     };
 
+    const parseDate = (dateStr: string): Date => {
+        console.log('Attempting to parse date:', dateStr);
+        
+        // Try parsing RFC 822 format first (e.g., "Wed, 20 Mar 2024 15:30:00 GMT")
+        const rfcDate = new Date(dateStr);
+        if (!isNaN(rfcDate.getTime())) {
+            return rfcDate;
+        }
+
+        // Try parsing "Month DD YYYY" format (e.g., "June 02 2025" or "Jun 02 2025")
+        const monthDayYear = dateStr.match(/(\w+)\s+(\d{2})\s+(\d{4})/);
+        if (monthDayYear) {
+            const [_, month, day, year] = monthDayYear;
+            console.log('Parsed date components:', { month, day, year });
+            
+            // Convert abbreviated month to numeric month (0-11)
+            const monthMap: { [key: string]: number } = {
+                'Jan': 0, 'Feb': 1, 'Mar': 2,
+                'Apr': 3, 'May': 4, 'Jun': 5,
+                'Jul': 6, 'Aug': 7, 'Sep': 8,
+                'Oct': 9, 'Nov': 10, 'Dec': 11
+            };
+            
+            const numericMonth = monthMap[month] ?? 0;
+            const numericDay = parseInt(day, 10);
+            const numericYear = parseInt(year, 10);
+            
+            return new Date(numericYear, numericMonth, numericDay);
+        }
+
+        // If all parsing fails, return current date
+        console.warn(`Could not parse date: ${dateStr}`);
+        return new Date();
+    };
+
+    // Fetch feed options when component mounts
+    useEffect(() => {
+        const fetchFeedOptions = async () => {
+            try {
+                const response = await axios.get('https://waleed.firstlight.am/feeds/list');
+                const options = response.data.map((feed: { title: string, url: string }) => ({
+                    label: feed.title.replace(/\[ID:\d+\]/, '').trim(),
+                    value: feed.url.replace(/\/+/g, '/') // Fix double slashes in URL
+                }));
+                setFeedOptions(options);
+                if (options.length > 0) {
+                    setSelectedFeed(options[0].value);
+                }
+            } catch (error) {
+                console.error('Error fetching feed options:', error);
+                setFeedOptions([]);
+            }
+        };
+        
+        fetchFeedOptions();
+    }, []);
+
+    // Fetch RSS data when selected feed changes
     useEffect(() => {
         if (user) {
             const fetchRSSData = async () => {
                 try {
+                    //console.log('Fetching from:', selectedFeed);
                     const response = await axios.get(selectedFeed);
+                    //console.log('Response data:', response.data);
                     
                     if (selectedFeed.includes('waleed.firstlight.am')) {
                         const xmlString = response.data;
@@ -55,17 +116,19 @@ const RSSFeed = () => {
                             if (itemEnd === -1) break;
                             
                             const itemXml = xmlString.substring(itemStart, itemEnd + 7);
+                            //console.log('Processing item XML:', itemXml); // Debug log
                             
                             const title = extractContent(itemXml, 'title');
                             const link = extractContent(itemXml, 'link');
                             const pubDate = extractContent(itemXml, 'pubDate');
+                            //console.log('Extracted pubDate:', pubDate); // Debug log
                             const description = extractContent(itemXml, 'description');
                             
                             if (title && link && pubDate) {
                                 items.push({
                                     title,
                                     link,
-                                    pubDate,
+                                    pubDate: parseDate(pubDate).toISOString(),
                                     description: description || undefined
                                 });
                             }
@@ -73,11 +136,13 @@ const RSSFeed = () => {
                             currentIndex = itemEnd + 7;
                         }
                         
+                        //console.log('Parsed items:', items);
                         setData(items);
                     } else {
                         setData(response.data.items || []);
                     }
                 } catch (error) {
+                    console.error('Error fetching RSS data:', error);
                     setData([]);
                 } finally {
                     setLoading(false);
@@ -87,7 +152,6 @@ const RSSFeed = () => {
         }
     }, [user, selectedFeed]);
 
-    //this is to check to see if a user is here based on the listener, then go through this
     if (!user) {
         return (
             <View style={styles.container}>
@@ -104,8 +168,6 @@ const RSSFeed = () => {
         );
     }
 
-    //this return statement returns the items found in with the API
-    //don't move into another component unless you want to pass everything in
     return (
         <>
             <View style={styles.headerContainer}>
