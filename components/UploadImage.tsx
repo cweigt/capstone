@@ -5,7 +5,6 @@ import {
     Platform, 
     TouchableOpacity, 
     Text, 
-    StyleSheet,
     Alert
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
@@ -14,6 +13,7 @@ import DisplayImage from '@/components/DisplayImage';
 import { useImage } from '@/context/ImageContext';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
+import { UploadImageStyles as styles } from '../styles/UploadImage.styles';
 
 //this component includes a call to the other component for the image
 //also includes the logic and rendering for the Edit Image thing and Image Picker
@@ -46,7 +46,6 @@ const UploadImage = () => {
         
         // Finally update local state
         setImage(imageUri);
-      
       }
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -55,28 +54,14 @@ const UploadImage = () => {
   };
 
   return (
-    <View style={{ alignSelf: 'center', alignItems: 'center' }}>
+    <View style={styles.container}>
         <DisplayImage />
-        <TouchableOpacity onPress={addImage} style={imageUploaderStyles.uploadBtn}>
-            <Text style={{ color: 'black' }}>{image ? 'Edit' : 'Upload'} Image</Text>
+        <TouchableOpacity onPress={addImage} style={styles.uploadBtn}>
+            <Text style={styles.uploadText}>{image ? 'Edit' : 'Upload'} Image</Text>
             <AntDesign name="camera" size={20} color="black" />
         </TouchableOpacity>
     </View>
   );
 }
-
-const imageUploaderStyles=StyleSheet.create({
-    uploadBtn:{
-        display:'flex',
-        alignItems:"center",
-        justifyContent:'center',
-        flexDirection: 'row',
-        gap: 5,
-        marginTop: 10,
-        padding: 8,
-        backgroundColor: 'lightgrey',
-        borderRadius: 5
-    }
-});
 
 export default UploadImage;
