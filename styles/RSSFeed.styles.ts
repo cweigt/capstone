@@ -1,28 +1,13 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colors, spacing, typography, commonStyles } from './theme';
+import { colors, spacing, typography } from './theme';
 
 export const RSSFeedStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-    padding: spacing.md,
-    marginTop: 70,
-  },
-  header: {
-    padding: spacing.md,
-    backgroundColor: colors.primary,
-  },
-  headerText: {
-    fontSize: typography.h1.fontSize,
-    fontWeight: 'bold' as const,
-    color: colors.background,
   },
   dropdownContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1000,
+    width: '100%',
     backgroundColor: colors.background,
     padding: spacing.sm,
     borderBottomWidth: 1,
@@ -41,16 +26,27 @@ export const RSSFeedStyles = StyleSheet.create({
       },
     }),
   },
+  listContent: {
+    padding: spacing.md,
+    paddingBottom: 120,
+    flex: 1,
+  },
+  header: {
+    padding: spacing.md,
+    backgroundColor: colors.primary,
+  },
+  headerText: {
+    fontSize: typography.h1.fontSize,
+    fontWeight: 'bold' as const,
+    color: colors.background,
+  },
   dropdown: {
     height: 50,
     borderColor: colors.border,
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: spacing.sm,
-  },
-  listContent: {
-    paddingBottom: 80,
-    flex: 1,
+    backgroundColor: colors.background,
   },
   card: {
     borderRadius: 8,

@@ -9,7 +9,6 @@ import { Card } from '@rneui/themed';
 import axios from 'axios';
 import { auth } from '@/firebase';
 import { useAuth } from '@/context/AuthContext';
-import { Dropdown } from 'react-native-element-dropdown';
 import { RSSFeedStyles as styles } from '../styles/RSSFeed.styles';
 import { colors } from '../styles/theme';
 
@@ -25,12 +24,22 @@ interface FeedOption {
     value: string;
 }
 
-const RSSFeed = () => {
+interface RSSFeedProps {
+    feedOptions: FeedOption[];
+    setFeedOptions: (options: FeedOption[]) => void;
+    selectedFeed: string;
+    setSelectedFeed: (feed: string) => void;
+}
+
+const RSSFeed: React.FC<RSSFeedProps> = ({
+    feedOptions,
+    setFeedOptions,
+    selectedFeed,
+    setSelectedFeed
+}) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<RSSItem[]>([]);
     const { user } = useAuth();
-    const [feedOptions, setFeedOptions] = useState<FeedOption[]>([]);
-    const [selectedFeed, setSelectedFeed] = useState<string>('');
 
     const extractContent = (xml: string, tag: string): string => {
         const start = xml.indexOf(`<${tag}>`) + tag.length + 2;
@@ -39,7 +48,7 @@ const RSSFeed = () => {
     };
 
     const parseDate = (dateStr: string): Date => {
-        console.log('Attempting to parse date:', dateStr);
+        //console.log('Attempting to parse date:', dateStr);
         
         // Try parsing RFC 822 format first (e.g., "Wed, 20 Mar 2024 15:30:00 GMT")
         const rfcDate = new Date(dateStr);
@@ -51,7 +60,7 @@ const RSSFeed = () => {
         const monthDayYear = dateStr.match(/(\w+)\s+(\d{2})\s+(\d{4})/);
         if (monthDayYear) {
             const [_, month, day, year] = monthDayYear;
-            console.log('Parsed date components:', { month, day, year });
+            //console.log('Parsed date components:', { month, day, year });
             
             // Convert abbreviated month to numeric month (0-11)
             const monthMap: { [key: string]: number } = {
@@ -170,48 +179,35 @@ const RSSFeed = () => {
     }
 
     return (
-        <>
-            <View style={styles.dropdownContainer}>
-                <Dropdown
-                    style={styles.dropdown}
-                    data={feedOptions}
-                    labelField="label"
-                    valueField="value"
-                    value={selectedFeed}
-                    onChange={item => setSelectedFeed(item.value)}
-                    placeholder="Select News Source"
-                />
-            </View>
-            <View style={styles.container}>
-                <View style={styles.listContent}>
-                    {Array.isArray(data) && data.length > 0 ? (
-                        data.map((item, index) => (
-                            <Card key={index} containerStyle={styles.card}>
-                                <Card.Title style={styles.cardTitle}>{item.title}</Card.Title>
-                                <Text style={styles.date}>
-                                    {new Date(item.pubDate).toLocaleString()}
+        <View style={styles.container}>
+            <View style={styles.listContent}>
+                {Array.isArray(data) && data.length > 0 ? (
+                    data.map((item, index) => (
+                        <Card key={index} containerStyle={styles.card}>
+                            <Card.Title style={styles.cardTitle}>{item.title}</Card.Title>
+                            <Text style={styles.date}>
+                                {new Date(item.pubDate).toLocaleString()}
+                            </Text>
+                            {item.description && (
+                                <Text style={styles.description} numberOfLines={3}>
+                                    {item.description}
                                 </Text>
-                                {item.description && (
-                                    <Text style={styles.description} numberOfLines={3}>
-                                        {item.description}
-                                    </Text>
-                                )}
-                                <Text
-                                    style={styles.link}
-                                    onPress={() => {
-                                        Linking.openURL(item.link);
-                                    }}
-                                >
-                                    Read More
-                                </Text>
-                            </Card>
-                        ))
-                    ) : (
-                        <Text style={styles.message}>No items available</Text>
-                    )}
-                </View>
+                            )}
+                            <Text
+                                style={styles.link}
+                                onPress={() => {
+                                    Linking.openURL(item.link);
+                                }}
+                            >
+                                Read More
+                            </Text>
+                        </Card>
+                    ))
+                ) : (
+                    <Text style={styles.message}>No items available</Text>
+                )}
             </View>
-        </>
+        </View>
     );
 };
 
