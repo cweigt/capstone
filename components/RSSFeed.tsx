@@ -86,7 +86,7 @@ const RSSFeed = () => {
                     setSelectedFeed(options[0].value);
                 }
             } catch (error) {
-                console.error('Error fetching feed options:', error);
+                //console.error('Error fetching feed options:', error);
                 setFeedOptions([]);
             }
         };
@@ -142,7 +142,7 @@ const RSSFeed = () => {
                         setData(response.data.items || []);
                     }
                 } catch (error) {
-                    console.error('Error fetching RSS data:', error);
+                    //console.error('Error fetching RSS data:', error);
                     setData([]);
                 } finally {
                     setLoading(false);
