@@ -2,61 +2,90 @@ import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
-  FlatList, 
   ActivityIndicator, 
   StyleSheet, 
-  Linking 
+  Linking, 
 } from 'react-native';
+import { Card } from '@rneui/themed';
 import axios from 'axios';
 import { auth } from '@/firebase';
-
+import { useAuth } from '@/context/AuthContext';
+import { Dropdown } from 'react-native-element-dropdown';
 
 interface RSSItem {
     title: string;
-    link: string;
+    link: string;   
     pubDate: string;
+    description?: string;
 }
-
 
 const RSSFeed = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<RSSItem[]>([]);
-    //managing own user state to avoid THE GLITCH
-    const [user, setUser] = useState(null); 
+    const { user } = useAuth();
+    const [selectedFeed, setSelectedFeed] = useState('https://waleed.firstlight.am/aylienV2/proxyEndpoint/313');
+    
+    const feedOptions = [
+        { label: 'Quantum Computing News', value: 'https://waleed.firstlight.am/aylienV2/proxyEndpoint/313' },
+        { label: 'Quantum Patents', value: 'https://waleed.firstlight.am//patents//proxyEndpoint//320' },
+    ];
 
-    useEffect(() => {
-        //listens for any authentication of a user and then brings the user object into here
-        const listener = auth.onAuthStateChanged((user) => {
-            setUser(user);
-        });
-        return () => listener();
-    }, []);
+    const extractContent = (xml: string, tag: string): string => {
+        const start = xml.indexOf(`<${tag}>`) + tag.length + 2;
+        const end = xml.indexOf(`</${tag}>`);
+        return start > tag.length + 1 && end > start ? xml.substring(start, end) : '';
+    };
 
-    // Replace this with your RSS URL (use rss2json.com API)
-    const feedUrl = 'https://rss2json.com/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml'; // NY Times RSS
-    const feedUrl2 = 'https://rss2json.com/api.json?rss_url=https://api.axios.com/feed/top/'; // Axios RSS
-    const feedUrl3 = 'https://rss2json.com/api.json?rss_url=https://www.foxnews.com/rss/top-stories'; // Fox News RSS
-    const feedUrl4 = 'https://rss2json.com/api.json?rss_url=https://www.politico.com/rss/morningtech.xml'; // Politico RSS
-    const feedUrl5 = 'https://rss2json.com/api.json?rss_url=https://feeds.bbci.co.uk/news/rss.xml'; // BBC RSS
-    const feedUrl6 = 'https://rss2json.com/api.json?rss_url=https://mindmatters.ai/feed/podcast'; // MindMatters RSS
-
-    //retrieving the feed and parsing the URL through API
     useEffect(() => {
         if (user) {
             const fetchRSSData = async () => {
                 try {
-                    //gets and sets the content from the API from the URL
-                    const response = await axios.get(feedUrl);
-                    setData(response.data.items);
+                    const response = await axios.get(selectedFeed);
+                    
+                    if (selectedFeed.includes('waleed.firstlight.am')) {
+                        const xmlString = response.data;
+                        const items: RSSItem[] = [];
+                        let currentIndex = 0;
+                        
+                        while (true) {
+                            const itemStart = xmlString.indexOf('<item>', currentIndex);
+                            if (itemStart === -1) break;
+                            
+                            const itemEnd = xmlString.indexOf('</item>', itemStart);
+                            if (itemEnd === -1) break;
+                            
+                            const itemXml = xmlString.substring(itemStart, itemEnd + 7);
+                            
+                            const title = extractContent(itemXml, 'title');
+                            const link = extractContent(itemXml, 'link');
+                            const pubDate = extractContent(itemXml, 'pubDate');
+                            const description = extractContent(itemXml, 'description');
+                            
+                            if (title && link && pubDate) {
+                                items.push({
+                                    title,
+                                    link,
+                                    pubDate,
+                                    description: description || undefined
+                                });
+                            }
+                            
+                            currentIndex = itemEnd + 7;
+                        }
+                        
+                        setData(items);
+                    } else {
+                        setData(response.data.items || []);
+                    }
                 } catch (error) {
-                    console.error('Error fetching RSS data:', error);
+                    setData([]);
                 } finally {
                     setLoading(false);
                 }
             };
             fetchRSSData();
         }
-    }, [user]); //this happens everytime the user object changes
+    }, [user, selectedFeed]);
 
     //this is to check to see if a user is here based on the listener, then go through this
     if (!user) {
@@ -66,7 +95,7 @@ const RSSFeed = () => {
             </View>
         );
     }
-
+    
     if (loading) {
         return (
             <View style={styles.loader}>
@@ -78,37 +107,73 @@ const RSSFeed = () => {
     //this return statement returns the items found in with the API
     //don't move into another component unless you want to pass everything in
     return (
-        <View style={styles.container}>
-            <Text style={styles.header}>Latest News</Text>
-            <FlatList
-                data={data}
-                renderItem={({ item }) => (
-                    <View style={styles.item}>
-                        <Text style={styles.title}>{item.title}</Text>
-                        <Text style={styles.date}>{new Date(item.pubDate).toLocaleString()}</Text>
-                        <Text
-                            style={styles.link}
-                            onPress={() => {
-                                Linking.openURL(item.link);
-                            }}
-                        >Read more
-                        </Text>
-                    </View>
-                )}
-                keyExtractor={(item, index) => index.toString()}
-                contentContainerStyle={styles.listContent}
-            />
-        </View>
+        <>
+            <View style={styles.headerContainer}>
+                <Dropdown
+                    style={styles.dropdown}
+                    data={feedOptions}
+                    labelField="label"
+                    valueField="value"
+                    value={selectedFeed}
+                    onChange={item => setSelectedFeed(item.value)}
+                    placeholder="Select News Source"
+                />
+            </View>
+            <View style={styles.container}>
+                <View style={styles.listContent}>
+                    {Array.isArray(data) && data.length > 0 ? (
+                        data.map((item, index) => (
+                            <Card key={index} containerStyle={styles.card}>
+                                <Card.Title>{item.title}</Card.Title>
+                                <Text style={styles.date}>
+                                    {new Date(item.pubDate).toLocaleString()}
+                                </Text>
+                                {item.description && (
+                                    <Text style={styles.description} numberOfLines={3}>
+                                        {item.description}
+                                    </Text>
+                                )}
+                                <Text
+                                    style={styles.link}
+                                    onPress={() => {
+                                        Linking.openURL(item.link);
+                                    }}
+                                >
+                                    Read more
+                                </Text>
+                            </Card>
+                        ))
+                    ) : (
+                        <Text style={styles.message}>No articles available</Text>
+                    )}
+                </View>
+            </View>
+        </>
     );
 };
 
 const styles = StyleSheet.create({
+    headerContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'white',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        padding: 10,
+    },
     container: {
         flex: 1,
         padding: 10,
+        marginTop: 70,
     },
     listContent: {
-        paddingBottom: 20,
+        paddingBottom: 80,
+        flex: 1,
     },
     loader: {
         flex: 1,
@@ -119,6 +184,7 @@ const styles = StyleSheet.create({
       fontSize: 24,
       fontWeight: 'bold',
       marginBottom: 10,
+      paddingVertical: 10,
     },
     item: {
       marginBottom: 15,
@@ -137,9 +203,24 @@ const styles = StyleSheet.create({
     },
     message: {
       fontSize: 16,
-      textAlign: 'center',
+      textAlign: 'left',
       marginTop: 20,
       color: '#666',
+    },
+    card: {
+        borderRadius: 8,
+        marginBottom: 15,
+    },
+    dropdown: {
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,        
+    },
+    description: {
+        fontSize: 14,
+        color: '#555',
     },
 });
 

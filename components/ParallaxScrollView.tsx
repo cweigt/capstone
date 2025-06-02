@@ -3,109 +3,125 @@
 //when combined with KeyboardAvoidingView
 //this is the solution to that, and is the IDEAL TEMPLATE
 
-import type { PropsWithChildren, ReactElement } from 'react';
-import { StyleSheet, Keyboard } from 'react-native';
-import { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import {
+    View,
+    ScrollView,
+    StyleSheet,
+    ViewStyle,
+    Keyboard,
+    Platform,
+} from 'react-native';
 import Animated, {
+    useAnimatedStyle, 
+    useSharedValue,
+    useAnimatedScrollHandler,
   interpolate,
-  useAnimatedRef,
-  useAnimatedStyle,
-  useScrollViewOffset,
 } from 'react-native-reanimated';
+// import { ThemedView } from '@/components/ThemedView';
 
-import { ThemedView } from '@/components/ThemedView';
-import { useBottomTabOverflow } from '@/components/ui/TabBarBackground';
-import { useColorScheme } from '@/hooks/useColorScheme';
+interface ParallaxScrollViewProps {
+    headerImage: React.ReactNode;
+    headerBackgroundColor: {
+        light: string;
+        dark: string;
+    };
+    children: React.ReactNode;
+    headerHeight?: number;
+    style?: ViewStyle;
+}
 
-const HEADER_HEIGHT = 170;
-
-type Props = PropsWithChildren<{
-  headerImage: ReactElement;
-  headerBackgroundColor: { light: string, dark: string };
-}>;
-
-const ParallaxScrollView = ({
-  children,
+export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
   headerImage,
   headerBackgroundColor,
-}: Props) => {
-  const colorScheme = useColorScheme() ?? 'light';
-  const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const scrollOffset = useScrollViewOffset(scrollRef);
-  const bottom = useBottomTabOverflow();
+    children,
+    headerHeight = 200,
+    style,
+}) => {
+    const scrollY = useSharedValue(0);
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
 
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
-
-  useEffect(() => {
-    const showSub = Keyboard.addListener('keyboardWillShow', (e) => {
-      setKeyboardHeight(e.endCoordinates.height);
-    });
-    const hideSub = Keyboard.addListener('keyboardWillHide', () => {
-      setKeyboardHeight(0);
-    });
+    React.useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            () => {
+                setKeyboardVisible(true);
+            }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => {
+                setKeyboardVisible(false);
+            }
+        );
 
     return () => {
-      showSub.remove();
-      hideSub.remove();
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
     };
   }, []);
 
-  //@ts-ignore: Suppress the error for this line
-  const headerAnimatedStyle = useAnimatedStyle(() => {
+    const headerAnimatedStyle = useAnimatedStyle<ViewStyle>(() => {
     return {
       transform: [
-        {
-          translateY: interpolate(
-            scrollOffset.value,
-            [-HEADER_HEIGHT, 0, HEADER_HEIGHT],
-            [-HEADER_HEIGHT / 2, 0, HEADER_HEIGHT * 0.75]
-          ),
+                { translateY: 0 },
+                { scale: 1 },
+            ] as const,
+        };
+    });
+
+    const scrollHandler = useAnimatedScrollHandler({
+        onScroll: (event) => {
+            scrollY.value = event.contentOffset.y;
         },
-        {
-          scale: interpolate(scrollOffset.value, [-HEADER_HEIGHT, 0, HEADER_HEIGHT], [2, 1, 1]),
-        },
-      ],
-    };
   });
 
   return (
-    <ThemedView style={styles.container}>
-      <Animated.ScrollView
-        ref={scrollRef}
-        scrollEventThrottle={16}
-        scrollIndicatorInsets={{ bottom }}
-        contentContainerStyle={{
-          paddingBottom: bottom + keyboardHeight,
-        }}>
+        <View style={[styles.container, style]}>
         <Animated.View
           style={[
             styles.header,
-            { backgroundColor: headerBackgroundColor[colorScheme] },
-            //@ts-ignore: Suppress the error for this line
             headerAnimatedStyle,
-          ]}>
+                    { backgroundColor: headerBackgroundColor.light }
+                ]}
+            >
           {headerImage}
         </Animated.View>
-        <ThemedView style={styles.content}>{children}</ThemedView>
+            <Animated.ScrollView
+                style={styles.scrollView}
+                contentContainerStyle={[
+                    styles.contentContainer,
+                    { paddingTop: headerHeight },
+                ]}
+                onScroll={scrollHandler}
+                scrollEventThrottle={16}
+                keyboardShouldPersistTaps="handled"
+                keyboardDismissMode={Platform.OS === 'ios' ? 'on-drag' : 'none'}
+            >
+                <View style={{ backgroundColor: 'white' }}>
+                    {children}
+                </View>
       </Animated.ScrollView>
-    </ThemedView>
+        </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   header: {
-    height: HEADER_HEIGHT,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
     overflow: 'hidden',
+        zIndex: 1,
   },
-  content: {
+    scrollView: {
     flex: 1,
-    padding: 32,
-    gap: 16,
-    overflow: 'hidden',
+    },
+    contentContainer: {
+        flexGrow: 1,
   },
 });
-
-export default ParallaxScrollView;

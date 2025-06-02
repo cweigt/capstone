@@ -5,43 +5,35 @@ import {
   Image 
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { auth } from '@/firebase';
+import { ParallaxScrollView } from '@/components/ParallaxScrollView';
+import { useAuth } from '@/context/AuthContext';
 
 const Notifications = () => {
-  const [user, setUser] = useState(null);
-
-  //this listens for the user to be changed and then will change display
-  //in this case it's better than passing user in as prop… will cause issues
-  useEffect(() => {
-    const listener = auth.onAuthStateChanged((user) => {
-      setUser(user)
-    });
-    return () => listener();
-  }, []);
-
+  const {user} = useAuth(); //this also holds any sort of listener
 
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }}
+      headerHeight={175}
       headerImage={
         <Image
           source={require('@/assets/images/aurora-wdc.png')}
           style={styles.auroraLogo}
         />
       }
-    > {/*end of opening ParallaxScrollView*/}
-      {user ? (
-        <View style={styles.container}>
-          <Text style={styles.title}>Notifications</Text>
-          <Text style={styles.message}>You don't have any notifications yet.</Text>
-        </View>
-      ) : (
-        <View style={styles.container}>
+    >
+      <View style={{ backgroundColor: 'white' }}>
+        {user ? (
+          <View style={styles.container}>
+            <Text style={styles.title}>Notifications</Text>
+            <Text style={styles.message}>You don't have any notifications yet.</Text>
+          </View>
+        ) : (
+          <View style={styles.container}>
             <Text style={styles.message}>Please sign in to view notifications.</Text>
-        </View>
-      )};
-      
+          </View>
+        )}
+      </View>
     </ParallaxScrollView>
   );
 };
@@ -50,7 +42,7 @@ const styles = StyleSheet.create({
   auroraLogo: {
     marginTop: 1,
     marginLeft: 33,
-    height: 250,
+    height: 175,
     width: 330,
     resizeMode: 'contain',
   },

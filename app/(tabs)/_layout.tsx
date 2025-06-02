@@ -1,15 +1,19 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Image } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useImage } from '@/context/ImageContext';
+import { useAuth } from '@/context/AuthContext';
 
 const TabLayout = () => {
   const colorScheme = useColorScheme();
+  const { image } = useImage();
+  const { user } = useAuth();
   
   return (
     <Tabs
@@ -44,7 +48,30 @@ const TabLayout = () => {
         name="signup"
         options={{
           title: 'Account',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.circle.fill" color={color} />,
+          tabBarIcon: ({ color }) => (
+            user && image ? (
+              <Image 
+                source={{ uri: image }} 
+                style={{ 
+                  width: 28, 
+                  height: 28, 
+                  borderRadius: 14,
+                  borderWidth: 1,
+                  borderColor: color
+                }} 
+              />
+            ) : (
+              <IconSymbol size={28} name="person.circle.fill" color={color} />
+            )
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
+          href: user ? undefined : null,
         }}
       />
     </Tabs>

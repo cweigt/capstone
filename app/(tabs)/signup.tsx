@@ -4,66 +4,55 @@ import {
   Image, 
   Button, 
   TouchableOpacity,
+  View
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import React, { useState } from 'react';
+import { ParallaxScrollView } from '@/components/ParallaxScrollView';
 import SignUp from '@/components/SignUp';
 import SignIn from '@/components/SignIn';
-import { ThemedView } from '@/components/ThemedView';
+import ResetPassword from '@/components/ResetPassword';
+import DisplayImage from '@/components/DisplayImage';
+// import { ThemedView } from '@/components/ThemedView';
 import { auth } from '@/firebase';
+import { useAuth } from '@/context/AuthContext';
 
 const Sign_Up = () => {
-    const [authUser, setAuthUser] = useState(null);
     const [showSignUp, setShowSignUp] = useState(false);
-  
-    useEffect(() => {
-        const listener = auth.onAuthStateChanged((authUser) => {
-            if (authUser) {
-                authUser.reload();
-                const refreshedUser = auth.currentUser;
-                setAuthUser(refreshedUser);
-            } else {
-                setAuthUser(null);
-            }
-        });
-        return () => listener();
-    }, []);
-  
-    useEffect(() => {
-        console.log('Updated auth user', authUser);
-    }, [authUser]);
+    const {user} = useAuth();
 
     return (
       <ParallaxScrollView 
           headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }} //#A1CEDC
+          headerHeight={175}
           headerImage={
               <Image
                 source={require('@/assets/images/aurora-wdc.png')}
                 style={styles.auroraLogo}
               />
             }>
-          <ThemedView style={{backgroundColor: "white"}}>
+          <View style={{backgroundColor: "white"}}>
             {/*This will be for the sign out function using conditional rendering*/}
-            {authUser ? (
+            {user ? (
               <>
                 <Text style={styles.welcomeText}>
-                  Welcome, {authUser.displayName}! {/*This is the line that is breaking with displayName*/}
+                  Welcome, {user.displayName}! {/*This is the line that is breaking with displayName*/}
                 </Text>
+                <DisplayImage />
                 <Button //button tags are self closing in native
                   title="Sign Out" //declaring what will be displayed on button, not in between both tags
                   onPress={() => { //don't forget curly brace with multi-line executions
                     auth.signOut();
-                    setAuthUser(null);
-                    window.alert(`Auth user signed out: ${authUser.email}`);
                   }}
                 />
+                <ResetPassword />
+                {/*this is placeholder for the account information component*/}
               </>
             ) : (
               <>
                 {showSignUp ? (
-                  <SignUp setUser={setAuthUser}/>
+                  <SignUp setUser={setShowSignUp} />
                 ) : (
-                  <SignIn setUser={setAuthUser}/>
+                  <SignIn setUser={setShowSignUp} />
                 )}
                 <TouchableOpacity onPress={() => setShowSignUp(!showSignUp)}>
                   <Text style={styles.toggleText}>
@@ -76,7 +65,7 @@ const Sign_Up = () => {
             
             
             
-          </ThemedView>
+          </View>
       </ParallaxScrollView>
   );
 
@@ -86,7 +75,7 @@ const styles = StyleSheet.create({
   auroraLogo: {
     marginTop: 1,
     marginLeft: 33,
-    height: 250,
+    height: 175,
     width: 330,
     resizeMode: 'contain',
   },

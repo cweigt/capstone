@@ -7,9 +7,9 @@ import {
     TouchableOpacity 
 } from 'react-native';
 import React, { useState } from 'react';
-import { ThemedView } from '@/components/ThemedView';
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '@/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+// import { ThemedView } from '@/components/ThemedView';
 
 const Sign_In = ({ setUser }) => {
     const [password, setPassword] = useState('');
@@ -32,11 +32,25 @@ const Sign_In = ({ setUser }) => {
         }
     };
 
+    const sendPasswordEmail = async() => {
+        try {
+            //sending password reset email
+            await sendPasswordResetEmail(auth, email);
+            window.alert('Password reset email sent! Please check your inbox.');
+            setErrorMessage('');
+        } catch (error) {
+            setErrorMessage('Error sending reset email. Please try again.');
+        }
+    }
+
     return (
         <View style={styles.container}>
-            <ThemedView>
+            <View style={{ backgroundColor: 'white' }}>
                 <View style={styles.formContainer}>
                     <Text style={styles.title}>Sign In</Text>
+                    <Text style={styles.requirements}>
+                        To reset your password, enter your email address and click, "Reset Password".
+                    </Text>
                     <TextInput
                         style={styles.input}
                         placeholder="Email..."
@@ -55,9 +69,7 @@ const Sign_In = ({ setUser }) => {
                     />
                     <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                         <Text style={styles.message}>
-                            <Text style={styles.message}>
-                                {showPassword ? 'Hide' : 'Show'} Password
-                            </Text>
+                            {showPassword ? 'Hide' : 'Show'} Password
                         </Text>
                     </TouchableOpacity>
                     {errorMessage !== '' && (
@@ -67,8 +79,12 @@ const Sign_In = ({ setUser }) => {
                         title="Sign In"
                         onPress={signIn}
                     />
+                    <Button
+                        title="Reset Password"
+                        onPress={sendPasswordEmail}
+                    />
                 </View>
-            </ThemedView>
+            </View>
         </View>
     );
 };
@@ -103,6 +119,11 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         //marginTop: 20,
         color: '#666',
+    },
+    requirements: {
+        fontSize: 12,
+        color: '#666',
+        marginBottom: 10,
     },
 });
 
