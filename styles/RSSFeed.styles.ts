@@ -29,6 +29,7 @@ export const RSSFeedStyles = StyleSheet.create({
   listContent: {
     padding: spacing.md,
     paddingBottom: 120,
+    paddingTop: 80,
     flex: 1,
   },
   header: {
