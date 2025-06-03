@@ -1,7 +1,10 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colors, spacing } from './theme';
+import { colors, spacing, typography } from './theme';
 
 export const HomeStyles = StyleSheet.create({
+    container: {
+        padding: spacing.md,
+    },
     titleContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -50,5 +53,12 @@ export const HomeStyles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: spacing.sm,
         backgroundColor: colors.background,
+    },
+    message: {
+        fontSize: typography.body.fontSize,
+        textAlign: 'left',
+        marginTop: spacing.lg,
+        color: colors.text,
+        opacity: 0.7,
     },
 }); 
