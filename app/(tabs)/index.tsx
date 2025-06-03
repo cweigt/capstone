@@ -20,7 +20,7 @@ const HomeScreen = () => {
         headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }}
         headerHeight={225}
         headerImage={
-          <View style={styles.headerContainer}>
+          <>
             <Image
               source={require('@/assets/images/aurora-wdc.png')}
               style={styles.auroraLogo}
@@ -36,7 +36,7 @@ const HomeScreen = () => {
                 placeholder="Select News Source"
               />
             </View>
-          </View>
+          </>
         }
       >
         <View style={{backgroundColor: "white"}}>
