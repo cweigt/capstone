@@ -17,6 +17,8 @@ export const HomeStyles = StyleSheet.create({
         alignItems: 'center',
     },
     auroraLogo: {
+        marginTop: 1,
+        marginLeft: 33,
         height: 175,
         width: 330,
         resizeMode: 'contain',
