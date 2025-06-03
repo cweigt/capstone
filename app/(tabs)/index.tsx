@@ -1,7 +1,10 @@
 import { 
   Image, 
   View,
-  Text 
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView
 } from 'react-native';
 import React, { useState } from 'react';
 import { ParallaxScrollView } from '@/components/ParallaxScrollView';
@@ -18,7 +21,10 @@ const HomeScreen = () => {
   const {user} = useAuth();
 
   return (
-    <View style={{ flex: 1 }}>
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
       <ParallaxScrollView 
         headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }}
         headerHeight={175}
@@ -30,7 +36,7 @@ const HomeScreen = () => {
             />
             {user ? (
               <View style={styles.dropdownContainer}>
-                  <Dropdown
+                <Dropdown
                   style={styles.dropdown}
                   data={feedOptions}
                   labelField="label"
@@ -45,11 +51,10 @@ const HomeScreen = () => {
                 <Text style={styles.message}>Please sign in to view feed.</Text>
               </View>
             )}
-            
           </>
         }
       >
-        <View style={{backgroundColor: "white"}}>
+        <View style={{backgroundColor: "white", flex: 1}}>
           <RSSFeed 
             feedOptions={feedOptions}
             setFeedOptions={setFeedOptions}
@@ -58,7 +63,7 @@ const HomeScreen = () => {
           />
         </View>
       </ParallaxScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
