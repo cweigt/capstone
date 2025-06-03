@@ -1,31 +1,29 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, initializeAuth, getReactNativePersistence } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-export const firebaseConfig = {
-    apiKey: "AIzaSyB7N-BOm26nyeju-fWIr3eFfGV8-l3L4RA",
-    authDomain: "aurorawdc.firebaseapp.com",
-    projectId: "aurorawdc",
-    storageBucket: "aurorawdc.firebasestorage.app",
-    messagingSenderId: "1085205837895",
-    appId: "1:1085205837895:web:094fba8340806ac671d962",
-    measurementId: "G-0DVN9242ZF"
-};
+const firebaseConfig = {
+    apiKey: "AIzaSyBHTp7_TbRR91CRZa8UUFi0-ca-Tvagau8",
+    authDomain: "aurorawdc-app-5a801.firebaseapp.com",
+    databaseURL: "https://aurorawdc-app-5a801-default-rtdb.firebaseio.com",
+    projectId: "aurorawdc-app-5a801",
+    storageBucket: "aurorawdc-app-5a801.firebasestorage.app",
+    messagingSenderId: "142728050041",
+    appId: "1:142728050041:web:e948984f4ebc9db6e1eba8",
+    measurementId: "G-QB7EJSQJBW"
+  };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Auth with persistence
-const auth = initializeAuth(app, {
-    persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-});
+// Initialize Auth
+const auth = getAuth(app);
 
 // Initialize Database
 const db = getDatabase(app);
