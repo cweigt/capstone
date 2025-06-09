@@ -11,7 +11,6 @@ import SignUp from '@/components/SignUp';
 import SignIn from '@/components/SignIn';
 import ResetPassword from '@/components/ResetPassword';
 import DisplayImage from '@/components/DisplayImage';
-import { auth } from '@/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { SignUpPageStyles as styles } from '../../styles/SignUpPage.styles';
 
@@ -37,12 +36,6 @@ const Sign_Up = () => {
                   Welcome, {user.displayName}! {/*This is the line that is breaking with displayName*/}
                 </Text>
                 <DisplayImage />
-                <Button //button tags are self closing in native
-                  title="Sign Out" //declaring what will be displayed on button, not in between both tags
-                  onPress={() => { //don't forget curly brace with multi-line executions
-                    auth.signOut();
-                  }}
-                />
                 <ResetPassword />
                 {/*this is placeholder for the account information component*/}
               </>
