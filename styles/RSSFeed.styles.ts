@@ -83,5 +83,7 @@ export const RSSFeedStyles = StyleSheet.create({
   center: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 80,
+    marginBottom: 10,
   },
 }); 

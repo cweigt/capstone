@@ -1,8 +1,10 @@
 export const ROUTES = {
   HOME: '/',
   SETTINGS: '/settings',
-  SIGNUP: '/signup',
+  ACCOUNT: '/account',
   NOTIFICATIONS: '/notifs',
+  EULA: '/eula',
+  PRIVACY_POLICY: '/privacy-policy',
 } as const;
 
 // Type for the route values

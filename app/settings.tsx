@@ -13,7 +13,7 @@ import {
 } from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
 import UploadImage from '@/components/UploadImage';
-import { SettingsStyles as styles } from '../../styles/Settings.styles';
+import { SettingsStyles as styles } from '../styles/Settings.styles';
 import { router } from 'expo-router';
 import { ROUTES } from '@/constants/Routes';
 
@@ -96,7 +96,7 @@ const Settings = () => {
                 title="Sign Out"
                 onPress={() => {
                   auth.signOut();
-                  router.replace(ROUTES.SIGNUP);
+                  router.replace(ROUTES.ACCOUNT);
                 }}
               />
             </View>

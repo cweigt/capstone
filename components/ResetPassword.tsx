@@ -44,7 +44,7 @@ const Reset_Password = () => {
                             {showPasswordReset ? 'Hide' : 'Show'} Password Reset Form
                         </Text>
                     </TouchableOpacity>
-                    {showPasswordReset ? (
+                    {showPasswordReset && (
                         <>
                             <Text style={styles.requirements}>
                                 Reset your password below by entering your old and new password.
@@ -79,9 +79,6 @@ const Reset_Password = () => {
                                 title="Reset Password"
                                 onPress={reauthenticate}
                             />
-                        </>
-                    ) : (
-                        <>
                         </>
                     )}
                 </View>
