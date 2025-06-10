@@ -12,7 +12,7 @@ import SignIn from '@/components/SignIn';
 import ResetPassword from '@/components/ResetPassword';
 import UploadImage from '@/components/UploadImage';
 import { useAuth } from '@/context/AuthContext';
-import { SignUpPageStyles as styles } from '@/styles/Account.styles';
+import { AccountStyles as styles } from '@/styles/Account.styles';
 import NameChange from '@/components/NameChange';
 import { router } from 'expo-router';
 import { ROUTES } from '@/constants/Routes';
@@ -47,9 +47,11 @@ const Sign_Up = () => {
                 <NameChange />
                 
                 <TouchableOpacity
+                  onPress={() => router.push(ROUTES.SAVED)}
+                  style={{ marginBottom: 5 }}
                 >
                   <Text style={styles.savedArticles}>
-                    Saved Articles
+                    Saved Articles →
                   </Text>
                 </TouchableOpacity>
 

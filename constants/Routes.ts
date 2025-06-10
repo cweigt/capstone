@@ -5,6 +5,7 @@ export const ROUTES = {
   NOTIFICATIONS: '/notifs',
   EULA: '/eula',
   PRIVACY_POLICY: '/privacy-policy',
+  SAVED: '/savedArticles',
 } as const;
 
 // Type for the route values

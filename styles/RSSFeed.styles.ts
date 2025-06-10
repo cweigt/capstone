@@ -51,11 +51,34 @@ export const RSSFeedStyles = StyleSheet.create({
   },
   card: {
     borderRadius: 8,
-    marginBottom: spacing.md,
+    marginBottom: 16,
+    padding: 16,
+    backgroundColor: colors.background,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   cardTitle: {
-    fontSize: typography.h3.fontSize,
-    fontWeight: 'bold' as const,
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  starButton: {
+    padding: 8,
+    minWidth: 40,
+    minHeight: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
   },
   date: {
     fontSize: typography.caption.fontSize,
@@ -70,8 +93,8 @@ export const RSSFeedStyles = StyleSheet.create({
   },
   link: {
     color: colors.primary,
-    textDecorationLine: 'underline',
-    fontSize: typography.body.fontSize,
+    fontSize: 14,
+    fontWeight: '500',
   },
   message: {
     fontSize: typography.body.fontSize,

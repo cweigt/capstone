@@ -1,22 +1,40 @@
+//RSSFeed.tsx:
+    //Main component that displays RSS feed articles
+    //Key features:
+        //Fetches feed options from https://waleed.firstlight.am/feeds/list
+        //Displays articles in cards with:
+            //Title
+            //Publication date
+            //Description
+            //"Read More" link
+            //Star button for saving
+        //Saves articles to Firebase at users/${user.uid}/savedArticles/${safeKey}
+        //Uses real-time updates to sync the star state with Firebase
+        //Handles article saving/unsaving through the toggleSave function
+
 import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
   ActivityIndicator, 
-  Linking, 
+  Linking,
+  Pressable,
 } from 'react-native';
 import { Card } from '@rneui/themed';
 import axios from 'axios';
 import { auth } from '@/firebase';
+import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
 import { useAuth } from '@/context/AuthContext';
 import { RSSFeedStyles as styles } from '../styles/RSSFeed.styles';
 import { colors } from '../styles/theme';
+import { IconSymbol } from '@/components/ui/IconSymbol';
 
 interface RSSItem {
     title: string;
     link: string;   
     pubDate: string;
     description?: string;
+    saved?: boolean;
 }
 
 interface FeedOption {
@@ -40,7 +58,9 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<RSSItem[]>([]);
     const { user } = useAuth();
+    const database = getDatabase();
 
+    //manually parsing the data retrieved from the XML file
     const extractContent = (xml: string, tag: string): string => {
         const start = xml.indexOf(`<${tag}>`) + tag.length + 2;
         const end = xml.indexOf(`</${tag}>`);
@@ -82,7 +102,7 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
         return new Date();
     };
 
-    // Fetch feed options when component mounts
+    // Fetch feed options when component mounts… displayed in dropdown
     useEffect(() => {
         const fetchFeedOptions = async () => {
             try {
@@ -104,63 +124,161 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
         fetchFeedOptions();
     }, []);
 
-    // Fetch RSS data when selected feed changes
+    // Fetch RSS data when selected feed changes… displayed in actual page
     useEffect(() => {
-        if (user) {
-            const fetchRSSData = async () => {
-                try {
-                    //console.log('Fetching from:', selectedFeed);
-                    const response = await axios.get(selectedFeed);
-                    //console.log('Response data:', response.data);
+        if (!user) return;
+        
+        const fetchRSSData = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get(selectedFeed);
+                
+                if (selectedFeed.includes('waleed.firstlight.am')) {
+                    const xmlString = response.data;
+                    const items: RSSItem[] = [];
+                    let currentIndex = 0;
                     
-                    if (selectedFeed.includes('waleed.firstlight.am')) {
-                        const xmlString = response.data;
-                        const items: RSSItem[] = [];
-                        let currentIndex = 0;
+                    while (true) {
+                        const itemStart = xmlString.indexOf('<item>', currentIndex);
+                        if (itemStart === -1) break;
                         
-                        while (true) {
-                            const itemStart = xmlString.indexOf('<item>', currentIndex);
-                            if (itemStart === -1) break;
-                            
-                            const itemEnd = xmlString.indexOf('</item>', itemStart);
-                            if (itemEnd === -1) break;
-                            
-                            const itemXml = xmlString.substring(itemStart, itemEnd + 7);
-                            //console.log('Processing item XML:', itemXml); // Debug log
-                            
-                            const title = extractContent(itemXml, 'title');
-                            const link = extractContent(itemXml, 'link');
-                            const pubDate = extractContent(itemXml, 'pubDate');
-                            //console.log('Extracted pubDate:', pubDate); // Debug log
-                            const description = extractContent(itemXml, 'description');
-                            
-                            if (title && link && pubDate) {
-                                items.push({
-                                    title,
-                                    link,
-                                    pubDate: parseDate(pubDate).toISOString(),
-                                    description: description || undefined
-                                });
-                            }
-                            
-                            currentIndex = itemEnd + 7;
+                        const itemEnd = xmlString.indexOf('</item>', itemStart);
+                        if (itemEnd === -1) break;
+                        
+                        const itemXml = xmlString.substring(itemStart, itemEnd + 7);
+                        
+                        const title = extractContent(itemXml, 'title');
+                        const link = extractContent(itemXml, 'link');
+                        const pubDate = extractContent(itemXml, 'pubDate');
+                        const description = extractContent(itemXml, 'description');
+                        
+                        if (title && link && pubDate) {
+                            items.push({
+                                title,
+                                link,
+                                pubDate: parseDate(pubDate).toISOString(),
+                                description: description || undefined,
+                                saved: false
+                            });
                         }
                         
-                        //console.log('Parsed items:', items);
-                        setData(items);
-                    } else {
-                        setData(response.data.items || []);
+                        currentIndex = itemEnd + 7;
                     }
-                } catch (error) {
-                    //console.error('Error fetching RSS data:', error);
-                    setData([]);
-                } finally {
-                    setLoading(false);
+                    
+                    // Set initial data
+                    setData(items);
+                    
+                    // Listen for saved articles changes
+                    const savedRef = ref(database, `users/${user.uid}/savedArticles`);
+                    const listener = onValue(savedRef, (snapshot) => {
+                        const savedArticles = snapshot.val() || {};
+                        
+                        // Update saved status for each item
+                        setData(prevData => 
+                            prevData.map(item => ({
+                                ...item,
+                                saved: !!savedArticles[item.link
+                                    .replace(/[.#$\/[\]]/g, '_')
+                                    .replace(/:/g, '_')
+                                    .replace(/\?/g, '_')
+                                    .replace(/&/g, '_')
+                                    .replace(/=/g, '_')]
+                            }))
+                        );
+                    });
+                    
+                    return () => listener();
+                } else {
+                    setData(response.data.items || []);
                 }
-            };
-            fetchRSSData();
+            } catch (error) {
+                console.error('Error fetching RSS data:', error);
+                setData([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        fetchRSSData();
+    }, [user, selectedFeed]); //everytime user or selectedFeed changes
+
+    const toggleSave = async (index: number) => {
+        if (!user) {
+            // console.log('No user logged in');
+            return;
         }
-    }, [user, selectedFeed]);
+
+        try {
+            const item = data[index];
+            if (!item) {
+                // console.log('No item found at index:', index);
+                return;
+            }
+
+            // console.log('Toggling save for item:', item.title);
+            // console.log('Current saved state:', item.saved);
+
+            // Create a safe key for Firebase by replacing invalid characters
+            const safeKey = item.link
+                .replace(/[.#$\/[\]]/g, '_')
+                .replace(/:/g, '_')
+                .replace(/\?/g, '_')
+                .replace(/&/g, '_')
+                .replace(/=/g, '_');
+                
+            const savedRef = ref(database, `users/${user.uid}/savedArticles/${safeKey}`);
+            
+            const newSavedState = !item.saved;
+            // console.log('Attempting to set new saved state:', newSavedState);
+            
+            if (newSavedState) {
+                // Save the article
+                // console.log('Saving to Firebase...');
+                const articleData = {
+                    title: item.title,
+                    link: item.link,
+                    pubDate: item.pubDate,
+                    description: item.description,
+                    savedAt: new Date().toISOString()
+                };
+                // console.log('Article data:', articleData);
+                
+                try {
+                    await set(savedRef, articleData);
+                    // console.log('Successfully saved to Firebase');
+                } catch (firebaseError) {
+                    console.error('Firebase save error:', firebaseError);
+                    return;
+                }
+            } else {
+                // Remove the article
+                // console.log('Removing from Firebase...');
+                try {
+                    await remove(savedRef);
+                    // console.log('Successfully removed from Firebase');
+                } catch (firebaseError) {
+                    console.error('Firebase remove error:', firebaseError);
+                    return;
+                }
+            }
+
+            // Update local state immediately
+            // console.log('Updating local state...');
+            const newData = [...data];
+            newData[index] = { ...newData[index], saved: newSavedState };
+            
+            // console.log('Setting new data with updated state');
+            setData(newData);
+            
+            // Verify the state was updated
+            // console.log('Verifying state update...');
+            //const updatedItem = newData[index];
+            // console.log('Updated item state:', updatedItem.saved);
+            
+        } catch (error) {
+            console.error('Error in toggleSave:', error);
+        }
+    };
 
     if (!user) {
         return (
@@ -193,14 +311,36 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
                                     {item.description}
                                 </Text>
                             )}
-                            <Text
-                                style={styles.link}
-                                onPress={() => {
-                                    Linking.openURL(item.link);
-                                }}
-                            >
-                                Read More
-                            </Text>
+                            <View style={styles.cardFooter}>
+                                <Pressable
+                                    onPress={() => {
+                                        //console.log('Read More pressed');
+                                        Linking.openURL(item.link);
+                                    }}
+                                >
+                                    <Text style={styles.link}>
+                                        Read More
+                                    </Text>
+                                </Pressable>
+                                <Pressable 
+                                    onPress={() => {
+                                        //console.log('Star pressed');
+                                        toggleSave(index);
+                                    }}
+                                    style={({ pressed }) => [
+                                        styles.starButton,
+                                        { 
+                                            transform: [{ scale: pressed ? 1.2 : 1 }],
+                                        }
+                                    ]}
+                                >
+                                    <IconSymbol 
+                                        name={item.saved ? "star.fill" : "star"} 
+                                        size={24} 
+                                        color={item.saved ? "#FFD700" : colors.text} 
+                                    />
+                                </Pressable>
+                            </View>
                         </Card>
                     ))
                 ) : (

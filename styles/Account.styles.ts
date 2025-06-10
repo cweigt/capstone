@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { colors, spacing, typography } from './theme';
 
-export const SignUpPageStyles = StyleSheet.create({
+export const AccountStyles = StyleSheet.create({
     auroraLogo: {
         marginTop: 1,
         marginLeft: 33,
