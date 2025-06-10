@@ -192,7 +192,7 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
                     setData(response.data.items || []);
                 }
             } catch (error) {
-                console.error('Error fetching RSS data:', error);
+                // console.error('Error fetching RSS data:', error);
                 setData([]);
             } finally {
                 setLoading(false);
@@ -303,9 +303,6 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
                     data.map((item, index) => (
                         <Card key={index} containerStyle={styles.card}>
                             <Card.Title style={styles.cardTitle}>{item.title}</Card.Title>
-                            <Text style={styles.date}>
-                                {new Date(item.pubDate).toLocaleString()}
-                            </Text>
                             {item.description && (
                                 <Text style={styles.description} numberOfLines={3}>
                                     {item.description}
@@ -314,7 +311,6 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
                             <View style={styles.cardFooter}>
                                 <Pressable
                                     onPress={() => {
-                                        //console.log('Read More pressed');
                                         Linking.openURL(item.link);
                                     }}
                                 >
@@ -322,11 +318,13 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
                                         Read More
                                     </Text>
                                 </Pressable>
+                                <Text style={styles.date}>
+                                    {new Date(item.pubDate).toLocaleDateString()}
+                                </Text>
+                            </View>
+                            <View style={styles.starContainer}>
                                 <Pressable 
-                                    onPress={() => {
-                                        //console.log('Star pressed');
-                                        toggleSave(index);
-                                    }}
+                                    onPress={() => toggleSave(index)}
                                     style={({ pressed }) => [
                                         styles.starButton,
                                         { 
@@ -337,7 +335,7 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
                                     <IconSymbol 
                                         name={item.saved ? "star.fill" : "star"} 
                                         size={24} 
-                                        color={item.saved ? "#FFD700" : colors.text} 
+                                        color={item.saved ? "#FFD700" : colors.text}
                                     />
                                 </Pressable>
                             </View>

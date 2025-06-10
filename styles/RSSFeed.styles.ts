@@ -37,9 +37,10 @@ export const RSSFeedStyles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   headerText: {
-    fontSize: typography.h1.fontSize,
-    fontWeight: 'bold' as const,
-    color: colors.background,
+    fontSize: 18,
+    color: colors.text,
+    textAlign: 'center',
+    marginTop: 20,
   },
   dropdown: {
     height: 50,
@@ -58,13 +59,15 @@ export const RSSFeedStyles = StyleSheet.create({
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: 8,
+    paddingRight: 8,
   },
   cardTitle: {
     fontSize: 16,
     fontWeight: '600',
-    marginBottom: 8,
+    flex: 1,
+    marginRight: 16,
   },
   cardFooter: {
     flexDirection: 'row',
@@ -72,24 +75,29 @@ export const RSSFeedStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 12,
   },
+  starContainer: {
+    alignItems: 'center',
+    marginTop: -24,
+    marginLeft: 16,
+  },
   starButton: {
-    padding: 8,
-    minWidth: 40,
-    minHeight: 40,
+    padding: 4,
+    minWidth: 32,
+    minHeight: 32,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1,
   },
   date: {
-    fontSize: typography.caption.fontSize,
+    fontSize: 12,
     color: colors.text,
     opacity: 0.7,
+    marginLeft: 'auto',
   },
   description: {
-    fontSize: typography.body.fontSize,
+    fontSize: 14,
     color: colors.text,
     opacity: 0.8,
-    marginVertical: spacing.sm,
+    marginVertical: 8,
   },
   link: {
     color: colors.primary,
@@ -97,16 +105,14 @@ export const RSSFeedStyles = StyleSheet.create({
     fontWeight: '500',
   },
   message: {
-    fontSize: typography.body.fontSize,
-    textAlign: 'left',
-    marginTop: spacing.lg,
+    fontSize: 16,
     color: colors.text,
     opacity: 0.7,
+    textAlign: 'center',
+    marginTop: 20,
   },
   center: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 80,
-    marginBottom: 10,
   },
 }); 
