@@ -4,9 +4,10 @@ import { User } from 'firebase/auth';
 
 type AuthContextType = {
   user: User | null;
+  setUser: (user: User | null) => void;
 };
 
-const AuthContext = createContext<AuthContextType>({ user: null });
+const AuthContext = createContext<AuthContextType>({ user: null, setUser: () => {} });
 
 export const useAuth = () => useContext(AuthContext);
 //Custom hook to easily access the auth context
@@ -34,7 +35,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   //Cleans up the listener when the component unmounts
   
   return (
-    <AuthContext.Provider value={{ user }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
