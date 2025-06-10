@@ -31,10 +31,9 @@ export const SavedArticlesStyles = StyleSheet.create({
         marginBottom: 8,
     },
     date: {
-        fontSize: 14,
         color: colors.text,
-        opacity: 0.7,
-        marginBottom: 8,
+        fontSize: 12,
+        marginLeft: 'auto',
     },
     description: {
         fontSize: 14,
@@ -47,10 +46,15 @@ export const SavedArticlesStyles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 12,
     },
+    starContainer: {
+        alignItems: 'center',
+        marginTop: -24,
+        marginLeft: 16,
+    },
     starButton: {
-        padding: 8,
-        minWidth: 40,
-        minHeight: 40,
+        padding: 4,
+        minWidth: 32,
+        minHeight: 32,
         justifyContent: 'center',
         alignItems: 'center',
     },

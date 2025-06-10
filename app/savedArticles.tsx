@@ -120,9 +120,6 @@ const SavedArticles = () => {
                         {savedArticles.map((article, index) => (
                             <Card key={index} containerStyle={styles.card}>
                                 <Card.Title style={styles.cardTitle}>{article.title}</Card.Title>
-                                <Text style={styles.date}>
-                                    {new Date(article.pubDate).toLocaleString()}
-                                </Text>
                                 {article.description && (
                                     <Text style={styles.description} numberOfLines={3}>
                                         {article.description}
@@ -138,6 +135,11 @@ const SavedArticles = () => {
                                             Read More
                                         </Text>
                                     </Pressable>
+                                    <Text style={styles.date}>
+                                        {new Date(article.pubDate).toLocaleDateString()}
+                                    </Text>
+                                </View>
+                                <View style={styles.starContainer}>
                                     <Pressable 
                                         onPress={() => removeArticle(article)}
                                         style={({ pressed }) => [
