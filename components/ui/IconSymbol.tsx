@@ -13,6 +13,10 @@ const MAPPING = {
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  // -Avrey: I had to manually add these in order to get the icons to render on Android.
+  // This is most likely a hack that doesn't address the underlying problem... 
+  'bell': 'notifications', 
+  'gearshape.fill': 'settings' 
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],
