@@ -45,7 +45,7 @@ const TabLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="signup"
+        name="account"
         options={{
           title: 'Account',
           tabBarIcon: ({ color }) => (
@@ -64,14 +64,6 @@ const TabLayout = () => {
               <IconSymbol size={28} name="person.circle.fill" color={color} />
             )
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
-          href: user ? undefined : null,
         }}
       />
     </Tabs>
