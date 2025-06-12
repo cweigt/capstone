@@ -33,45 +33,40 @@ const Sign_Up = () => {
               />
             }
       >
-          <View style={{backgroundColor: "white", paddingBottom: 250}}>
+          <View style={{backgroundColor: "white", flex: 1, paddingBottom: 250}}>
             {user ? (
               <>
                 <Text style={styles.welcomeText}>
-                  Welcome, {user.displayName}
+                  Welcome, {user.displayName}!
                 </Text>
-                <Text style={styles.title}>
-                  Account
-                </Text>
-                <UploadImage />
-                <ResetPassword />
-                <NameChange />
                 
-                <TouchableOpacity
-                  onPress={() => router.push(ROUTES.SAVED)}
-                  style={{ marginBottom: 5 }}
-                >
-                  <Text style={styles.savedArticles}>
-                    Saved Articles →
-                  </Text>
-                </TouchableOpacity>
+                <View style={styles.cardContainer}>
+                  <TouchableOpacity
+                    onPress={() => router.push(ROUTES.PROFILE)}
+                    style={styles.menuItem}
+                  >
+                    <Text style={styles.menuItemText}>Profile</Text>
+                    <Text style={styles.arrow}>→</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity
+                    onPress={() => router.push(ROUTES.SAVED)}
+                    style={styles.menuItem}
+                  >
+                    <Text style={styles.menuItemText}>Saved Articles</Text>
+                    <Text style={styles.arrow}>→</Text>
+                  </TouchableOpacity>
 
-                <Text style={styles.title}>
-                  Legal
-                </Text>
-                <View style={{ paddingHorizontal: 20 }}>
-                  <TouchableOpacity 
-                    onPress={() => router.push(ROUTES.EULA)}
-                    style={{ marginBottom: 10 }}
+                  <TouchableOpacity
+                    onPress={() => router.push(ROUTES.LEGAL)}
+                    style={styles.menuItem}
                   >
-                    <Text style={styles.links}>End User License Agreement</Text>
+                    <Text style={styles.menuItemText}>Legal</Text>
+                    <Text style={styles.arrow}>→</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity 
-                    onPress={() => router.push(ROUTES.PRIVACY_POLICY)}
-                    style={{ marginBottom: 10 }}
-                  >
-                    <Text style={styles.links}>Privacy Policy</Text>
-                  </TouchableOpacity>
-                  <View style={{marginTop: 20}}>
+                </View>
+
+                <View style={{ paddingHorizontal: 20, marginTop: 30 }}>
                     <TouchableOpacity
                         onPress={() => {
                             auth.signOut();
@@ -81,7 +76,6 @@ const Sign_Up = () => {
                     >
                         <Text style={styles.signOut}>Sign Out</Text>
                     </TouchableOpacity>
-                </View>
                 </View>
               </>
             ) : (
