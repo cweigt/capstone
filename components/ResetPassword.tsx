@@ -76,7 +76,7 @@ const Reset_Password = () => {
                                 </Text>
                             </TouchableOpacity>
                             <Button 
-                                title="Reset Password"
+                                title="Save New Password"
                                 onPress={reauthenticate}
                             />
                         </>
