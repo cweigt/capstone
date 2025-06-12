@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { colors, spacing, typography } from './theme';
 
-export const ResetPasswordStyles = StyleSheet.create({
+export const NameChangeStyles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: 0,
     },
     formContainer: {
-        paddingTop: spacing.md,
-        paddingBottom: spacing.sm,
+        paddingTop: spacing.sm,
         paddingHorizontal: spacing.md,
     },
     title: {
@@ -39,7 +39,7 @@ export const ResetPasswordStyles = StyleSheet.create({
         color: colors.text,
         opacity: 0.7,
         marginBottom: 0,
-        marginTop: spacing.sm,
+        marginTop: spacing.sm, //for some reason, this is actually md
         textAlign: 'left',
     },
     toggleText: {
