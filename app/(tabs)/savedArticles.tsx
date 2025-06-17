@@ -102,13 +102,6 @@ const SavedArticles = () => {
             }
         >
             <View style={{ backgroundColor: 'white', padding: 20 }}>
-                <TouchableOpacity 
-                    onPress={() => router.back()}
-                    style={{ marginBottom: 20 }}
-                >
-                    <Text style={styles.back}>← Back</Text>
-                </TouchableOpacity>
-                
                 <Text style={styles.title}>
                     Saved Articles
                 </Text>
