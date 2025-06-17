@@ -5,6 +5,19 @@ export const ResetPasswordStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    reset: {
+        fontWeight: '500',
+        fontSize: typography.body.fontSize,
+        fontFamily: 'System',
+        borderWidth: 0,
+        backgroundColor: '#F2F2F7',
+        borderColor: colors.text,
+        paddingVertical: spacing.sm,
+        paddingHorizontal: spacing.lg,
+        borderRadius: 5,
+        color: colors.text,
+        alignSelf: 'center',
+    },
     formContainer: {
         paddingTop: spacing.md,
         paddingBottom: spacing.sm,
@@ -50,5 +63,14 @@ export const ResetPasswordStyles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 16,
         fontFamily: 'System',
+    },
+    eye: {
+        position: 'absolute',
+        right: 10,
+        top: 16,
+        height: 24,
+        width: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 }); 

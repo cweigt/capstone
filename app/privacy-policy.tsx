@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PrivacyPolicy = () => {
   return (
-    <SafeAreaView style={legalStyles.container}>
+    <SafeAreaView style={legalStyles.container} edges={['top']}>
     <ScrollView>
       <View style={{ padding: 20 }}>
         <TouchableOpacity 

@@ -7,7 +7,6 @@ import {
     Text, 
     Alert
 } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import DisplayImage from '@/components/DisplayImage';
 import { useImage } from '@/context/ImageContext';
@@ -55,11 +54,14 @@ const UploadImage = () => {
 
   return (
     <View style={styles.container}>
-        <DisplayImage />
-        <TouchableOpacity onPress={addImage} style={styles.uploadBtn}>
-            <Text style={styles.uploadText}>{image ? 'Edit' : 'Upload'} Image</Text>
-            <AntDesign name="camera" size={20} color="black" />
-        </TouchableOpacity>
+        <View style={styles.row}>
+            <View style={{ width: 100, height: 125 }}>
+                <DisplayImage />
+            </View>
+            <TouchableOpacity onPress={addImage} style={styles.uploadBtn}>
+                <Text style={styles.uploadText}>Change Profile Photo</Text>
+            </TouchableOpacity>
+        </View>
     </View>
   );
 }

@@ -22,6 +22,10 @@ const Name_Change = () => {
   const [lastName, setLastName] = useState('');
   const [showNameChange, setShowNameChange] = useState(false);
   
+  //Get current first and last name from display name
+  const currentFirstName = user?.displayName?.split(' ')[0] || '';
+  const currentLastName = user?.displayName?.split(' ')[1] || '';
+  
   const changeName = async() => {
     try {
       if (!firstName.trim() || !lastName.trim()) {
@@ -60,36 +64,34 @@ const Name_Change = () => {
     <View style={styles.container}>
         <View style={{ backgroundColor: 'white' }}>
             <View style={styles.formContainer}>
-                <TouchableOpacity onPress={() => setShowNameChange(!showNameChange)}>
-                    <Text style={styles.toggleText}>
-                        {showNameChange ? 'Hide' : 'Show'} Name Change Form
-                    </Text>
+                <Text style={styles.requirements}>
+                    First Name
+                </Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder={currentFirstName}
+                    placeholderTextColor='#000000'
+                    value={firstName}
+                    onChangeText={setFirstName}
+                />
+                <Text style={[styles.requirements, {paddingTop: 10 }]}>
+                    Last Name
+                </Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder={currentLastName}
+                    placeholderTextColor='#000000'
+                    value={lastName}
+                    onChangeText={setLastName}
+                />
+                <View style={{ paddingBottom: 20 }}></View>
+                <TouchableOpacity
+                  onPress={changeName}
+                >
+                  <Text style={styles.toggleText}>
+                    Save Name
+                  </Text>
                 </TouchableOpacity>
-                {showNameChange && (
-                    <>
-                        <Text style={styles.requirements}>
-                            Change your name by entering your new name.
-                        </Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Change first name..."
-                            placeholderTextColor='#000000'
-                            value={firstName}
-                            onChangeText={setFirstName}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Change last name..."
-                            placeholderTextColor='#000000'
-                            value={lastName}
-                            onChangeText={setLastName}
-                        />
-                        <Button
-                            title="Save name"
-                            onPress={() => changeName()}
-                        />
-                    </>
-                )}
             </View>
         </View>
     </View>
