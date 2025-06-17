@@ -101,7 +101,7 @@ const SavedArticles = () => {
                 <Text style={styles.title}>
                     Saved Articles
                 </Text>
-            L</View>
+            </View>
             <View style={feedStyles.listContentContainer}>
             {Array.isArray(savedArticles) && savedArticles.length > 0 ? (
             savedArticles.map((item, index) => (
