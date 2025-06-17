@@ -32,7 +32,7 @@ import { auth } from '@/firebase';
 import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
 import { useAuth } from '@/context/AuthContext';
 import { RSSFeedStyles as styles } from '../styles/RSSFeed.styles';
-import { colors } from '../styles/theme';
+import { colors, commonStyles } from '../styles/theme';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 
 interface RSSItem {
@@ -206,6 +206,7 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
             link: item.link,
             pubDate: item.pubDate,
             description: item.description,
+            author: item.author,
             savedAt: new Date().toISOString(),
         };
         await set(savedRef, articleData);
@@ -239,12 +240,9 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
 
     return (
     <SafeAreaView style={styles.safeArea}>
-        <StatusBar barStyle="dark-content" backgroundColor={colors.background} />
+        <StatusBar barStyle="dark-content" />
 
         <View style={styles.headerContainer}>
-            <TouchableOpacity onPress={() =>{}}>
-                <Icon name="menu" size={30} color={colors.text}/>
-            </TouchableOpacity>
             <View style={styles.headerTextContainer}>
                 <Text style={styles.headerSubtitle}>
                     Current Feed
@@ -268,6 +266,7 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
             />
         }
         >
+
         <View style={styles.listContentContainer}>
             {Array.isArray(data) && data.length > 0 ? (
             data.map((item, index) => (
@@ -277,9 +276,7 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
                 <Text style={styles.cardDate}>{new Date(item.pubDate).toLocaleDateString()}</Text>
                 </View> 
                 <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardDate}>
-                    {new Date(item.pubDate).toLocaleString()}
-                </Text>
+                
                 {item.description && (
                     <Text style={styles.cardDescription} numberOfLines={3}>
                     {item.description}
@@ -290,23 +287,19 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
                     <TouchableOpacity style={styles.actionButton} onPress={() => toggleSave(index)}>
                         <Icon
                         name={item.saved ? 'star' : 'star-outline'}
-                        /* ... */
-                        color={item.saved ? colors.saveIconActive : colors.secondary}
+                        color={item.saved ? '#FFD700' : colors.gray}
                         />
-                        <Text style={[
-                        styles.actionLabel,
-                        item.saved && { color: colors.saveIconActive }
-                        ]}>
+                        <Text style={[styles.actionLabel, { color: item.saved ? colors.text : colors.gray }]}>
                         {item.saved ? 'Saved' : 'Save'}
                         </Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.actionButton}>
-                            <Icon name="share-2" /* ... */ color={colors.secondary} />
+                            <Icon name="share" type="feather" color={colors.gray} />
                             <Text style={styles.actionLabel}>Share</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.actionButton} onPress={() => Linking.openURL(item.link)}>
                             <Text style={styles.viewLabel}>View</Text>
-                            <Icon name="external-link" /* ... */ color={colors.accentBlue} />
+                            <Icon name="external-link" type="feather" color={colors.accentBlue || '#007AFF'} size={18} style={{ marginLeft: 4 }} />
                     </TouchableOpacity>
                 </View>
                 </Card>

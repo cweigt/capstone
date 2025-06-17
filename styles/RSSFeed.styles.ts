@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colors, spacing, typography, commonStyles, } from './theme';
+import { colors, spacing, typography, commonStyles } from './theme';
 
 export const RSSFeedStyles = StyleSheet.create({
   container: {
@@ -16,9 +16,9 @@ export const RSSFeedStyles = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowColor: colors.text,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
       },
       // Android shadow
       android: {
@@ -35,8 +35,8 @@ export const RSSFeedStyles = StyleSheet.create({
 
   listContentContainer: {
     padding: spacing.md,
-    paddingBottom: 120,
-    paddingTop: 80,
+    //paddingBottom: 120,
+   //paddingTop: 80,
     flex: 1,
   },
   header: {
@@ -75,11 +75,11 @@ export const RSSFeedStyles = StyleSheet.create({
   },
   cardSource:{
     fontSize: typography.caption.fontSize,
-    color: colors.secondary,
+    color: '#888888',
 
   },
   cardTitle: {
-    fontSize: typography.h1.fontSize,
+    fontSize: typography.h2.fontSize,
     fontWeight: '600',
     marginBottom: spacing.sm,
     //flex: 1,
@@ -102,17 +102,17 @@ export const RSSFeedStyles = StyleSheet.create({
     minHeight: 32,
     justifyContent: 'center',
     alignItems: 'center',
-    color: '#FFD700',
+    color: '#888888',
   },
   cardDate: {
     fontSize: typography.caption.fontSize,
-    color: colors.secondary,
+    color: '#888888',
     //opacity: 0.7,
     //marginLeft: 'auto',
   },
   cardDescription: {
     fontSize: typography.body.fontSize,
-    color: colors.secondary,
+    color: '#888888',
     //opacity: 0.8,
     //marginVertical: 8,
     marginBottom: spacing.sm,
@@ -168,11 +168,12 @@ export const RSSFeedStyles = StyleSheet.create({
   actionButton:{
     flexDirection: 'row',
     alignItems: 'center',
+    color: '#888888',
 
   },
   actionLabel:{
     fontSize: typography.body.fontSize,
-    color: colors.secondary,
+    color: '#888888',
     marginLeft: spacing.xs,
 
   },

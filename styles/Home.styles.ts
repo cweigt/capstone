@@ -29,23 +29,17 @@ export const HomeStyles = StyleSheet.create({
     dropdownContainer: {
         width: '100%',
         backgroundColor: colors.background,
+        marginTop: 60,
         padding: spacing.sm,
         paddingHorizontal: Platform.OS === 'ios' ? spacing.sm : spacing.md,
         borderBottomWidth: 1,
         borderBottomColor: colors.border,
         // iOS shadow
-        ...Platform.select({
-            ios: {
-                shadowColor: colors.text,
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-            },
-            // Android shadow
-            android: {
-                elevation: 5,
-            },
-        }),
+    },
+    hamburger: {
+        justifyContent: 'flex-start', 
+        alignItems: 'flex-start', 
+        padding: 5,
     },
     dropdown: {
         height: 50,
