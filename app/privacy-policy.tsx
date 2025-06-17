@@ -5,23 +5,15 @@ import {
   TouchableOpacity,
  } from 'react-native';
 import { router } from 'expo-router';
-import { ParallaxScrollView } from '@/components/ParallaxScrollView';
-import { Image } from 'react-native';
 import { LegalStyles as styles } from '@/styles/Legal.styles';
+import { LegalCommonStyles as legalStyles } from '@/styles/LegalCommon.styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PrivacyPolicy = () => {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }}
-      headerHeight={175}
-      headerImage={
-        <Image
-          source={require('@/assets/images/aurora-wdc.png')}
-          style={styles.auroraLogo}
-        />
-      }
-    >
-      <View style={{ backgroundColor: 'white', padding: 20 }}>
+    <SafeAreaView style={legalStyles.container}>
+    <ScrollView>
+      <View style={{ padding: 20 }}>
         <TouchableOpacity 
           onPress={() => router.back()}
           style={{ marginBottom: 20 }}
@@ -39,7 +31,8 @@ const PrivacyPolicy = () => {
           </Text>
         </ScrollView>
       </View>
-    </ParallaxScrollView>
+    </ScrollView>
+    </SafeAreaView>
   );
 };
 
