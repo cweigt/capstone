@@ -8,6 +8,9 @@ export const colors = {
   border: '#E5E5EA',
   error: '#FF3B30',
   success: '#34C759',
+  accentBlue: 'blue',
+  saveIconActive: 'blue',
+
 };
 
 export const spacing = {
@@ -56,10 +59,14 @@ export const commonStyles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  card:{
+    borderRadius: 8,
+
   },
 }); 
