@@ -92,7 +92,7 @@ const SavedArticles = () => {
     }, [user]); //runs everytime user changes
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} edges={['top']}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={{ padding: 20 }}>
                     
