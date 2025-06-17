@@ -49,21 +49,8 @@ const TabLayout = () => {
         options={{
           title: 'Account',
           tabBarIcon: ({ color }) => (
-            user && image ? (
-              <Image 
-                source={{ uri: image }} 
-                style={{ 
-                  width: 28, 
-                  height: 28, 
-                  borderRadius: 14,
-                  borderWidth: 1,
-                  borderColor: color
-                }} 
-              />
-            ) : (
               <IconSymbol size={28} name="person" color={color} />
-            )
-          ),
+     ),
         }}
       />
       <Tabs.Screen

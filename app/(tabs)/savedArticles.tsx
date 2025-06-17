@@ -16,7 +16,7 @@ import {
     Pressable,
 } from 'react-native';
 import { router } from 'expo-router';
-import { ParallaxScrollView } from '@/components/ParallaxScrollView';
+// import { ParallaxScrollView } from '@/components/ParallaxScrollView'; // Remove ParallaxScrollView import
 import { Image } from 'react-native';
 import { SavedArticlesStyles as styles } from '@/styles/SavedArticles.styles';
 import { getDatabase, ref, onValue, remove } from 'firebase/database';
@@ -26,6 +26,7 @@ import { Linking } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { colors } from '@/styles/theme';
 import { useState, useEffect } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context'; // Import SafeAreaView
 
 //this is basically the Card that needs to be rendered into this page
 interface SavedArticle {
@@ -91,72 +92,66 @@ const SavedArticles = () => {
     }, [user]); //runs everytime user changes
 
     return (
-        <ParallaxScrollView
-            headerBackgroundColor={{ light: '#3982b8', dark: '#3982b8' }}
-            headerHeight={175}
-            headerImage={
-                <Image
-                    source={require('@/assets/images/aurora-wdc.png')}
-                    style={styles.auroraLogo}
-                />
-            }
-        >
-            <View style={{ backgroundColor: 'white', padding: 20 }}>
-                <Text style={styles.title}>
-                    Saved Articles
-                </Text>
-                
-                {loading ? (
-                    <ActivityIndicator size="large" color={colors.primary} />
-                ) : savedArticles.length > 0 ? (
-                    <ScrollView>
-                        {savedArticles.map((article, index) => (
-                            <Card key={index} containerStyle={styles.card}>
-                                <Card.Title style={styles.cardTitle}>{article.title}</Card.Title>
-                                {article.description && (
-                                    <Text style={styles.description} numberOfLines={3}>
-                                        {article.description}
-                                    </Text>
-                                )}
-                                <View style={styles.cardFooter}>
-                                    <Pressable
-                                        onPress={() => {
-                                            Linking.openURL(article.link);
-                                        }}
-                                    >
-                                        <Text style={styles.link}>
-                                            Read More
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                <View style={{ padding: 20 }}>
+                    
+                    <Text style={styles.title}>
+                        Saved Articles
+                    </Text>
+                    
+                    {loading ? (
+                        <ActivityIndicator size="large" color={colors.primary} />
+                    ) : savedArticles.length > 0 ? (
+                        <ScrollView>
+                            {savedArticles.map((article, index) => (
+                                <Card key={index} containerStyle={styles.card}>
+                                    <Card.Title style={styles.cardTitle}>{article.title}</Card.Title>
+                                    {article.description && (
+                                        <Text style={styles.description} numberOfLines={3}>
+                                            {article.description}
                                         </Text>
-                                    </Pressable>
-                                    <Text style={styles.date}>
-                                        {new Date(article.pubDate).toLocaleDateString()}
-                                    </Text>
-                                </View>
-                                <View style={styles.starContainer}>
-                                    <Pressable 
-                                        onPress={() => removeArticle(article)}
-                                        style={({ pressed }) => [
-                                            styles.starButton,
-                                            { 
-                                                transform: [{ scale: pressed ? 1.2 : 1 }],
-                                            }
-                                        ]}
-                                    >
-                                        <IconSymbol 
-                                            name="star.fill" 
-                                            size={24} 
-                                            color="#FFD700"
-                                        />
-                                    </Pressable>
-                                </View>
-                            </Card>
-                        ))}
-                    </ScrollView>
-                ) : (
-                    <Text style={styles.message}>No saved articles yet</Text>
-                )}
-            </View>
-        </ParallaxScrollView>
+                                    )}
+                                    <View style={styles.cardFooter}>
+                                        <Pressable
+                                            onPress={() => {
+                                                Linking.openURL(article.link);
+                                            }}
+                                        >
+                                            <Text style={styles.link}>
+                                                Read More
+                                            </Text>
+                                        </Pressable>
+                                        <Text style={styles.date}>
+                                            {new Date(article.pubDate).toLocaleDateString()}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.starContainer}>
+                                        <Pressable 
+                                            onPress={() => removeArticle(article)}
+                                            style={({ pressed }) => [
+                                                styles.starButton,
+                                                { 
+                                                    transform: [{ scale: pressed ? 1.2 : 1 }],
+                                                }
+                                            ]}
+                                        >
+                                            <IconSymbol 
+                                                name="star.fill" 
+                                                size={24} 
+                                                color="#FFD700"
+                                            />
+                                        </Pressable>
+                                    </View>
+                                </Card>
+                            ))}
+                        </ScrollView>
+                    ) : (
+                        <Text style={styles.message}>No saved articles yet</Text>
+                    )}
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 } 
 
