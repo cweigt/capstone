@@ -245,15 +245,15 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
             <TouchableOpacity onPress={() =>{}}>
                 <Icon name="menu" size={30} color={colors.text}/>
             </TouchableOpacity>
-            <view style={styles.headerTextContainer}>
-                <text style={styles.headerSubtitle}>
+            <View style={styles.headerTextContainer}>
+                <Text style={styles.headerSubtitle}>
                     Current Feed
-                </text>
-                <text style={styles.headerTitle}>
+                </Text>
+                <Text style={styles.headerTitle}>
                     Quantum Computing News
-                </text>
-            </view>
-            <view style={styles.headerPlaceholder}/>
+                </Text>
+            </View>
+            <View style={styles.headerPlaceholder}/>
         </View>
         
         <ScrollView
