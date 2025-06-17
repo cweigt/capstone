@@ -3,22 +3,20 @@ import { colors, spacing, typography } from './theme';
 //this is shared between both privacy-policy and eula
 
 export const SavedArticlesStyles = StyleSheet.create({
-    auroraLogo: {
-        marginTop: 1,
-        marginLeft: 33,
-        height: 175,
-        width: 330,
-        resizeMode: 'contain',
-    },
-    back: {
-        color: '#007AFF', 
-        fontSize: 16,
-    },
     title: {
-        fontSize: 24, 
-        fontWeight: 'bold', 
-        marginBottom: 20,
+        fontSize: typography.h2.fontSize,
+        fontWeight: '600',
+        textAlign: 'center',
+        marginBottom: spacing.md,
+        marginTop: spacing.sm,
+        marginLeft: spacing.sm,
+        marginRight: spacing.sm,
+        color: colors.text,
     },
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+      },
     card: {
         borderRadius: 8,
         marginBottom: 16,

@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 export const colors = {
-  primary: '#007AFF',
+  primary: '#007AFF', //active tint 
   secondary: '#5856D6',
-  background: '#FFFFFF',
-  text: '#000000',
+  background: '#FFFFFF', //tab bar bkg
+  text: '#000000', //inactive tint
   border: '#E5E5EA',
   error: '#FF3B30',
   success: '#34C759',
@@ -14,7 +14,7 @@ export const colors = {
 };
 
 export const spacing = {
-  xs: 4,
+  xs: 4, //these are spacing theme tokens
   sm: 8,
   md: 16,
   lg: 24,
@@ -38,7 +38,7 @@ export const typography = {
     fontSize: 16,
   },
   caption: {
-    fontSize: 12,
+    fontSize: 12, //label font size
   },
 };
 

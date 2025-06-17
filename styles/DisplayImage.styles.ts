@@ -4,8 +4,8 @@ import { colors, spacing } from './theme';
 export const DisplayImageStyles = StyleSheet.create({
     container: {
         elevation: 2,
-        height: 150,
-        width: 150,
+        height: 100,
+        width: 100,
         backgroundColor: colors.border,
         position: 'relative',
         borderRadius: 999,
@@ -14,7 +14,7 @@ export const DisplayImageStyles = StyleSheet.create({
         alignSelf: 'center',
     },
     image: {
-        width: 150,
-        height: 150,
+        width: 100,
+        height: 100,
     },
 }); 
