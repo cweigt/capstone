@@ -7,7 +7,7 @@ export const ROUTES = {
   PRIVACY_POLICY: '/privacy-policy',
   SAVED: '/savedArticles',
   PROFILE: '/profile',
-  LEGAL: '/legal',
+  //LEGAL: '/legal',
 } as const;
 
 // Type for the route values
