@@ -21,7 +21,7 @@ const Sign_Up = () => {
     const {user} = useAuth();
 
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }} edges={['top']}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <View style={{ flex: 1 }}>
             {user ? (
