@@ -12,7 +12,6 @@ import SignIn from '@/components/SignIn';
 import { useAuth } from '@/context/AuthContext';
 import { AccountStyles as styles } from '@/styles/Account.styles';
 import { router } from 'expo-router';
-import { ROUTES } from '@/constants/Routes';
 import { auth } from '@/firebase';
 import DisplayImage from '@/components/DisplayImage';
 
@@ -29,7 +28,7 @@ const Sign_Up = () => {
                 <Text style={styles.title}>
                   My Account
                 </Text>
-                <View style={styles.myAccount} />
+                <View style={styles.divider} />
                 
                 <DisplayImage />
                 <Text style={styles.welcomeText}>
@@ -37,26 +36,26 @@ const Sign_Up = () => {
                 </Text>
 
                 <TouchableOpacity
-                    onPress={() => router.push(ROUTES.PROFILE)}
+                    onPress={() => router.push('/account/profile')}
                     style={styles.links}
                   >
                     <Text style={styles.editProfile}>Edit Profile →</Text>
                   </TouchableOpacity>
 
-                <View style={{ paddingBottom: 150 }}></View>
+                <View style={{ paddingBottom: 200 }}></View>
 
                 <View style={styles.legalContainer}>
                    <Text style={styles.legal}>
                     Legal Information
                    </Text>
                     <TouchableOpacity
-                      onPress={() => router.push(ROUTES.EULA)}
+                      onPress={() => router.push('/eula')}
                       style={styles.links}
                     >
                       <Text style={styles.links}>End User License Agreement</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => router.push(ROUTES.PRIVACY_POLICY)}
+                      onPress={() => router.push('/privacy-policy')}
                       style={styles.links}
                     >
                       <Text style={styles.links}>Privacy Policy</Text>

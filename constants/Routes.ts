@@ -6,8 +6,6 @@ export const ROUTES = {
   EULA: '/eula',
   PRIVACY_POLICY: '/privacy-policy',
   SAVED: '/savedArticles',
-  PROFILE: '/profile',
-  //LEGAL: '/legal',
 } as const;
 
 // Type for the route values

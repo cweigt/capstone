@@ -2,17 +2,11 @@ import { StyleSheet } from 'react-native';
 import { colors, spacing, typography } from './theme';
 
 export const AccountStyles = StyleSheet.create({
-    auroraLogo: {
-        marginTop: 1,
-        marginLeft: 33,
-        height: 175,
-        width: 330,
-        resizeMode: 'contain',
-    },
-    myAccount: {
-        borderBottomWidth: 1, 
-        borderBottomColor: '#000000', 
+    divider: {
+        borderBottomWidth: 1.5, 
+        borderBottomColor: '#E0E0E0', 
         marginBottom: 20,
+        marginHorizontal: -20,
     },
     toggleText: {
         marginTop: 0,
