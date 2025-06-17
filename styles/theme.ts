@@ -8,6 +8,9 @@ export const colors = {
   border: '#E5E5EA',
   error: '#FF3B30',
   success: '#34C759',
+  accentBlue: 'blue',
+  saveIconActive: '#FFD700',
+  gray: '#888888',
 };
 
 export const spacing = {
@@ -42,7 +45,7 @@ export const typography = {
 export const commonStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#F2F2F7',
   },
   row: {
     flexDirection: 'row',
@@ -53,13 +56,17 @@ export const commonStyles = StyleSheet.create({
     alignItems: 'center',
   },
   shadow: {
-    shadowColor: '#000',
+    shadowColor: '#F2F2F7',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 4,
+  },
+  card:{
+    borderRadius: 8,
+
   },
 }); 

@@ -22,7 +22,7 @@ import { ParallaxScrollViewStyles as styles } from '../styles/ParallaxScrollView
 
 interface ParallaxScrollViewProps {
     headerImage: React.ReactNode;
-    headerBackgroundColor: {
+    headerBackgroundColor?: {
         light: string;
         dark: string;
     };
@@ -33,10 +33,10 @@ interface ParallaxScrollViewProps {
 
 export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
     headerImage,
-    headerBackgroundColor,
     children,
-    headerHeight = 200,
     style,
+    headerBackgroundColor,
+    headerHeight,
 }) => {
     const scrollY = useSharedValue(0);
     const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -82,7 +82,7 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
                 style={[
                     styles.header,
                     headerAnimatedStyle,
-                    { backgroundColor: headerBackgroundColor.light }
+                    { backgroundColor: headerBackgroundColor?.light || '#FFFFFF' }
                 ]}
             >
                 {headerImage}

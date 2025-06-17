@@ -19,12 +19,14 @@ import { router } from 'expo-router';
 // import { ParallaxScrollView } from '@/components/ParallaxScrollView'; // Remove ParallaxScrollView import
 import { Image } from 'react-native';
 import { SavedArticlesStyles as styles } from '@/styles/SavedArticles.styles';
-import { getDatabase, ref, onValue, remove } from 'firebase/database';
+import { RSSFeedStyles as feedStyles } from '@/styles/RSSFeed.styles';
+import { getDatabase, ref, set, get, onValue, remove } from 'firebase/database';
 import { useAuth } from '@/context/AuthContext';
 import { Card } from '@rneui/themed';
 import { Linking } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { colors } from '@/styles/theme';
+import { colors, commonStyles } from '@/styles/theme';
+import { Icon } from '@rneui/themed';
 import { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context'; // Import SafeAreaView
 
@@ -32,6 +34,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'; // Import SafeAre
 interface SavedArticle {
     title: string;
     link: string;
+    author: string;
     pubDate: string;
     description?: string;
     savedAt: string;
@@ -94,62 +97,52 @@ const SavedArticles = () => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} edges={['top']}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <View style={{ padding: 20 }}>
-                    
-                    <Text style={styles.title}>
-                        Saved Articles
+            <View>
+                <Text style={styles.title}>
+                    Saved Articles
+                </Text>
+            L</View>
+            <View style={feedStyles.listContentContainer}>
+            {Array.isArray(savedArticles) && savedArticles.length > 0 ? (
+            savedArticles.map((item, index) => (
+                <Card key={index} containerStyle={styles.card}>
+                <View style={feedStyles.cardHeaderRow}>
+                <Text style={feedStyles.cardSource}>{item.author || 'Source'}</Text>
+                <Text style={feedStyles.cardDate}>{new Date(item.pubDate).toLocaleDateString()}</Text>
+                </View> 
+                <Text style={styles.cardTitle}>{item.title}</Text>
+                
+                {item.description && (
+                    <Text style={feedStyles.cardDescription} numberOfLines={3}>
+                    {item.description}
                     </Text>
-                    
-                    {loading ? (
-                        <ActivityIndicator size="large" color={colors.primary} />
-                    ) : savedArticles.length > 0 ? (
-                        <ScrollView>
-                            {savedArticles.map((article, index) => (
-                                <Card key={index} containerStyle={styles.card}>
-                                    <Card.Title style={styles.cardTitle}>{article.title}</Card.Title>
-                                    {article.description && (
-                                        <Text style={styles.description} numberOfLines={3}>
-                                            {article.description}
-                                        </Text>
-                                    )}
-                                    <View style={styles.cardFooter}>
-                                        <Pressable
-                                            onPress={() => {
-                                                Linking.openURL(article.link);
-                                            }}
-                                        >
-                                            <Text style={styles.link}>
-                                                Read More
-                                            </Text>
-                                        </Pressable>
-                                        <Text style={styles.date}>
-                                            {new Date(article.pubDate).toLocaleDateString()}
-                                        </Text>
-                                    </View>
-                                    <View style={styles.starContainer}>
-                                        <Pressable 
-                                            onPress={() => removeArticle(article)}
-                                            style={({ pressed }) => [
-                                                styles.starButton,
-                                                { 
-                                                    transform: [{ scale: pressed ? 1.2 : 1 }],
-                                                }
-                                            ]}
-                                        >
-                                            <IconSymbol 
-                                                name="star.fill" 
-                                                size={24} 
-                                                color="#FFD700"
-                                            />
-                                        </Pressable>
-                                    </View>
-                                </Card>
-                            ))}
-                        </ScrollView>
-                    ) : (
-                        <Text style={styles.message}>No saved articles yet</Text>
-                    )}
+                )}
+
+                <View style={feedStyles.cardActionRow}>
+                    <TouchableOpacity style={feedStyles.actionButton} onPress={() => removeArticle(item)}>
+                        <Icon
+                        name="star"
+                        color="#FFD700"
+                        />
+                        <Text style={[feedStyles.actionLabel, { color: colors.text }]}>Saved</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={feedStyles.actionButton}>
+                            <Icon name="share" type="feather" color={colors.gray} />
+                            <Text style={feedStyles.actionLabel}>Share</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={feedStyles.actionButton} onPress={() => Linking.openURL(item.link)}>
+                            <Text style={feedStyles.viewLabel}>View</Text>
+                            <Icon name="external-link" type="feather" color={colors.accentBlue || '#007AFF'} size={18} style={{ marginLeft: 4 }} />
+                    </TouchableOpacity>
                 </View>
+                </Card>
+            ))
+            ) : (
+            <View style={feedStyles.emptyContainer}>
+            <Text style={feedStyles.emptyText}>No articles available</Text>
+            </View>
+            )}
+        </View>
             </ScrollView>
         </SafeAreaView>
     );

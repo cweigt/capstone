@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colors, spacing, typography } from './theme';
+import { colors, spacing, typography, commonStyles } from './theme';
 
 export const RSSFeedStyles = StyleSheet.create({
   container: {
@@ -16,9 +16,9 @@ export const RSSFeedStyles = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowColor: colors.text,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
       },
       // Android shadow
       android: {
@@ -26,10 +26,17 @@ export const RSSFeedStyles = StyleSheet.create({
       },
     }),
   },
-  listContent: {
+  
+  safeArea: {
+    flex: 1,
+    backgroundColor: colors.background,
+
+  },
+
+  listContentContainer: {
     padding: spacing.md,
-    paddingBottom: 120,
-    paddingTop: 80,
+    //paddingBottom: 120,
+   //paddingTop: 80,
     flex: 1,
   },
   header: {
@@ -37,7 +44,7 @@ export const RSSFeedStyles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   headerText: {
-    fontSize: 18,
+    fontSize: typography.h1.fontSize,
     color: colors.text,
     textAlign: 'center',
     marginTop: 20,
@@ -51,23 +58,32 @@ export const RSSFeedStyles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   card: {
-    borderRadius: 8,
-    marginBottom: 16,
-    padding: 16,
-    backgroundColor: colors.background,
+    borderRadius: commonStyles.card.borderRadius,
+    shadowColor: commonStyles.shadow.shadowColor,
+    shadowOffset: commonStyles.shadow.shadowOffset,
+
+    //marginBottom: 16,
+    //padding: 16,
+    //backgroundColor: colors.background,
   },
-  cardHeader: {
+  cardHeaderRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 8,
-    paddingRight: 8,
+    alignItems: 'center',
+    marginBottom: spacing.xs,
+    //paddingRight: 8,
+  },
+  cardSource:{
+    fontSize: typography.caption.fontSize,
+    color: '#888888',
+
   },
   cardTitle: {
-    fontSize: 16,
+    fontSize: typography.h2.fontSize,
     fontWeight: '600',
-    flex: 1,
-    marginRight: 16,
+    marginBottom: spacing.sm,
+    //flex: 1,
+    //marginRight: 16,
   },
   cardFooter: {
     flexDirection: 'row',
@@ -86,26 +102,28 @@ export const RSSFeedStyles = StyleSheet.create({
     minHeight: 32,
     justifyContent: 'center',
     alignItems: 'center',
+    color: '#888888',
   },
-  date: {
-    fontSize: 12,
-    color: colors.text,
-    opacity: 0.7,
-    marginLeft: 'auto',
+  cardDate: {
+    fontSize: typography.caption.fontSize,
+    color: '#888888',
+    //opacity: 0.7,
+    //marginLeft: 'auto',
   },
-  description: {
-    fontSize: 14,
-    color: colors.text,
-    opacity: 0.8,
-    marginVertical: 8,
+  cardDescription: {
+    fontSize: typography.body.fontSize,
+    color: '#888888',
+    //opacity: 0.8,
+    //marginVertical: 8,
+    marginBottom: spacing.sm,
   },
   link: {
     color: colors.primary,
-    fontSize: 14,
+    fontSize: typography.body.fontSize,
     fontWeight: '500',
   },
   message: {
-    fontSize: 16,
+    fontSize: typography.body.fontSize,
     color: colors.text,
     opacity: 0.7,
     textAlign: 'center',
@@ -114,5 +132,69 @@ export const RSSFeedStyles = StyleSheet.create({
   center: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  headerContainer:{
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    shadowColor: commonStyles.shadow.shadowColor,
+    shadowOffset: commonStyles.shadow.shadowOffset,
+    shadowOpacity: commonStyles.shadow.shadowOpacity,
+    shadowRadius: commonStyles.shadow.shadowRadius,
+    elevation: commonStyles.shadow.elevation,
+  },
+  headerTextContainer:{
+    flex: 1,
+    alignItems: 'center',
+  },
+  headerSubtitle:{
+    fontSize: typography.caption.fontSize,
+    color: colors.secondary,
+  },
+  headerTitle:{
+    fontSize: typography.h1.fontSize,
+    fontWeight: 600,
+    color: colors.primary,
+  },
+  headerPlaceholder:{
+    width:30,
+
+  },
+  cardActionRow:{
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    alignItems: 'center',
+    marginTop: spacing.sm,
+  },
+  actionButton:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    color: '#888888',
+
+  },
+  actionLabel:{
+    fontSize: typography.body.fontSize,
+    color: '#888888',
+    marginLeft: spacing.xs,
+
+  },
+  viewLabel:{
+    fontSize: typography.body.fontSize,
+    color: colors.accentBlue,
+    marginRight: spacing.xs,
+
+  },
+  emptyContainer:{
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: spacing.lg,
+
+
+  },
+  emptyText:{
+    fontSize: typography.body.fontSize,
+    color: colors.secondary,
+    textAlign: 'center',
+
   },
 }); 
