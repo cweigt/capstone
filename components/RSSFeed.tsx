@@ -28,6 +28,8 @@ import { useAuth } from '@/context/AuthContext';
 import { RSSFeedStyles as styles } from '../styles/RSSFeed.styles';
 import { colors } from '../styles/theme';
 import ArticleCard from './ArticleCard';
+import { Icon } from '@rneui/base';
+import { TouchableOpacity } from 'react-native';
 
 interface RSSItem {
     title: string;
@@ -59,6 +61,7 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<RSSItem[]>([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const { user } = useAuth();
     const database = getDatabase();
 
@@ -157,6 +160,11 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
     }
     }, [user, selectedFeed]);
 
+    const retryFetch = () => {
+        setError(null);
+        setLoading(true);
+        fetchRSSData(); // reuse existing fetch function
+      };
     // Call once when selectedFeed/user changes
     useEffect(() => {
     fetchRSSData();
@@ -203,6 +211,29 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
         </View>
     );
     }
+
+    if (error)
+    // if (true) // uncomment this and comment `if (error)` to test out what would happen if an error occurred 
+    {
+        return (
+          <SafeAreaView style={styles.safeArea}>
+            <StatusBar/>
+            <View style={styles.errorContainer}>
+              {/* optional icon */}
+              <Icon name="alert-circle" type="feather" size={48}/>
+              <Text style={styles.errorTitle}>Unable to load articles</Text>
+              <Text style={styles.errorMessage}>Please check your connection and tap Retry.</Text>
+              <TouchableOpacity
+                style={styles.retryButton}
+                onPress={retryFetch}
+                accessibilityLabel="Retry loading articles"
+              >
+                <Text style={styles.retryButtonText}>Retry</Text>
+              </TouchableOpacity>
+            </View>
+          </SafeAreaView>
+        );
+      }
 
     return (
     <SafeAreaView style={styles.safeArea}>
