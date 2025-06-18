@@ -31,15 +31,29 @@ export const HomeStyles = StyleSheet.create({
         backgroundColor: colors.background,
         marginTop: 60,
         padding: spacing.sm,
+        paddingTop: spacing.lg,
         paddingHorizontal: Platform.OS === 'ios' ? spacing.sm : spacing.md,
         borderBottomWidth: 1,
         borderBottomColor: colors.border,
-        // iOS shadow
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     hamburger: {
         justifyContent: 'flex-start', 
         alignItems: 'flex-start', 
         padding: 5,
+    },
+    headerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    feedTitleContainer: {
+        flex: 1,
+        alignItems: 'center',
+        marginRight: 40, // Account for hamburger menu width
     },
     dropdown: {
         height: 50,
@@ -71,4 +85,15 @@ export const HomeStyles = StyleSheet.create({
         textAlign: 'center',
     
       },
+      headerSubtitle: {
+        fontSize: typography.body.fontSize,
+        color: colors.text,
+        textAlign: 'center',
+    },
+    headerTitle: {
+        fontSize: typography.h2.fontSize,
+        fontWeight: '500',
+        color: colors.text,
+        textAlign: 'center',
+    },
 }); 

@@ -17,23 +17,16 @@ import {
     View,
     Text,
     ActivityIndicator,
-    Linking,
-    Pressable,
     RefreshControl,
     ScrollView,
-    TouchableOpacity,
     SafeAreaView,
     StatusBar,
 } from 'react-native';
-import { Card } from '@rneui/themed';
-import { Icon } from '@rneui/themed';
 import axios from 'axios';
-import { auth } from '@/firebase';
 import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
 import { useAuth } from '@/context/AuthContext';
 import { RSSFeedStyles as styles } from '../styles/RSSFeed.styles';
-import { colors, commonStyles } from '../styles/theme';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import { colors } from '../styles/theme';
 import ArticleCard from './ArticleCard';
 
 interface RSSItem {
@@ -168,27 +161,6 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
     fetchRSSData();
     }, [fetchRSSData]);
 
-    // Fetch feed options initially
-    useEffect(() => {
-    const fetchFeedOptions = async () => {
-        try {
-        const response = await axios.get('https://waleed.firstlight.am/feeds/list');
-        const options = response.data.map((feed: { title: string; url: string }) => ({
-            label: feed.title.replace(/\[ID:\d+\]/, '').trim(),
-            value: feed.url.replace(/\/+/g, '/'),
-        }));
-        setFeedOptions(options);
-        if (options.length > 0) {
-            setSelectedFeed(options[0].value);
-        }
-        } catch (error) {
-        console.error('Error fetching feed options:', error);
-        setFeedOptions([]);
-        }
-    };
-    fetchFeedOptions();
-    }, []);
-
     const toggleSave = async (index: number) => {
     if (!user) return;
 
@@ -236,15 +208,9 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
         <StatusBar barStyle="dark-content" />
 
         <View style={styles.headerContainer}>
-            <View style={styles.headerTextContainer}>
-                <Text style={styles.headerSubtitle}>
-                    Current Feed
-                </Text>
-                <Text style={styles.headerTitle}>
-                    Quantum Computing News
-                </Text>
+            <View style={[styles.headerTextContainer, {paddingTop: 70}]}>
             </View>
-            <View style={styles.headerPlaceholder}/>
+            <View style={[styles.headerPlaceholder, {paddingTop: 50}]}/>
         </View>
         
         <ScrollView
