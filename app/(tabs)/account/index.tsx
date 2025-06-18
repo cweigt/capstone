@@ -78,12 +78,6 @@ const Sign_Up = () => {
                 ) : (
                   <SignIn setUser={setShowSignUp} />
                 )}
-                <TouchableOpacity onPress={() => setShowSignUp(!showSignUp)}>
-                  <Text style={styles.toggleText}>
-                    {showSignUp ? 'Already have an account? Sign in.'
-                    : "Don't have an account? Sign up."}
-                  </Text>
-                </TouchableOpacity>
               </>
             )}
           </View>
@@ -93,3 +87,4 @@ const Sign_Up = () => {
 };
 
 export default Sign_Up;
+ 
