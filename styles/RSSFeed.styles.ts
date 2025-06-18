@@ -197,4 +197,38 @@ export const RSSFeedStyles = StyleSheet.create({
     textAlign: 'center',
 
   },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: spacing.md,
+    backgroundColor: colors.background,
+    marginTop: 100,
+
+  },
+  errorTitle: {
+    // fontSize: FontSizes.title,
+    fontWeight: '600',
+    // color: colors.textPrimary,
+    marginTop: spacing.sm,
+  },
+  errorMessage: {
+    // fontSize: FontSizes.body,
+    // color: colors.textSecondary,
+    textAlign: 'center',
+    marginTop: spacing.xs,
+    marginBottom: spacing.md,
+  },
+  retryButton: {
+    backgroundColor: colors.accentBlue,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    // borderRadius: BorderRadius.card,
+  },
+  retryButtonText: {
+    // fontSize: FontSizes.body,
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontWeight: '500',
+  }
 }); 
