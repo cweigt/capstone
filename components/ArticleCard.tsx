@@ -44,7 +44,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
 
       <View style={styles.cardActionRow}>
         {showSavedIcon && onSave && (
-          <TouchableOpacity style={styles.actionButton} onPress={onSave}>
+          <TouchableOpacity style={styles.actionButton} onPress={onSave}
+          accessibilityLabel='Unsave/Save article'
+          accessibilityRole='button'
+          >
             <Icon
               name={saved ? 'star' : 'star-outline'}
               color={saved ? '#FFD700' : colors.gray}
@@ -54,11 +57,17 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             </Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity style={styles.actionButton} onPress={onShare}>
+        <TouchableOpacity style={styles.actionButton} onPress={onShare}
+        accessibilityLabel='Share Article'
+        accessibilityRole='button'
+        >
           <Icon name="share" type="feather" color={colors.gray} />
           <Text style={styles.actionLabel}>Share</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton} onPress={() => Linking.openURL(link)}>
+        <TouchableOpacity style={styles.actionButton} onPress={() => Linking.openURL(link)}
+        accessibilityLabel='View article'
+        accessibilityRole='link'
+          >
           <Text style={styles.viewLabel}>View</Text>
           <Icon name="external-link" type="feather" color={colors.accentBlue || '#007AFF'} size={18} style={{ marginLeft: 4 }} />
         </TouchableOpacity>
