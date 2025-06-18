@@ -14,6 +14,7 @@ import {
  } from 'firebase/auth';
 import { ResetPasswordStyles as styles } from '../styles/ResetPassword.styles';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/styles/theme';
 // import { ThemedView } from '@/components/ThemedView';
 
 const Reset_Password = () => {
@@ -57,7 +58,7 @@ const Reset_Password = () => {
                             <View style={{ position: 'relative', marginBottom: 16 }}>
                               <TextInput
                                   style={[styles.input, { paddingRight: 40 }]}
-                                  placeholderTextColor='#000000'
+                                  placeholderTextColor={colors.text}
                                   secureTextEntry={!showPasswordOld}
                                   value={oldPassword}
                                   onChangeText={setOldPassword}
@@ -69,7 +70,7 @@ const Reset_Password = () => {
                                 <Ionicons
                                   name={showPasswordOld ? 'eye-off' : 'eye'}
                                   size={22}
-                                  color="#888"
+                                  color={colors.gray}
                                 />
                               </TouchableOpacity>
                             </View>
@@ -80,7 +81,7 @@ const Reset_Password = () => {
                             <View style={{ position: 'relative', marginBottom: 16 }}>
                               <TextInput
                                   style={[styles.input, { paddingRight: 40 }]}
-                                  placeholderTextColor='#000000'
+                                  placeholderTextColor={colors.text}
                                   secureTextEntry={!showPasswordNew}
                                   value={newPassword}
                                   onChangeText={setNewPassword}
@@ -92,7 +93,7 @@ const Reset_Password = () => {
                                 <Ionicons
                                   name={showPasswordNew ? 'eye-off' : 'eye'}
                                   size={22}
-                                  color="#888"
+                                  color={colors.gray}
                                 />
                               </TouchableOpacity>
                             </View>
@@ -103,7 +104,7 @@ const Reset_Password = () => {
                             <View style={{ position: 'relative', marginBottom: 16 }}>
                               <TextInput
                                   style={[styles.input, { paddingRight: 40 }]}
-                                  placeholderTextColor='#000000'
+                                  placeholderTextColor={colors.text}
                                   secureTextEntry={!showPasswordNewConfirm}
                                   value={confirmPassword}
                                   onChangeText={setConfirmPassword}
@@ -115,7 +116,7 @@ const Reset_Password = () => {
                                 <Ionicons
                                   name={showPasswordNewConfirm ? 'eye-off' : 'eye'}
                                   size={22}
-                                  color="#888"
+                                  color={colors.gray}
                                 />
                               </TouchableOpacity>
                             </View>
