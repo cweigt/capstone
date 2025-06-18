@@ -52,10 +52,23 @@ export const HomeStyles = StyleSheet.create({
     },
     message: {
         fontSize: typography.body.fontSize,
-        textAlign: 'left',
+        textAlign: 'center',
         marginTop: Platform.OS === 'ios' ? spacing.lg : spacing.md,
         marginBottom: Platform.OS === 'android' ? spacing.sm : 0,
         color: colors.text,
-        opacity: 0.7,
     },
+    emptyContainer:{
+        flex:1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: spacing.lg,
+    
+    
+      },
+      emptyText:{
+        fontSize: typography.body.fontSize,
+        color: '#000000',
+        textAlign: 'center',
+    
+      },
 }); 
