@@ -96,7 +96,8 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
         setLoading(true);
         const response = await axios.get(selectedFeed);
 
-        if (selectedFeed.includes('waleed.firstlight.am')) {
+        //this is a must change when we change the url/value of the articles
+        if (selectedFeed.includes('clientmobile.firstlight.am')) {
         const xmlString = response.data;
         const items: RSSItem[] = [];
         let currentIndex = 0;

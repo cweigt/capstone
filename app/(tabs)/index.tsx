@@ -33,11 +33,24 @@ const HomeScreen = () => {
   useEffect(() => {
     const fetchFeedOptions = async () => {
       try {
-        const response = await axios.get('https://waleed.firstlight.am/feeds/list');
+        /*const response = await axios.get('https://waleed.firstlight.am/feeds/list');
         const options = response.data.map((feed: { title: string; url: string }) => ({
           label: feed.title.replace(/\[ID:\d+\]/, '').trim(),
           value: feed.url.replace(/\/+/g, '/'),
-        }));
+        }));*/
+
+        const options = [
+          { label: "Feed 118", value: "https://clientmobile.firstlight.am/widget/rss/118" },
+          { label: "Feed 119", value: "https://clientmobile.firstlight.am/widget/rss/119" },
+          { label: "Feed 120", value: "https://clientmobile.firstlight.am/widget/rss/120" },
+          { label: "Feed 115", value: "https://clientmobile.firstlight.am/widget/rss/115" },
+          { label: "Feed 116", value: "https://clientmobile.firstlight.am/widget/rss/116" },
+          { label: "Feed 121", value: "https://clientmobile.firstlight.am/widget/rss/121" },
+          { label: "Feed 117", value: "https://clientmobile.firstlight.am/widget/rss/117" },
+          { label: "Feed 123", value: "https://clientmobile.firstlight.am/widget/rss/123" },
+          { label: "Feed 124", value: "https://clientmobile.firstlight.am/widget/rss/124" },
+          { label: "Feed 125", value: "https://clientmobile.firstlight.am/widget/rss/125" }
+        ];
         //this log shows us what feeds are fetched
         //good for us to know if it fetches when more stuff is added
         console.log('Feed options fetched:', options);
