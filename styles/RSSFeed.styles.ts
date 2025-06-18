@@ -193,7 +193,7 @@ export const RSSFeedStyles = StyleSheet.create({
   },
   emptyText:{
     fontSize: typography.body.fontSize,
-    color: colors.secondary,
+    color: '#000000',
     textAlign: 'center',
 
   },

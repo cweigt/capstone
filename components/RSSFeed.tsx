@@ -34,6 +34,7 @@ import { useAuth } from '@/context/AuthContext';
 import { RSSFeedStyles as styles } from '../styles/RSSFeed.styles';
 import { colors, commonStyles } from '../styles/theme';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import ArticleCard from './ArticleCard';
 
 interface RSSItem {
     title: string;
@@ -222,14 +223,6 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
     }
     };
 
-    if (!user) {
-    return (
-        <View style={styles.container}>
-        <Text style={styles.headerText}>Please sign in to view the RSS feed.</Text>
-        </View>
-    );
-    }
-
     if (loading) {
     return (
         <View style={[styles.container, styles.center]}>
@@ -268,41 +261,22 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
         >
 
         <View style={styles.listContentContainer}>
-            {Array.isArray(data) && data.length > 0 ? (
+            {Array.isArray(data) && data.length > 0 && user ? (
             data.map((item, index) => (
-                <Card key={index} containerStyle={styles.card}>
-                <View style={styles.cardHeaderRow}>
-                <Text style={styles.cardSource}>{item.author || 'Source'}</Text>
-                <Text style={styles.cardDate}>{new Date(item.pubDate).toLocaleDateString()}</Text>
-                </View> 
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                
-                {item.description && (
-                    <Text style={styles.cardDescription} numberOfLines={3}>
-                    {item.description}
-                    </Text>
-                )}
-
-                <View style={styles.cardActionRow}>
-                    <TouchableOpacity style={styles.actionButton} onPress={() => toggleSave(index)}>
-                        <Icon
-                        name={item.saved ? 'star' : 'star-outline'}
-                        color={item.saved ? '#FFD700' : colors.gray}
-                        />
-                        <Text style={[styles.actionLabel, { color: item.saved ? colors.text : colors.gray }]}>
-                        {item.saved ? 'Saved' : 'Save'}
-                        </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.actionButton}>
-                            <Icon name="share" type="feather" color={colors.gray} />
-                            <Text style={styles.actionLabel}>Share</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.actionButton} onPress={() => Linking.openURL(item.link)}>
-                            <Text style={styles.viewLabel}>View</Text>
-                            <Icon name="external-link" type="feather" color={colors.accentBlue || '#007AFF'} size={18} style={{ marginLeft: 4 }} />
-                    </TouchableOpacity>
-                </View>
-                </Card>
+                <ArticleCard
+                  key={index}
+                  title={item.title}
+                  link={item.link}
+                  author={item.author}
+                  pubDate={item.pubDate}
+                  description={item.description}
+                  saved={item.saved}
+                  onSave={() => toggleSave(index)}
+                  onShare={() => {
+                    // TODO: Implement share functionality
+                    console.log('Share article:', item.title);
+                  }}
+                />
             ))
             ) : (
             <View style={styles.emptyContainer}>

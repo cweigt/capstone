@@ -29,6 +29,7 @@ import { colors, commonStyles } from '@/styles/theme';
 import { Icon } from '@rneui/themed';
 import { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context'; // Import SafeAreaView
+import ArticleCard from '@/components/ArticleCard';
 
 //this is basically the Card that needs to be rendered into this page
 interface SavedArticle {
@@ -102,40 +103,25 @@ const SavedArticles = () => {
                     Saved Articles
                 </Text>
             </View>
-            <View style={feedStyles.listContentContainer}>
-            {Array.isArray(savedArticles) && savedArticles.length > 0 ? (
-            savedArticles.map((item, index) => (
-                <Card key={index} containerStyle={styles.card}>
-                <View style={feedStyles.cardHeaderRow}>
-                <Text style={feedStyles.cardSource}>{item.author || 'Source'}</Text>
-                <Text style={feedStyles.cardDate}>{new Date(item.pubDate).toLocaleDateString()}</Text>
-                </View> 
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                
-                {item.description && (
-                    <Text style={feedStyles.cardDescription} numberOfLines={3}>
-                    {item.description}
-                    </Text>
-                )}
 
-                <View style={feedStyles.cardActionRow}>
-                    <TouchableOpacity style={feedStyles.actionButton} onPress={() => removeArticle(item)}>
-                        <Icon
-                        name="star"
-                        color="#FFD700"
-                        />
-                        <Text style={[feedStyles.actionLabel, { color: colors.text }]}>Saved</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={feedStyles.actionButton}>
-                            <Icon name="share" type="feather" color={colors.gray} />
-                            <Text style={feedStyles.actionLabel}>Share</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={feedStyles.actionButton} onPress={() => Linking.openURL(item.link)}>
-                            <Text style={feedStyles.viewLabel}>View</Text>
-                            <Icon name="external-link" type="feather" color={colors.accentBlue || '#007AFF'} size={18} style={{ marginLeft: 4 }} />
-                    </TouchableOpacity>
-                </View>
-                </Card>
+            <View style={feedStyles.listContentContainer}>
+            {Array.isArray(savedArticles) && savedArticles.length > 0 && user ? (
+            savedArticles.map((item, index) => (
+                <ArticleCard
+                  key={index}
+                  title={item.title}
+                  link={item.link}
+                  author={item.author}
+                  pubDate={item.pubDate}
+                  description={item.description}
+                  saved={true}
+                  showSavedIcon={true}
+                  onSave={() => removeArticle(item)}
+                  onShare={() => {
+                    // TODO: Implement share functionality
+                    console.log('Share article:', item.title);
+                  }}
+                />
             ))
             ) : (
             <View style={feedStyles.emptyContainer}>
