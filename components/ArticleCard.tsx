@@ -1,9 +1,15 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Linking } from 'react-native';
+import { 
+  View, 
+  Text, 
+  TouchableOpacity, 
+  Alert,
+} from 'react-native';
 import { Card } from '@rneui/themed';
 import { Icon } from '@rneui/themed';
 import { RSSFeedStyles as styles } from '@/styles/RSSFeed.styles';
 import { colors } from '@/styles/theme';
+import * as WebBrowser from 'expo-web-browser';
 
 interface ArticleCardProps {
   title: string;
@@ -16,6 +22,10 @@ interface ArticleCardProps {
   onShare?: () => void;
   showSavedIcon?: boolean;
 }
+
+const handleOpenLink = async (url) => {
+  await WebBrowser.openBrowserAsync(url);
+};
 
 const ArticleCard: React.FC<ArticleCardProps> = ({
   title,
@@ -57,16 +67,17 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             </Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity style={styles.actionButton} onPress={onShare}
-        accessibilityLabel='Share Article'
-        accessibilityRole='button'
+        <TouchableOpacity style={styles.actionButton} //onPress={onShare}
+          onPress={() => Alert.alert('This feature is currently in development!')}
+          accessibilityLabel='Share Article'
+          accessibilityRole='button'
         >
           <Icon name="share" type="feather" color={colors.gray} />
           <Text style={styles.actionLabel}>Share</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton} onPress={() => Linking.openURL(link)}
-        accessibilityLabel='View article'
-        accessibilityRole='link'
+        <TouchableOpacity style={styles.actionButton} onPress={() => handleOpenLink(link)}
+          accessibilityLabel='View article'
+          accessibilityRole='link'
           >
           <Text style={styles.viewLabel}>View</Text>
           <Icon name="external-link" type="feather" color={colors.accentBlue || '#007AFF'} size={18} style={{ marginLeft: 4 }} />
