@@ -1,227 +1,290 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  ActivityIndicator, 
-  StyleSheet, 
-  Linking, 
+//RSSFeed.tsx:
+    //Main component that displays RSS feed articles
+    //Key features:
+        //Fetches feed options from https://waleed.firstlight.am/feeds/list
+        //Displays articles in cards with:
+            //Title
+            //Publication date
+            //Description
+            //"Read More" link
+            //Star button for saving
+        //Saves articles to Firebase at users/${user.uid}/savedArticles/${safeKey}
+        //Uses real-time updates to sync the star state with Firebase
+        //Handles article saving/unsaving through the toggleSave function
+
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+    View,
+    Text,
+    ActivityIndicator,
+    RefreshControl,
+    ScrollView,
+    SafeAreaView,
+    StatusBar,
 } from 'react-native';
-import { Card } from '@rneui/themed';
 import axios from 'axios';
-import { auth } from '@/firebase';
+import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
 import { useAuth } from '@/context/AuthContext';
-import { Dropdown } from 'react-native-element-dropdown';
+import { RSSFeedStyles as styles } from '../styles/RSSFeed.styles';
+import { colors } from '../styles/theme';
+import ArticleCard from './ArticleCard';
+import { Icon } from '@rneui/base';
+import { TouchableOpacity } from 'react-native';
 
 interface RSSItem {
     title: string;
-    link: string;   
+    link: string;
+    author: string;
     pubDate: string;
     description?: string;
+    saved?: boolean;
 }
 
-const RSSFeed = () => {
+interface FeedOption {
+    label: string;
+    value: string;
+}
+
+interface RSSFeedProps {
+    feedOptions: FeedOption[];
+    setFeedOptions: (options: FeedOption[]) => void;
+    selectedFeed: string;
+    setSelectedFeed: (feed: string) => void;
+}
+
+const RSSFeed: React.FC<RSSFeedProps> = ({
+    feedOptions,
+    setFeedOptions,
+    selectedFeed,
+    setSelectedFeed,
+}) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<RSSItem[]>([]);
+    const [refreshing, setRefreshing] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const { user } = useAuth();
-    const [selectedFeed, setSelectedFeed] = useState('https://waleed.firstlight.am/aylienV2/proxyEndpoint/313');
-    
-    const feedOptions = [
-        { label: 'Quantum Computing News', value: 'https://waleed.firstlight.am/aylienV2/proxyEndpoint/313' },
-        { label: 'Quantum Patents', value: 'https://waleed.firstlight.am//patents//proxyEndpoint//320' },
-    ];
+    const database = getDatabase();
 
     const extractContent = (xml: string, tag: string): string => {
-        const start = xml.indexOf(`<${tag}>`) + tag.length + 2;
-        const end = xml.indexOf(`</${tag}>`);
-        return start > tag.length + 1 && end > start ? xml.substring(start, end) : '';
+    const start = xml.indexOf(`<${tag}>`) + tag.length + 2;
+    const end = xml.indexOf(`</${tag}>`);
+    return start > tag.length + 1 && end > start ? xml.substring(start, end) : '';
     };
 
-    useEffect(() => {
-        if (user) {
-            const fetchRSSData = async () => {
-                try {
-                    const response = await axios.get(selectedFeed);
-                    
-                    if (selectedFeed.includes('waleed.firstlight.am')) {
-                        const xmlString = response.data;
-                        const items: RSSItem[] = [];
-                        let currentIndex = 0;
-                        
-                        while (true) {
-                            const itemStart = xmlString.indexOf('<item>', currentIndex);
-                            if (itemStart === -1) break;
-                            
-                            const itemEnd = xmlString.indexOf('</item>', itemStart);
-                            if (itemEnd === -1) break;
-                            
-                            const itemXml = xmlString.substring(itemStart, itemEnd + 7);
-                            
-                            const title = extractContent(itemXml, 'title');
-                            const link = extractContent(itemXml, 'link');
-                            const pubDate = extractContent(itemXml, 'pubDate');
-                            const description = extractContent(itemXml, 'description');
-                            
-                            if (title && link && pubDate) {
-                                items.push({
-                                    title,
-                                    link,
-                                    pubDate,
-                                    description: description || undefined
-                                });
-                            }
-                            
-                            currentIndex = itemEnd + 7;
-                        }
-                        
-                        setData(items);
-                    } else {
-                        setData(response.data.items || []);
-                    }
-                } catch (error) {
-                    setData([]);
-                } finally {
-                    setLoading(false);
-                }
-            };
-            fetchRSSData();
+    const parseDate = (dateStr: string): Date => {
+    const rfcDate = new Date(dateStr);
+    if (!isNaN(rfcDate.getTime())) {
+        return rfcDate;
+    }
+
+    const monthDayYear = dateStr.match(/(\w+)\s+(\d{2})\s+(\d{4})/);
+    if (monthDayYear) {
+        const [_, month, day, year] = monthDayYear;
+        const monthMap: { [key: string]: number } = {
+        Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+        Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+        };
+        return new Date(parseInt(year), monthMap[month] ?? 0, parseInt(day));
+    }
+
+    console.warn(`Could not parse date: ${dateStr}`);
+    return new Date();
+    };
+
+    // Reusable fetch function
+    const fetchRSSData = useCallback(async () => {
+    if (!user || !selectedFeed) return;
+
+    try {
+        setLoading(true);
+        const response = await axios.get(selectedFeed);
+
+        //this is a must change when we change the url/value of the articles
+        if (selectedFeed.includes('clientmobile.firstlight.am')) {
+        const xmlString = response.data;
+        const items: RSSItem[] = [];
+        let currentIndex = 0;
+
+        while (true) {
+            const itemStart = xmlString.indexOf('<item>', currentIndex);
+            if (itemStart === -1) break;
+
+            const itemEnd = xmlString.indexOf('</item>', itemStart);
+            if (itemEnd === -1) break;
+
+            const itemXml = xmlString.substring(itemStart, itemEnd + 7);
+            const title = extractContent(itemXml, 'title');
+            const link = extractContent(itemXml, 'link');
+            const pubDate = extractContent(itemXml, 'pubDate');
+            const description = extractContent(itemXml, 'description');
+            const author = extractContent(itemXml, 'author');
+
+            if (title && link && pubDate) {
+            items.push({
+                title,
+                link,
+                author,
+                pubDate: parseDate(pubDate).toISOString(),
+                description,
+                saved: false,
+            });
+            }
+
+            currentIndex = itemEnd + 7;
         }
+
+        setData(items);
+
+        const savedRef = ref(database, `users/${user.uid}/savedArticles`);
+        const listener = onValue(savedRef, (snapshot) => {
+            const savedArticles = snapshot.val() || {};
+            setData((prevData) =>
+            prevData.map((item) => ({
+                ...item,
+                saved: !!savedArticles[item.link
+                .replace(/[.#$\/[\]]/g, '_')
+                .replace(/[:?&=]/g, '_')],
+            }))
+            );
+        });
+
+        return () => listener();
+        } else {
+        setData(response.data.items || []);
+        }
+    } catch (error) {
+        console.error('Error fetching RSS data:', error);
+        setData([]);
+    } finally {
+        setLoading(false);
+    }
     }, [user, selectedFeed]);
 
-    //this is to check to see if a user is here based on the listener, then go through this
-    if (!user) {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.message}>Please sign in to view the RSS feed.</Text>
-            </View>
-        );
+    const retryFetch = () => {
+        setError(null);
+        setLoading(true);
+        fetchRSSData(); // reuse existing fetch function
+      };
+    // Call once when selectedFeed/user changes
+    useEffect(() => {
+    fetchRSSData();
+    }, [fetchRSSData]);
+
+    const toggleSave = async (index: number) => {
+    if (!user) return;
+
+    try {
+        const item = data[index];
+        const safeKey = item.link
+        .replace(/[.#$\/[\]]/g, '_')
+        .replace(/[:?&=]/g, '_');
+
+        const savedRef = ref(database, `users/${user.uid}/savedArticles/${safeKey}`);
+        const newSavedState = !item.saved;
+
+        if (newSavedState) {
+        const articleData = {
+            title: item.title,
+            link: item.link,
+            pubDate: item.pubDate,
+            description: item.description,
+            author: item.author,
+            savedAt: new Date().toISOString(),
+        };
+        await set(savedRef, articleData);
+        } else {
+        await remove(savedRef);
+        }
+
+        const newData = [...data];
+        newData[index] = { ...newData[index], saved: newSavedState };
+        setData(newData);
+    } catch (error) {
+        console.error('Error in toggleSave:', error);
     }
-    
+    };
+
     if (loading) {
-        return (
-            <View style={styles.loader}>
-                <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-        );
+    return (
+        <View style={[styles.container, styles.center]}>
+        <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+    );
     }
 
-    //this return statement returns the items found in with the API
-    //don't move into another component unless you want to pass everything in
+    if (error)
+    // if (true) // uncomment this and comment `if (error)` to test out what would happen if an error occurred 
+    {
+        return (
+          <SafeAreaView style={styles.safeArea}>
+            <StatusBar/>
+            <View style={styles.errorContainer}>
+              {/* optional icon */}
+              <Icon name="alert-circle" type="feather" size={48}/>
+              <Text style={styles.errorTitle}>Unable to load articles</Text>
+              <Text style={styles.errorMessage}>Please check your connection and tap Retry.</Text>
+              <TouchableOpacity
+                style={styles.retryButton}
+                onPress={retryFetch}
+                accessibilityLabel="Retry loading articles"
+              >
+                <Text style={styles.retryButtonText}>Retry</Text>
+              </TouchableOpacity>
+            </View>
+          </SafeAreaView>
+        );
+      }
+
     return (
-        <>
-            <View style={styles.headerContainer}>
-                <Dropdown
-                    style={styles.dropdown}
-                    data={feedOptions}
-                    labelField="label"
-                    valueField="value"
-                    value={selectedFeed}
-                    onChange={item => setSelectedFeed(item.value)}
-                    placeholder="Select News Source"
+    <SafeAreaView style={styles.safeArea}>
+        <StatusBar barStyle="dark-content" />
+
+        <View style={styles.headerContainer}>
+            <View style={[styles.headerTextContainer, {paddingTop: 70}]}>
+            </View>
+            <View style={[styles.headerPlaceholder, {paddingTop: 50}]}/>
+        </View>
+        
+        <ScrollView
+        refreshControl={
+            <RefreshControl
+            refreshing={refreshing}
+            onRefresh={async () => {
+                setRefreshing(true);
+                await fetchRSSData();
+                setRefreshing(false);
+            }}
+            />
+        }
+        >
+
+        <View style={styles.listContentContainer}>
+            {Array.isArray(data) && data.length > 0 && user ? (
+            data.map((item, index) => (
+                <ArticleCard
+                  key={index}
+                  title={item.title}
+                  link={item.link}
+                  author={item.author}
+                  pubDate={item.pubDate}
+                  description={item.description}
+                  saved={item.saved}
+                  onSave={() => toggleSave(index)}
+                  onShare={() => {
+                    // TODO: Implement share functionality
+                    console.log('Share article:', item.title);
+                  }}
                 />
+            ))
+            ) : (
+            <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>No articles available</Text>
             </View>
-            <View style={styles.container}>
-                <View style={styles.listContent}>
-                    {Array.isArray(data) && data.length > 0 ? (
-                        data.map((item, index) => (
-                            <Card key={index} containerStyle={styles.card}>
-                                <Card.Title>{item.title}</Card.Title>
-                                <Text style={styles.date}>
-                                    {new Date(item.pubDate).toLocaleString()}
-                                </Text>
-                                {item.description && (
-                                    <Text style={styles.description} numberOfLines={3}>
-                                        {item.description}
-                                    </Text>
-                                )}
-                                <Text
-                                    style={styles.link}
-                                    onPress={() => {
-                                        Linking.openURL(item.link);
-                                    }}
-                                >
-                                    Read more
-                                </Text>
-                            </Card>
-                        ))
-                    ) : (
-                        <Text style={styles.message}>No articles available</Text>
-                    )}
-                </View>
-            </View>
-        </>
+            )}
+        </View>
+        </ScrollView>
+    </SafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    headerContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: 'white',
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        padding: 10,
-    },
-    container: {
-        flex: 1,
-        padding: 10,
-        marginTop: 70,
-    },
-    listContent: {
-        paddingBottom: 80,
-        flex: 1,
-    },
-    loader: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    header: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 10,
-      paddingVertical: 10,
-    },
-    item: {
-      marginBottom: 15,
-    },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-    date: {
-      fontSize: 14,
-      color: '#555',
-    },
-    link: {
-      color: 'blue',
-      textDecorationLine: 'underline',
-    },
-    message: {
-      fontSize: 16,
-      textAlign: 'left',
-      marginTop: 20,
-      color: '#666',
-    },
-    card: {
-        borderRadius: 8,
-        marginBottom: 15,
-    },
-    dropdown: {
-        height: 50,
-        borderColor: 'gray',
-        borderWidth: 0.5,
-        borderRadius: 8,
-        paddingHorizontal: 8,        
-    },
-    description: {
-        fontSize: 14,
-        color: '#555',
-    },
-});
 
 export default RSSFeed;

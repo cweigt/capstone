@@ -1,5 +1,4 @@
 import { 
-    StyleSheet, 
     View, 
     Text, 
     TextInput, 
@@ -13,18 +12,27 @@ import {
     reauthenticateWithCredential,
     EmailAuthProvider,
  } from 'firebase/auth';
+import { ResetPasswordStyles as styles } from '../styles/ResetPassword.styles';
+import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/styles/theme';
 // import { ThemedView } from '@/components/ThemedView';
 
 const Reset_Password = () => {
     const auth = getAuth();
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
     const [showPasswordOld, setShowPasswordOld] = useState(false);
     const [showPasswordNew, setShowPasswordNew] = useState(false);
-    const [showPasswordReset, setShowPasswordReset] = useState(false);
-
+    const [showPasswordNewConfirm, setShowPasswordNewConfirm] = useState(false);
 
     const reauthenticate = async() => {
+        setError('');
+        if (newPassword !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
         const credential = EmailAuthProvider.credential(
             auth.currentUser.email,
             oldPassword
@@ -34,111 +42,96 @@ const Reset_Password = () => {
         //calling updatePassword once the user is authenticated
         await updatePassword(auth.currentUser, newPassword);
         window.alert(`Password has been reset for ${auth.currentUser.email}`);
+
+        setOldPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
     }
     
     return (
         <View style={styles.container}>
             <View style={{ backgroundColor: 'white' }}>
                 <View style={styles.formContainer}>
-                <TouchableOpacity onPress={() => setShowPasswordReset(!showPasswordReset)}>
-                    <Text style={styles.toggleText}>
-                        {showPasswordReset ? 'Hide' : 'Show'} Password Reset Form
-                    </Text>
-                </TouchableOpacity>
-                    {showPasswordReset ? (
-                        <>
                             <Text style={styles.requirements}>
-                                Reset your password below by entering your old and new password.
+                                Current Password
                             </Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Old Password..."
-                                placeholderTextColor='#000000'
-                                secureTextEntry={!showPasswordOld}
-                                value={oldPassword}
-                                onChangeText={setOldPassword}
-                            />
-                            <TouchableOpacity onPress={() => setShowPasswordOld(!showPasswordOld)}>
-                                <Text style={styles.message}>
-                                    {showPasswordOld ? 'Hide' : 'Show'} Password
-                                </Text>
-                            </TouchableOpacity>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="New Password..."
-                                placeholderTextColor='#000000'
-                                secureTextEntry={!showPasswordNew}
-                                value={newPassword}
-                                onChangeText={setNewPassword}
-                            />
-                            <TouchableOpacity onPress={() => setShowPasswordNew(!showPasswordNew)}>
-                                <Text style={styles.message}>
-                                    {showPasswordNew ? 'Hide' : 'Show'} Password
-                                </Text>
-                            </TouchableOpacity>
-                            <Button 
-                                title="Reset Passsword"
-                                onPress={reauthenticate}
-                            />
-                        </>
-                    ) : (
-                        <>
-                        </>
-                    )}
-                    
+                            <View style={{ position: 'relative', marginBottom: 16 }}>
+                              <TextInput
+                                  style={[styles.input, { paddingRight: 40 }]}
+                                  placeholderTextColor={colors.text}
+                                  secureTextEntry={!showPasswordOld}
+                                  value={oldPassword}
+                                  onChangeText={setOldPassword}
+                              />
+                              <TouchableOpacity
+                                onPress={() => setShowPasswordOld(!showPasswordOld)}
+                                style={styles.eye}
+                              >
+                                <Ionicons
+                                  name={showPasswordOld ? 'eye-off' : 'eye'}
+                                  size={22}
+                                  color={colors.gray}
+                                />
+                              </TouchableOpacity>
+                            </View>
 
+                            <Text style={styles.requirements}>
+                                New Password
+                            </Text>
+                            <View style={{ position: 'relative', marginBottom: 16 }}>
+                              <TextInput
+                                  style={[styles.input, { paddingRight: 40 }]}
+                                  placeholderTextColor={colors.text}
+                                  secureTextEntry={!showPasswordNew}
+                                  value={newPassword}
+                                  onChangeText={setNewPassword}
+                              />
+                              <TouchableOpacity
+                                onPress={() => setShowPasswordNew(!showPasswordNew)}
+                                style={styles.eye}
+                              >
+                                <Ionicons
+                                  name={showPasswordNew ? 'eye-off' : 'eye'}
+                                  size={22}
+                                  color={colors.gray}
+                                />
+                              </TouchableOpacity>
+                            </View>
+
+                            <Text style={[styles.requirements, {marginTop: -10}]}>
+                                Confirm New Password
+                            </Text>
+                            <View style={{ position: 'relative', marginBottom: 16 }}>
+                              <TextInput
+                                  style={[styles.input, { paddingRight: 40 }]}
+                                  placeholderTextColor={colors.text}
+                                  secureTextEntry={!showPasswordNewConfirm}
+                                  value={confirmPassword}
+                                  onChangeText={setConfirmPassword}
+                              />
+                              <TouchableOpacity
+                                onPress={() => setShowPasswordNewConfirm(!showPasswordNewConfirm)}
+                                style={styles.eye}
+                              >
+                                <Ionicons
+                                  name={showPasswordNewConfirm ? 'eye-off' : 'eye'}
+                                  size={22}
+                                  color={colors.gray}
+                                />
+                              </TouchableOpacity>
+                            </View>
+                            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+                            <TouchableOpacity
+                              onPress={reauthenticate}
+                            >
+                              <Text style={styles.reset}>
+                                Reset Password
+                              </Text>
+                            </TouchableOpacity>
                 </View>
             </View>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    formContainer: {
-        padding: 16,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginTop: 10,
-        paddingLeft: 8,
-    },
-    errorText: {
-        color: 'red',
-        fontSize: 14,
-        marginBottom: 10,
-        marginTop: 7,
-    },
-    message: {
-        fontSize: 12,
-        textAlign: 'left',
-        //marginTop: 20,
-        color: '#666',
-    },
-    requirements: {
-        fontSize: 12,
-        color: '#666',
-        marginBottom: 0,
-        marginTop: 20,
-        marginHorizontal: 16,
-        textAlign: 'center',
-    },
-    toggleText: {
-    marginTop: 0,
-    marginBottom: 10,
-    color: '#007AFF',
-    textAlign: 'center',
-    fontWeight: '500',
-    },
-});
 
 export default Reset_Password;

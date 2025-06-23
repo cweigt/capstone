@@ -1,0 +1,70 @@
+import { StyleSheet } from 'react-native';
+import { colors, spacing, typography } from './theme';
+//this is shared between both privacy-policy and eula
+
+export const SavedArticlesStyles = StyleSheet.create({
+    title: {
+        fontSize: typography.h2.fontSize,
+        fontWeight: '600',
+        textAlign: 'center',
+        marginBottom: spacing.md,
+        marginTop: spacing.sm,
+        marginLeft: spacing.sm,
+        marginRight: spacing.sm,
+        color: colors.text,
+    },
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+      },
+    card: {
+        borderRadius: 8,
+        marginBottom: 16,
+        padding: 16,
+        backgroundColor: colors.background,
+    },
+    cardTitle: {
+        fontSize: 16,
+        fontWeight: '600',
+        marginBottom: 8,
+    },
+    date: {
+        color: colors.text,
+        fontSize: 12,
+        marginLeft: 'auto',
+    },
+    description: {
+        fontSize: 14,
+        color: colors.text,
+        marginBottom: 12,
+    },
+    cardFooter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 12,
+    },
+    starContainer: {
+        alignItems: 'center',
+        marginTop: -24,
+        marginLeft: 16,
+    },
+    starButton: {
+        padding: 4,
+        minWidth: 32,
+        minHeight: 32,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    link: {
+        color: colors.primary,
+        fontSize: 14,
+        fontWeight: '500',
+    },
+    message: {
+        fontSize: 16,
+        color: colors.text,
+        textAlign: 'center',
+        marginTop: 20,
+    },
+}); 
