@@ -40,16 +40,16 @@ const HomeScreen = () => {
         }));*/
 
         const options = [
-          { label: "Feed 118", value: "https://clientmobile.firstlight.am/widget/rss/118" },
-          { label: "Feed 119", value: "https://clientmobile.firstlight.am/widget/rss/119" },
-          { label: "Feed 120", value: "https://clientmobile.firstlight.am/widget/rss/120" },
-          { label: "Feed 115", value: "https://clientmobile.firstlight.am/widget/rss/115" },
-          { label: "Feed 116", value: "https://clientmobile.firstlight.am/widget/rss/116" },
-          { label: "Feed 121", value: "https://clientmobile.firstlight.am/widget/rss/121" },
-          { label: "Feed 117", value: "https://clientmobile.firstlight.am/widget/rss/117" },
-          { label: "Feed 123", value: "https://clientmobile.firstlight.am/widget/rss/123" },
-          { label: "Feed 124", value: "https://clientmobile.firstlight.am/widget/rss/124" },
-          { label: "Feed 125", value: "https://clientmobile.firstlight.am/widget/rss/125" }
+          { label: "AI in HR", value: "https://clientmobile.firstlight.am/widget/rss/118" },
+          { label: "AI in the DoD", value: "https://clientmobile.firstlight.am/widget/rss/119" },
+          { label: "Amazon", value: "https://clientmobile.firstlight.am/widget/rss/120" },
+          { label: "Citigroup", value: "https://clientmobile.firstlight.am/widget/rss/115" },
+          { label: "OneDigital", value: "https://clientmobile.firstlight.am/widget/rss/116" },
+          { label: "KFF", value: "https://clientmobile.firstlight.am/widget/rss/121" },
+          { label: "Semiconductors", value: "https://clientmobile.firstlight.am/widget/rss/117" },
+          { label: "UHC", value: "https://clientmobile.firstlight.am/widget/rss/123" },
+          { label: "Walgreens", value: "https://clientmobile.firstlight.am/widget/rss/124" },
+          { label: "WH Executive Orders", value: "https://clientmobile.firstlight.am/widget/rss/125" }
         ];
         //this log shows us what feeds are fetched
         //good for us to know if it fetches when more stuff is added
