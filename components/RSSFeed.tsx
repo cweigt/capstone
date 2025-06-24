@@ -240,9 +240,9 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
         <StatusBar barStyle="dark-content" />
 
         <View style={styles.headerContainer}>
-            <View style={[styles.headerTextContainer, {paddingTop: 70}]}>
+            <View style={[styles.headerTextContainer, {paddingTop: 60}]}>
             </View>
-            <View style={[styles.headerPlaceholder, {paddingTop: 50}]}/>
+            <View style={styles.headerPlaceholder}/>
         </View>
         
         <ScrollView

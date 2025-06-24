@@ -67,4 +67,10 @@ export const SavedArticlesStyles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20,
     },
+    divider: {
+        borderBottomWidth: 1, 
+        borderBottomColor: '#E0E0E0', 
+        marginBottom: 20,
+        marginHorizontal: -20,
+    },
 }); 

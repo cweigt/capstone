@@ -11,22 +11,11 @@ import {
     View, 
     Text, 
     ScrollView, 
-    TouchableOpacity,
-    ActivityIndicator,
-    Pressable,
 } from 'react-native';
-import { router } from 'expo-router';
-// import { ParallaxScrollView } from '@/components/ParallaxScrollView'; // Remove ParallaxScrollView import
-import { Image } from 'react-native';
 import { SavedArticlesStyles as styles } from '@/styles/SavedArticles.styles';
 import { RSSFeedStyles as feedStyles } from '@/styles/RSSFeed.styles';
-import { getDatabase, ref, set, get, onValue, remove } from 'firebase/database';
+import { getDatabase, ref, onValue, remove } from 'firebase/database';
 import { useAuth } from '@/context/AuthContext';
-import { Card } from '@rneui/themed';
-import { Linking } from 'react-native';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { colors, commonStyles } from '@/styles/theme';
-import { Icon } from '@rneui/themed';
 import { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context'; // Import SafeAreaView
 import ArticleCard from '@/components/ArticleCard';
@@ -98,11 +87,10 @@ const SavedArticles = () => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} edges={['top']}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-            <View>
-                <Text style={styles.title}>
-                    Saved Articles
-                </Text>
-            </View>
+            <Text style={styles.title}>
+                Saved Articles
+            </Text>
+            <View style={styles.divider}></View>
 
             <View style={feedStyles.listContentContainer}>
             {Array.isArray(savedArticles) && savedArticles.length > 0 && user ? (
