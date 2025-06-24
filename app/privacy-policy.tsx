@@ -5,9 +5,10 @@ import {
   TouchableOpacity,
  } from 'react-native';
 import { router } from 'expo-router';
-import { LegalStyles as styles } from '@/styles/Legal.styles';
+import { legalStyles as styles } from '@/styles/Legal.styles';
 import { LegalCommonStyles as legalStyles } from '@/styles/LegalCommon.styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Privacy_Policy } from '@/assets/Legal/Policy';
 
 const PrivacyPolicy = () => {
   return (
@@ -21,15 +22,8 @@ const PrivacyPolicy = () => {
           <Text style={styles.back}>← Back</Text>
         </TouchableOpacity>
         
-        <Text style={styles.title}>
-          Privacy Policy
-        </Text>
+        <Privacy_Policy />
         
-        <ScrollView>
-          <Text style={styles.content}>
-            This is a placeholder for the Privacy Policy. The actual content will be added here.
-          </Text>
-        </ScrollView>
       </View>
     </ScrollView>
     </SafeAreaView>
