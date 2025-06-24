@@ -7,7 +7,6 @@ import React, { useRef, useState } from 'react';
 import {
     View,
     ScrollView,
-    StyleSheet,
     ViewStyle,
     Keyboard,
     Platform,
@@ -16,13 +15,14 @@ import Animated, {
     useAnimatedStyle, 
     useSharedValue,
     useAnimatedScrollHandler,
-  interpolate,
+    interpolate,
 } from 'react-native-reanimated';
+import { ParallaxScrollViewStyles as styles } from '../styles/ParallaxScrollView.styles';
 // import { ThemedView } from '@/components/ThemedView';
 
 interface ParallaxScrollViewProps {
     headerImage: React.ReactNode;
-    headerBackgroundColor: {
+    headerBackgroundColor?: {
         light: string;
         dark: string;
     };
@@ -32,11 +32,11 @@ interface ParallaxScrollViewProps {
 }
 
 export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
-  headerImage,
-  headerBackgroundColor,
+    headerImage,
     children,
-    headerHeight = 200,
     style,
+    headerBackgroundColor,
+    headerHeight,
 }) => {
     const scrollY = useSharedValue(0);
     const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -55,15 +55,15 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
             }
         );
 
-    return () => {
+        return () => {
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
-    };
-  }, []);
+        };
+    }, []);
 
     const headerAnimatedStyle = useAnimatedStyle<ViewStyle>(() => {
-    return {
-      transform: [
+        return {
+            transform: [
                 { translateY: 0 },
                 { scale: 1 },
             ] as const,
@@ -74,19 +74,19 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
         onScroll: (event) => {
             scrollY.value = event.contentOffset.y;
         },
-  });
+    });
 
-  return (
+    return (
         <View style={[styles.container, style]}>
-        <Animated.View
-          style={[
-            styles.header,
-            headerAnimatedStyle,
-                    { backgroundColor: headerBackgroundColor.light }
+            <Animated.View
+                style={[
+                    styles.header,
+                    headerAnimatedStyle,
+                    { backgroundColor: headerBackgroundColor?.light || '#FFFFFF' }
                 ]}
             >
-          {headerImage}
-        </Animated.View>
+                {headerImage}
+            </Animated.View>
             <Animated.ScrollView
                 style={styles.scrollView}
                 contentContainerStyle={[
@@ -101,27 +101,7 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
                 <View style={{ backgroundColor: 'white' }}>
                     {children}
                 </View>
-      </Animated.ScrollView>
+            </Animated.ScrollView>
         </View>
-  );
+    );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-    overflow: 'hidden',
-        zIndex: 1,
-  },
-    scrollView: {
-    flex: 1,
-    },
-    contentContainer: {
-        flexGrow: 1,
-  },
-});
