@@ -5,7 +5,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { searchStyles as styles } from '@/styles/Search.styles';
-import { colors } from '@/styles/theme';
+import { colors, spacing } from '@/styles/theme';
 import { IconSymbol } from './ui/IconSymbol';
 
 const Search = ({ value, onChangeText }) => {
@@ -13,7 +13,7 @@ const Search = ({ value, onChangeText }) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputWrapper}>
-        <IconSymbol name="magnifyingglass" size={20} color={colors.gray} style={{ marginRight: 8 }} />
+        <IconSymbol name="magnifyingglass" size={20} color={colors.gray} style={{ marginRight: spacing.sm }} />
         <TextInput
           style={styles.input}
           placeholder='Search all feeds...'
@@ -24,7 +24,7 @@ const Search = ({ value, onChangeText }) => {
         <TouchableOpacity
             onPress={() => {onChangeText('')}}
         >
-            <IconSymbol name="xmark" size={20} color={colors.gray} style={{marginLeft: 8}} />
+            <IconSymbol name="xmark" size={20} color={colors.gray} style={{marginLeft: spacing.sm}} />
         </TouchableOpacity>
       </View>
     </View>

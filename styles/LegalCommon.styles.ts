@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
+import { colors } from './theme';
 
 export const LegalCommonStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
   },
 }); 

@@ -61,7 +61,7 @@ export const ResetPasswordStyles = StyleSheet.create({
         color: colors.primary,
         textAlign: 'center',
         fontWeight: '600',
-        fontSize: 16,
+        fontSize: typography.body.fontSize,
         fontFamily: 'System',
     },
     eye: {

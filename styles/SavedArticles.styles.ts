@@ -18,7 +18,7 @@ export const SavedArticlesStyles = StyleSheet.create({
         backgroundColor: colors.background,
       },
     card: {
-        borderRadius: 8,
+        borderRadius: spacing.sm,
         marginBottom: spacing.md,
         padding: spacing.md,
         backgroundColor: colors.background,
@@ -26,15 +26,15 @@ export const SavedArticlesStyles = StyleSheet.create({
     cardTitle: {
         fontSize: typography.body.fontSize,
         fontWeight: '600',
-        marginBottom: 8,
+        marginBottom: spacing.sm,
     },
     date: {
         color: colors.text,
-        fontSize: 12,
+        fontSize: typography.caption.fontSize,
         marginLeft: 'auto',
     },
     description: {
-        fontSize: 14,
+        fontSize: typography.regular.fontSize,
         color: colors.text,
         marginBottom: 12,
     },
@@ -58,7 +58,7 @@ export const SavedArticlesStyles = StyleSheet.create({
     },
     link: {
         color: colors.primary,
-        fontSize: 14,
+        fontSize: typography.regular.fontSize,
         fontWeight: '500',
     },
     message: {

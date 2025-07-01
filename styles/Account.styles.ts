@@ -35,7 +35,7 @@ export const AccountStyles = StyleSheet.create({
     },
     links: {
         color: colors.primary, 
-        fontSize: 16,
+        fontSize: typography.body.fontSize,
         justifyContent: 'center',
         alignItems: 'center',
         paddingBottom: 5,

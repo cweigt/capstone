@@ -75,7 +75,7 @@ export const RSSFeedStyles = StyleSheet.create({
   },
   cardSource:{
     fontSize: typography.caption.fontSize,
-    color: '#888888',
+    color: colors.gray,
 
   },
   cardTitle: {
@@ -93,26 +93,26 @@ export const RSSFeedStyles = StyleSheet.create({
   },
   starContainer: {
     alignItems: 'center',
-    marginTop: -24,
-    marginLeft: 16,
+    marginTop: -spacing.lg,
+    marginLeft: spacing.md,
   },
   starButton: {
-    padding: 4,
-    minWidth: 32,
-    minHeight: 32,
+    padding: spacing.xs,
+    minWidth: spacing.xl,
+    minHeight: spacing.xl,
     justifyContent: 'center',
     alignItems: 'center',
-    color: '#888888',
+    color: colors.gray,
   },
   cardDate: {
     fontSize: typography.caption.fontSize,
-    color: '#888888',
+    color: colors.gray,
     //opacity: 0.7,
     //marginLeft: 'auto',
   },
   cardDescription: {
     fontSize: typography.body.fontSize,
-    color: '#888888',
+    color: colors.gray,
     //opacity: 0.8,
     //marginVertical: 8,
     marginBottom: spacing.sm,
@@ -156,7 +156,7 @@ export const RSSFeedStyles = StyleSheet.create({
     color: colors.primary,
   },
   headerPlaceholder:{
-    width:30,
+    width: 30,
 
   },
   cardActionRow:{
@@ -168,12 +168,12 @@ export const RSSFeedStyles = StyleSheet.create({
   actionButton:{
     flexDirection: 'row',
     alignItems: 'center',
-    color: '#888888',
+    color: colors.gray,
 
   },
   actionLabel:{
     fontSize: typography.body.fontSize,
-    color: '#888888',
+    color: colors.gray,
     marginLeft: spacing.xs,
 
   },
@@ -193,7 +193,7 @@ export const RSSFeedStyles = StyleSheet.create({
   },
   emptyText:{
     fontSize: typography.body.fontSize,
-    color: '#000000',
+    color: colors.text,
     textAlign: 'center',
 
   },
@@ -227,7 +227,7 @@ export const RSSFeedStyles = StyleSheet.create({
   },
   retryButtonText: {
     // fontSize: FontSizes.body,
-    color: '#FFFFFF',
+    color: colors.background,
     textAlign: 'center',
     fontWeight: '500',
   }

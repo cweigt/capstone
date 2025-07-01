@@ -13,14 +13,14 @@ export const searchStyles = StyleSheet.create({
       backgroundColor: colors.background,
       borderColor: '#ccc',
       borderWidth: 1,
-      borderRadius: 8,
+      borderRadius: spacing.sm,
       paddingHorizontal: 10,
       marginBottom: spacing.md,
       height: 40,
     },
     input: {
       flex: 1,
-      fontSize: 16,
+      fontSize: typography.body.fontSize,
       color: colors.text,
     },
     result: {

@@ -85,7 +85,7 @@ export const sideDrawerStyles = StyleSheet.create({
       alignItems: 'center',
       padding: spacing.sm,
       marginVertical: spacing.xs,
-      borderRadius: 8,
+      borderRadius: spacing.sm,
     },
     selectedMenuItem: {
       backgroundColor: 'transparent',
