@@ -92,31 +92,31 @@ const SavedArticles = () => {
             </Text>
             <View style={styles.divider}></View>
 
-            <View style={feedStyles.listContentContainer}>
-            {Array.isArray(savedArticles) && savedArticles.length > 0 && user ? (
-            savedArticles.map((item, index) => (
-                <ArticleCard
-                  key={index}
-                  title={item.title}
-                  link={item.link}
-                  author={item.author}
-                  pubDate={item.pubDate}
-                  description={item.description}
-                  saved={true}
-                  showSavedIcon={true}
-                  onSave={() => removeArticle(item)}
-                  onShare={() => {
-                    // TODO: Implement share functionality
-                    console.log('Share article:', item.title);
-                  }}
-                />
-            ))
-            ) : (
-            <View style={feedStyles.emptyContainer}>
-            <Text style={feedStyles.emptyText}>No articles available</Text>
+            <View>
+                {Array.isArray(savedArticles) && savedArticles.length > 0 && user ? (
+                savedArticles.map((item, index) => (
+                    <ArticleCard
+                    key={index}
+                    title={item.title}
+                    link={item.link}
+                    author={item.author}
+                    pubDate={item.pubDate}
+                    description={item.description}
+                    saved={true}
+                    showSavedIcon={true}
+                    onSave={() => removeArticle(item)}
+                    onShare={() => {
+                        // TODO: Implement share functionality
+                        console.log('Share article:', item.title);
+                    }}
+                    />
+                ))
+                ) : (
+                <View style={feedStyles.emptyContainer}>
+                <Text style={feedStyles.emptyText}>No articles available</Text>
+                </View>
+                )}
             </View>
-            )}
-        </View>
             </ScrollView>
         </SafeAreaView>
     );
