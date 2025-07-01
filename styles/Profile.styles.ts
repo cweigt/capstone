@@ -5,7 +5,7 @@ import { colors, spacing, typography } from './theme';
 export const ProfileStyles = StyleSheet.create({
     back: {
         color: '#007AFF', 
-        fontSize: 16,
+        fontSize: typography.body.fontSize,
     },
     title: {
         fontSize: typography.h3.fontSize,

@@ -1,10 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing, typography } from './theme';
+import { colors, commonStyles, spacing, typography } from './theme';
 
 export const NameChangeStyles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 0,
     },
     formContainer: {
         paddingTop: spacing.sm,
@@ -46,8 +45,7 @@ export const NameChangeStyles = StyleSheet.create({
         fontWeight: '500',
         fontSize: typography.body.fontSize,
         fontFamily: 'System',
-        borderWidth: 0,
-        backgroundColor: '#F2F2F7',
+        backgroundColor: colors.backgroundColor,
         borderColor: colors.text,
         paddingVertical: spacing.sm,
         paddingHorizontal: spacing.lg,
@@ -56,12 +54,11 @@ export const NameChangeStyles = StyleSheet.create({
         alignSelf: 'center',
     },
     save: {
-        backgroundColor: '#F2F2F7',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 8,
+        backgroundColor: colors.backgroundColor,
+        paddingVertical: typography.caption.fontSize,
+        paddingHorizontal: spacing.xl,
+        borderRadius: spacing.sm,
         alignItems: 'center',
         alignSelf: 'center',
-        marginTop: 0,
     },
 }); 

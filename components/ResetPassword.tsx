@@ -14,7 +14,7 @@ import {
  } from 'firebase/auth';
 import { ResetPasswordStyles as styles } from '../styles/ResetPassword.styles';
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/styles/theme';
+import { colors, spacing } from '@/styles/theme';
 // import { ThemedView } from '@/components/ThemedView';
 
 const Reset_Password = () => {
@@ -55,7 +55,7 @@ const Reset_Password = () => {
                             <Text style={styles.requirements}>
                                 Current Password
                             </Text>
-                            <View style={{ position: 'relative', marginBottom: 16 }}>
+                            <View style={{ position: 'relative', marginBottom: spacing.md }}>
                               <TextInput
                                   style={[styles.input, { paddingRight: 40 }]}
                                   placeholderTextColor={colors.text}
@@ -78,7 +78,7 @@ const Reset_Password = () => {
                             <Text style={styles.requirements}>
                                 New Password
                             </Text>
-                            <View style={{ position: 'relative', marginBottom: 16 }}>
+                            <View style={{ position: 'relative', marginBottom: spacing.md }}>
                               <TextInput
                                   style={[styles.input, { paddingRight: 40 }]}
                                   placeholderTextColor={colors.text}
@@ -101,7 +101,7 @@ const Reset_Password = () => {
                             <Text style={[styles.requirements, {marginTop: -10}]}>
                                 Confirm New Password
                             </Text>
-                            <View style={{ position: 'relative', marginBottom: 16 }}>
+                            <View style={{ position: 'relative', marginBottom: spacing.md }}>
                               <TextInput
                                   style={[styles.input, { paddingRight: 40 }]}
                                   placeholderTextColor={colors.text}
