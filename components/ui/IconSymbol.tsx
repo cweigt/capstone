@@ -15,6 +15,8 @@ const MAPPING = {
   'star': 'star-outline',
   'star.fill': 'star',
   'doc.text': 'subject',
+  'magnifyingglass': 'search',
+  'xmark': 'close',
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],
