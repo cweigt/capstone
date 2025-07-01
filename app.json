@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MobileApp",
-    "slug": "MobileApp",
+    "name": "aurora-agent",
+    "slug": "aurora-agent",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -46,5 +46,7 @@
         "projectId": "e81b6cf0-43cc-43b6-b0ae-c4d1092a1881"
       }
     }
-  }
+  },
+  "name": "aurora-agent",
+  "displayName": "Aurora Agent"
 }
