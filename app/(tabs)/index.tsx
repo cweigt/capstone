@@ -15,6 +15,7 @@ import { colors } from '@/styles/theme';
 import axios from 'axios';
 import Search from '@/components/Search';
 import ArticleCard from '@/components/ArticleCard';
+import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
 
 interface FeedOption {
   label: string;
@@ -40,6 +41,9 @@ const HomeScreen = () => {
   const [allArticles, setAllArticles] = useState<Article[]>([]); //for all articles
   const [currentFeedArticles, setCurrentFeedArticles] = useState<Article[]>([]); //for selected feed
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<Article[]>([]);
+  const [savedLinks, setSavedLinks] = useState<string[]>([]);
+  const database = getDatabase();
 
   //Fetch feed options initially
   useEffect(() => {
@@ -96,15 +100,16 @@ const HomeScreen = () => {
                 if (itemEnd === -1) break;
                 const itemXml = xmlString.substring(itemStart, itemEnd + 7);
                 const extract = (tag) => {
-                  const start = itemXml.indexOf(`<${tag}>`) + tag.length + 2;
-                  const end = itemXml.indexOf(`</${tag}>`);
-                  return start > tag.length + 1 && end > start ? itemXml.substring(start, end) : '';
+                  //This regex matches <tag ...>content</tag> and captures the content
+                  const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`);
+                  const match = itemXml.match(regex);
+                  return match ? match[1].trim() : '';
                 };
                 const title = extract('title');
                 const link = extract('link');
                 const pubDate = extract('pubDate');
                 const description = extract('description');
-                const author = extract('author');
+                const author = extract('source');
                 if (title && link && pubDate) {
                   allResults.push({
                     title,
@@ -151,15 +156,16 @@ const HomeScreen = () => {
             if (itemEnd === -1) break;
             const itemXml = xmlString.substring(itemStart, itemEnd + 7);
             const extract = (tag) => {
-              const start = itemXml.indexOf(`<${tag}>`) + tag.length + 2;
-              const end = itemXml.indexOf(`</${tag}>`);
-              return start > tag.length + 1 && end > start ? itemXml.substring(start, end) : '';
+              //This regex matches <tag ...>content</tag> and captures the content
+              const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`);
+              const match = itemXml.match(regex);
+              return match ? match[1].trim() : '';
             };
             const title = extract('title');
             const link = extract('link');
             const pubDate = extract('pubDate');
             const description = extract('description');
-            const author = extract('author');
+            const author = extract('source');
             if (title && link && pubDate) {
               results.push({
                 title,
@@ -184,8 +190,47 @@ const HomeScreen = () => {
     fetchCurrentFeedArticles();
   }, [user, selectedFeed]);
 
+  // Fetch saved article links from Firebase
+  useEffect(() => {
+    if (!user) return;
+    const savedRef = ref(database, `users/${user.uid}/savedArticles`);
+    const unsubscribe = onValue(savedRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setSavedLinks(Object.values(data).map((a: any) => a.link));
+      } else {
+        setSavedLinks([]);
+      }
+    });
+    return () => unsubscribe();
+  }, [user]);
+
   const handleFeedSelect = (feed: string) => {
     setSelectedFeed(feed);
+  };
+
+  //saving the article using the toggleSave button
+  const toggleSave = async (item: Article) => {
+    if (!user) return;
+    const database = getDatabase();
+    const safeKey = item.link
+      .replace(/[.#$\/[\]]/g, '_')
+      .replace(/[:?&=]/g, '_');
+    const savedRef = ref(database, `users/${user.uid}/savedArticles/${safeKey}`);
+
+    if (savedLinks.includes(item.link)) {
+      await remove(savedRef);
+    } else {
+      const articleData = {
+        title: item.title,
+        link: item.link,
+        pubDate: item.pubDate,
+        description: item.description,
+        author: item.author,
+        savedAt: new Date().toISOString(),
+      };
+      await set(savedRef, articleData);
+    }
   };
 
   // Filter articles based on searchQuery
@@ -248,9 +293,9 @@ const HomeScreen = () => {
                 author={item.author}
                 pubDate={item.pubDate}
                 description={item.description}
-                saved={false}
-                showSavedIcon={false}
-                onSave={() => {}}
+                saved={savedLinks.includes(item.link)}
+                showSavedIcon={true}
+                onSave={() => toggleSave(item)}
                 onShare={() => {}}
               />
             ))
