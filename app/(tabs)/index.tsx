@@ -17,6 +17,7 @@ import Search from '@/components/Search';
 import ArticleCard from '@/components/ArticleCard';
 import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
 import decodeHtml from '@/utils/decodeHTML';
+import { RefreshControl } from 'react-native';
 
 interface FeedOption {
   label: string;
@@ -45,6 +46,7 @@ const HomeScreen = () => {
   const [data, setData] = useState<Article[]>([]);
   const [savedLinks, setSavedLinks] = useState<string[]>([]);
   const database = getDatabase();
+  const [refreshing, setRefreshing] = useState(false);
 
   //Fetch feed options initially
   useEffect(() => {
@@ -80,63 +82,65 @@ const HomeScreen = () => {
     fetchFeedOptions();
   }, []);
 
+  const fetchAllArticles = async () => {
+    if (!user || feedOptions.length === 0) return;
+    setLoading(true);
+    try {
+      const allResults: Article[] = [];
+      await Promise.all(feedOptions.map(async (feed) => {
+        try {
+          const response = await axios.get(feed.value);
+          if (feed.value.includes('clientmobile.firstlight.am')) {
+            const xmlString = response.data;
+            let currentIndex = 0;
+            while (true) {
+              const itemStart = xmlString.indexOf('<item>', currentIndex);
+              if (itemStart === -1) break;
+              const itemEnd = xmlString.indexOf('</item>', itemStart);
+              if (itemEnd === -1) break;
+              const itemXml = xmlString.substring(itemStart, itemEnd + 7);
+              const extract = (tag) => {
+                //This regex matches <tag ...>content</tag> and captures the content
+                const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`);
+                const match = itemXml.match(regex);
+                return match ? match[1].trim() : '';
+              };
+              const title = decodeHtml(extract('title'));
+              const link = extract('link');
+              const pubDate = extract('pubDate');
+              const description = decodeHtml(extract('description'));
+              const author = extract('source');
+              if (title && link && pubDate) {
+                allResults.push({
+                  title,
+                  link,
+                  author,
+                  pubDate: new Date(pubDate).toISOString(),
+                  description,
+                });
+              }
+              currentIndex = itemEnd + 7;
+            }
+          } else if (response.data.items) {
+            allResults.push(...response.data.items);
+          }
+        } catch (e) {
+          // Ignore individual feed errors
+        }
+      }));
+      setAllArticles(allResults);
+    } catch (e) {
+      setAllArticles([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   //Fetch all articles from all feeds for global search
   //this is NOT DISPLAYED directly within each card
   //RSSFeed component is useless now because we lifted fetching and search to parent component
   useEffect(() => {
-    const fetchAllArticles = async () => {
-      if (!user || feedOptions.length === 0) return;
-      setLoading(true);
-      try {
-        const allResults: Article[] = [];
-        await Promise.all(feedOptions.map(async (feed) => {
-          try {
-            const response = await axios.get(feed.value);
-            if (feed.value.includes('clientmobile.firstlight.am')) {
-              const xmlString = response.data;
-              let currentIndex = 0;
-              while (true) {
-                const itemStart = xmlString.indexOf('<item>', currentIndex);
-                if (itemStart === -1) break;
-                const itemEnd = xmlString.indexOf('</item>', itemStart);
-                if (itemEnd === -1) break;
-                const itemXml = xmlString.substring(itemStart, itemEnd + 7);
-                const extract = (tag) => {
-                  //This regex matches <tag ...>content</tag> and captures the content
-                  const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`);
-                  const match = itemXml.match(regex);
-                  return match ? match[1].trim() : '';
-                };
-                const title = decodeHtml(extract('title'));
-                const link = extract('link');
-                const pubDate = extract('pubDate');
-                const description = decodeHtml(extract('description'));
-                const author = extract('source');
-                if (title && link && pubDate) {
-                  allResults.push({
-                    title,
-                    link,
-                    author,
-                    pubDate: new Date(pubDate).toISOString(),
-                    description,
-                  });
-                }
-                currentIndex = itemEnd + 7;
-              }
-            } else if (response.data.items) {
-              allResults.push(...response.data.items);
-            }
-          } catch (e) {
-            // Ignore individual feed errors
-          }
-        }));
-        setAllArticles(allResults);
-      } catch (e) {
-        setAllArticles([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+    
     fetchAllArticles();
   }, [user, feedOptions]);
 
@@ -244,6 +248,15 @@ const HomeScreen = () => {
   //Decide which articles to show
   const articlesToShow = searchQuery.trim() === '' ? currentFeedArticles : filteredArticles;
 
+
+  const handleRefresh = async () => {
+     // console.log("refreshing");
+    setRefreshing(true);
+    // setError(null); // if error state exists
+    await fetchAllArticles(); // reuse fetch logic
+    setRefreshing(false);
+    
+  };
   return (
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -283,6 +296,12 @@ const HomeScreen = () => {
             )}
           </>
         }
+        // pull-from-top to refresh
+        refreshControl={<RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          tintColor={colors.accentBlue}
+        />}
       >
         <View style={{backgroundColor: "white", flex: 1, paddingTop: 220, paddingBottom: 20}}>
           {loading ? (

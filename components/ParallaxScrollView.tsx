@@ -18,6 +18,8 @@ import Animated, {
     interpolate,
 } from 'react-native-reanimated';
 import { ParallaxScrollViewStyles as styles } from '../styles/ParallaxScrollView.styles';
+import { colors } from '@/styles/theme';
+import { RefreshControl } from 'react-native';
 // import { ThemedView } from '@/components/ThemedView';
 
 interface ParallaxScrollViewProps {
@@ -29,6 +31,8 @@ interface ParallaxScrollViewProps {
     children: React.ReactNode;
     headerHeight?: number;
     style?: ViewStyle;
+    refreshControl?: RefreshControl
+    
 }
 
 export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
@@ -37,6 +41,7 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
     style,
     headerBackgroundColor,
     headerHeight,
+    refreshControl
 }) => {
     const scrollY = useSharedValue(0);
     const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -76,6 +81,21 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
         },
     });
 
+    // if no argument is given for refreshControl, then make it so that pulling from top does nothing
+    if (refreshControl == undefined || refreshControl == null)
+    {
+        // console.log("refreshControlFunction is not defined");
+        refreshControl=
+            <RefreshControl
+              refreshing={false}
+              // onRefresh={() => {console.log("refresh control is not defined")}}
+              onRefresh={() => {}}
+            />
+          
+    } 
+
+
+
     return (
         <View style={[styles.container, style]}>
             <Animated.View
@@ -88,6 +108,9 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
                 {headerImage}
             </Animated.View>
             <Animated.ScrollView
+                refreshControl={
+                    refreshControl
+                  }
                 style={styles.scrollView}
                 contentContainerStyle={[
                     styles.contentContainer,
