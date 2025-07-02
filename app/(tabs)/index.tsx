@@ -16,6 +16,7 @@ import axios from 'axios';
 import Search from '@/components/Search';
 import ArticleCard from '@/components/ArticleCard';
 import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
+import decodeHtml from '@/utils/decodeHTML';
 
 interface FeedOption {
   label: string;
@@ -80,6 +81,7 @@ const HomeScreen = () => {
   }, []);
 
   //Fetch all articles from all feeds for global search
+  //this is NOT DISPLAYED directly within each card
   //RSSFeed component is useless now because we lifted fetching and search to parent component
   useEffect(() => {
     const fetchAllArticles = async () => {
@@ -105,10 +107,10 @@ const HomeScreen = () => {
                   const match = itemXml.match(regex);
                   return match ? match[1].trim() : '';
                 };
-                const title = extract('title');
+                const title = decodeHtml(extract('title'));
                 const link = extract('link');
                 const pubDate = extract('pubDate');
-                const description = extract('description');
+                const description = decodeHtml(extract('description'));
                 const author = extract('source');
                 if (title && link && pubDate) {
                   allResults.push({
@@ -138,7 +140,8 @@ const HomeScreen = () => {
     fetchAllArticles();
   }, [user, feedOptions]);
 
-  // Fetch articles for the selected feed only
+  //fetch articles for the selected feed only
+  //this IS DISPLAYED on the screen
   useEffect(() => {
     const fetchCurrentFeedArticles = async () => {
       if (!user || !selectedFeed) return;
@@ -161,10 +164,10 @@ const HomeScreen = () => {
               const match = itemXml.match(regex);
               return match ? match[1].trim() : '';
             };
-            const title = extract('title');
+            const title = decodeHtml(extract('title'));
             const link = extract('link');
             const pubDate = extract('pubDate');
-            const description = extract('description');
+            const description = decodeHtml(extract('description'));
             const author = extract('source');
             if (title && link && pubDate) {
               results.push({
