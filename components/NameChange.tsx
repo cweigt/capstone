@@ -13,6 +13,7 @@ import {
 import { getDatabase, ref, update } from 'firebase/database';
 import { NameChangeStyles as styles } from '@/styles/NameChange.styles';
 import { useAuth } from '@/context/AuthContext';
+import { colors } from '@/styles/theme';
 
 const Name_Change = () => {
   const auth = getAuth();
@@ -70,7 +71,7 @@ const Name_Change = () => {
                 <TextInput
                     style={styles.input}
                     placeholder={currentFirstName}
-                    placeholderTextColor='#000000'
+                    placeholderTextColor={colors.text}
                     value={firstName}
                     onChangeText={setFirstName}
                 />
@@ -80,7 +81,7 @@ const Name_Change = () => {
                 <TextInput
                     style={styles.input}
                     placeholder={currentLastName}
-                    placeholderTextColor='#000000'
+                    placeholderTextColor={colors.text}
                     value={lastName}
                     onChangeText={setLastName}
                 />

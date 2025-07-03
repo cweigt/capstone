@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colors, spacing, typography } from './theme';
+import { colors, spacing, typography, commonStyles } from './theme';
 
 export const HomeStyles = StyleSheet.create({
     container: {
@@ -53,16 +53,17 @@ export const HomeStyles = StyleSheet.create({
     feedTitleContainer: {
         flex: 1,
         alignItems: 'center',
-        marginRight: 40, // Account for hamburger menu width
+        //marginRight: 40, // Account for hamburger menu width
     },
     dropdown: {
         height: 50,
         borderColor: colors.border,
         borderWidth: 0.5,
-        borderRadius: 8,
+        borderRadius: commonStyles.card.borderRadius,
         paddingHorizontal: spacing.sm,
         backgroundColor: colors.background,
         marginBottom: Platform.OS === 'android' ? spacing.sm : 0,
+        flex: 1,
     },
     message: {
         fontSize: typography.body.fontSize,
@@ -81,7 +82,7 @@ export const HomeStyles = StyleSheet.create({
       },
       emptyText:{
         fontSize: typography.body.fontSize,
-        color: '#000000',
+        color: colors.text,
         textAlign: 'center',
     
       },

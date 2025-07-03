@@ -11,6 +11,7 @@ export const colors = {
   accentBlue: 'blue',
   saveIconActive: '#FFD700',
   gray: '#888888',
+  containerColor: '#F2F2F7',
 };
 
 export const spacing = {
@@ -40,12 +41,15 @@ export const typography = {
   caption: {
     fontSize: 12, //label font size
   },
+  regular: {
+    fontSize: 14,
+  },
 };
 
 export const commonStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: colors.containerColor,
   },
   row: {
     flexDirection: 'row',
@@ -56,7 +60,7 @@ export const commonStyles = StyleSheet.create({
     alignItems: 'center',
   },
   shadow: {
-    shadowColor: '#F2F2F7',
+    shadowColor: colors.containerColor,
     shadowOffset: {
       width: 0,
       height: 2,

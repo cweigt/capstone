@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { typography } from './theme';
 //this is shared between both privacy-policy and eula
 
 export const legalStyles = StyleSheet.create({
@@ -11,7 +12,7 @@ export const legalStyles = StyleSheet.create({
     },
     back: {
         color: '#007AFF', 
-        fontSize: 16,
+        fontSize: typography.body.fontSize,
     },
     title: {
         fontSize: 24, 
@@ -19,7 +20,7 @@ export const legalStyles = StyleSheet.create({
         marginBottom: 20,
     },
     content: {
-        fontSize: 16, 
+        fontSize: typography.body.fontSize, 
         lineHeight: 24,
     },
     container: {

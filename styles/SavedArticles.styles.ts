@@ -15,26 +15,26 @@ export const SavedArticlesStyles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: colors.background,
       },
     card: {
-        borderRadius: 8,
-        marginBottom: 16,
-        padding: 16,
+        borderRadius: spacing.sm,
+        marginBottom: spacing.md,
+        padding: spacing.md,
         backgroundColor: colors.background,
     },
     cardTitle: {
-        fontSize: 16,
+        fontSize: typography.body.fontSize,
         fontWeight: '600',
-        marginBottom: 8,
+        marginBottom: spacing.sm,
     },
     date: {
         color: colors.text,
-        fontSize: 12,
+        fontSize: typography.caption.fontSize,
         marginLeft: 'auto',
     },
     description: {
-        fontSize: 14,
+        fontSize: typography.regular.fontSize,
         color: colors.text,
         marginBottom: 12,
     },
@@ -46,23 +46,23 @@ export const SavedArticlesStyles = StyleSheet.create({
     },
     starContainer: {
         alignItems: 'center',
-        marginTop: -24,
-        marginLeft: 16,
+        marginTop: -spacing.lg,
+        marginLeft: spacing.md,
     },
     starButton: {
         padding: 4,
-        minWidth: 32,
-        minHeight: 32,
+        minWidth: spacing.xl,
+        minHeight: spacing.xl,
         justifyContent: 'center',
         alignItems: 'center',
     },
     link: {
         color: colors.primary,
-        fontSize: 14,
+        fontSize: typography.regular.fontSize,
         fontWeight: '500',
     },
     message: {
-        fontSize: 16,
+        fontSize: spacing.md,
         color: colors.text,
         textAlign: 'center',
         marginTop: 20,
@@ -70,7 +70,7 @@ export const SavedArticlesStyles = StyleSheet.create({
     divider: {
         borderBottomWidth: 1, 
         borderBottomColor: '#E0E0E0', 
-        marginBottom: 20,
+        marginBottom: spacing.xs,
         marginHorizontal: -20,
     },
 }); 

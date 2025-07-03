@@ -46,6 +46,7 @@ interface FeedOption {
 }
 
 interface RSSFeedProps {
+    searchQuery: string;
     feedOptions: FeedOption[];
     setFeedOptions: (options: FeedOption[]) => void;
     selectedFeed: string;
@@ -53,6 +54,7 @@ interface RSSFeedProps {
 }
 
 const RSSFeed: React.FC<RSSFeedProps> = ({
+    searchQuery,
     feedOptions,
     setFeedOptions,
     selectedFeed,
@@ -91,7 +93,8 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
     return new Date();
     };
 
-    // Reusable fetch function
+    //this is per article, not per feed
+    //Reusable fetch function
     const fetchRSSData = useCallback(async () => {
     if (!user || !selectedFeed) return;
 
@@ -204,6 +207,11 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
     }
     };
 
+    // Filter data based on searchQuery
+    const filteredData = data.filter(article =>
+        article.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     if (loading) {
     return (
         <View style={[styles.container, styles.center]}>
@@ -240,7 +248,7 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
         <StatusBar barStyle="dark-content" />
 
         <View style={styles.headerContainer}>
-            <View style={[styles.headerTextContainer, {paddingTop: 60}]}>
+            <View style={[styles.headerTextContainer, {paddingTop: 130}]}>
             </View>
             <View style={styles.headerPlaceholder}/>
         </View>
@@ -259,8 +267,8 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
         >
 
         <View style={styles.listContentContainer}>
-            {Array.isArray(data) && data.length > 0 && user ? (
-            data.map((item, index) => (
+            {Array.isArray(filteredData) && filteredData.length > 0 && user ? (
+            filteredData.map((item, index) => (
                 <ArticleCard
                   key={index}
                   title={item.title}

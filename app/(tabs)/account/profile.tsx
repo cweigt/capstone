@@ -13,6 +13,7 @@ import ResetPassword from '@/components/ResetPassword';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native';
+import { spacing } from '@/styles/theme';
 
 const Profile = () => {
   return (
@@ -32,7 +33,7 @@ const Profile = () => {
               </TouchableOpacity>
               
               <View style={{ flex: 1, alignItems: 'flex-start', marginLeft: 55 }}>
-                <Text style={[styles.title, { paddingTop: 8 }]}>
+                <Text style={[styles.title, { paddingTop: spacing.sm }]}>
                   Edit Profile
                 </Text>
               </View>
@@ -44,7 +45,7 @@ const Profile = () => {
             </Text>
             <UploadImage />
             <NameChange />
-            <View style={[styles.divider, {marginTop: 20, marginBottom: 0}]} />
+            <View style={[styles.divider, {marginTop: 20}]} />
             <ResetPassword />
           </View>
         </ScrollView>

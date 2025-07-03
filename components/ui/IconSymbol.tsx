@@ -15,6 +15,10 @@ const MAPPING = {
   'star': 'star-outline',
   'star.fill': 'star',
   'doc.text': 'subject',
+  'magnifyingglass': 'search',
+  'xmark': 'close',
+  'arrow.backward': 'arrow-back',
+  'chevron.backward.2.left': 'chevron-left',
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],

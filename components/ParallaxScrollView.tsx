@@ -3,13 +3,15 @@
 //when combined with KeyboardAvoidingView
 //this is the solution to that, and is the IDEAL TEMPLATE
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, ReactElement } from 'react';
 import {
     View,
     ScrollView,
     ViewStyle,
     Keyboard,
     Platform,
+    RefreshControl,
+    type RefreshControlProps
 } from 'react-native';
 import Animated, {
     useAnimatedStyle, 
@@ -18,6 +20,7 @@ import Animated, {
     interpolate,
 } from 'react-native-reanimated';
 import { ParallaxScrollViewStyles as styles } from '../styles/ParallaxScrollView.styles';
+import { colors } from '@/styles/theme';
 // import { ThemedView } from '@/components/ThemedView';
 
 interface ParallaxScrollViewProps {
@@ -29,6 +32,8 @@ interface ParallaxScrollViewProps {
     children: React.ReactNode;
     headerHeight?: number;
     style?: ViewStyle;
+    refreshControl?: React.ReactElement<RefreshControlProps>;
+    
 }
 
 export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
@@ -37,6 +42,7 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
     style,
     headerBackgroundColor,
     headerHeight,
+    refreshControl
 }) => {
     const scrollY = useSharedValue(0);
     const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -76,6 +82,19 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
         },
     });
 
+    // if no argument is given for refreshControl, then make it so that pulling from top does nothing
+    if (refreshControl == undefined || refreshControl == null)
+    {
+        refreshControl = (
+            <RefreshControl
+              refreshing={false}
+              onRefresh={() => {}}
+            />
+        );
+    } 
+
+
+
     return (
         <View style={[styles.container, style]}>
             <Animated.View
@@ -88,6 +107,9 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
                 {headerImage}
             </Animated.View>
             <Animated.ScrollView
+                refreshControl={
+                    refreshControl
+                  }
                 style={styles.scrollView}
                 contentContainerStyle={[
                     styles.contentContainer,

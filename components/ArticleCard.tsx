@@ -8,7 +8,7 @@ import {
 import { Card } from '@rneui/themed';
 import { Icon } from '@rneui/themed';
 import { RSSFeedStyles as styles } from '@/styles/RSSFeed.styles';
-import { colors } from '@/styles/theme';
+import { colors, spacing } from '@/styles/theme';
 import * as WebBrowser from 'expo-web-browser';
 
 interface ArticleCardProps {
@@ -60,7 +60,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           >
             <Icon
               name={saved ? 'star' : 'star-outline'}
-              color={saved ? '#FFD700' : colors.gray}
+              color={saved ? colors.saveIconActive : colors.gray}
             />
             <Text style={[styles.actionLabel, { color: saved ? colors.text : colors.gray }]}>
               {saved ? 'Saved' : 'Save'}
@@ -80,7 +80,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           accessibilityRole='link'
           >
           <Text style={styles.viewLabel}>View</Text>
-          <Icon name="external-link" type="feather" color={colors.accentBlue || '#007AFF'} size={18} style={{ marginLeft: 4 }} />
+          <Icon name="external-link" type="feather" color={colors.accentBlue || colors.primary} size={18} style={{ marginLeft: spacing.xs }} />
         </TouchableOpacity>
       </View>
     </Card>

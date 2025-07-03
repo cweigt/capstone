@@ -8,8 +8,8 @@ import {
   Image,
 } from 'react-native';
 import { colors } from '@/styles/theme';
-import { Icon } from '@rneui/themed';
 import { sideDrawerStyles as styles } from '@/styles/SideDrawer.styles';
+import { IconSymbol } from './ui/IconSymbol';
 
 interface FeedOption {
   label: string;
@@ -85,7 +85,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
               resizeMode="contain"
             />
             <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
-              <Icon name="arrow-back" size={24} color={colors.text} />
+              <IconSymbol name="chevron.left" size={24} color={colors.text} />
             </TouchableOpacity>
           </View>
           <View style={styles.headerSubtitleContainer}>

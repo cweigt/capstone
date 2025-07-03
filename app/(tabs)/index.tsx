@@ -7,19 +7,32 @@ import {
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { ParallaxScrollView } from '@/components/ParallaxScrollView';
-// import { ThemedView } from '@/components/ThemedView';
-import RSSFeed from '@/components/RSSFeed';
 import SideDrawer from '@/components/SideDrawer';
 import { HomeStyles as styles } from '../../styles/Home.styles';
 import { useAuth } from '@/context/AuthContext';
 import { Icon } from '@rneui/themed';
-import { colors } from '@/styles/theme';
+import { colors, spacing } from '@/styles/theme';
 import axios from 'axios';
+import Search from '@/components/Search';
+import ArticleCard from '@/components/ArticleCard';
+import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
+import decodeHtml from '@/utils/decodeHTML';
+import { RefreshControl } from 'react-native';
+import { IconSymbol } from '@/components/ui/IconSymbol';
 
 interface FeedOption {
   label: string;
   value: string;
 }
+
+type Article = {
+  title: string;
+  link: string;
+  author: string;
+  pubDate: string;
+  description?: string;
+  saved?: boolean;
+};
 
 const HomeScreen = () => {
   const [feedOptions, setFeedOptions] = useState<FeedOption[]>([]);
@@ -27,9 +40,17 @@ const HomeScreen = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const {user} = useAuth();
   const [feedNum, setFeedNum] = useState(0); //this tracks number of feeds
+  const [searchQuery, setSearchQuery] = useState(''); //for search bar
+  const [allArticles, setAllArticles] = useState<Article[]>([]); //for all articles
+  const [currentFeedArticles, setCurrentFeedArticles] = useState<Article[]>([]); //for selected feed
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<Article[]>([]);
+  const [savedLinks, setSavedLinks] = useState<string[]>([]);
+  const database = getDatabase();
+  const [refreshing, setRefreshing] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
 
   //Fetch feed options initially
-  //this is shared between the SideDrawer and RSSFeed
   useEffect(() => {
     const fetchFeedOptions = async () => {
       try {
@@ -38,7 +59,6 @@ const HomeScreen = () => {
           label: feed.title.replace(/\[ID:\d+\]/, '').trim(),
           value: feed.url.replace(/\/+/g, '/'),
         }));*/
-
         const options = [
           { label: "AI in HR", value: "https://clientmobile.firstlight.am/widget/rss/118" },
           { label: "AI in the DoD", value: "https://clientmobile.firstlight.am/widget/rss/119" },
@@ -51,16 +71,12 @@ const HomeScreen = () => {
           { label: "Walgreens", value: "https://clientmobile.firstlight.am/widget/rss/124" },
           { label: "WH Executive Orders", value: "https://clientmobile.firstlight.am/widget/rss/125" }
         ];
-        //this log shows us what feeds are fetched
-        //good for us to know if it fetches when more stuff is added
-        console.log('Feed options fetched:', options);
         setFeedOptions(options);
-        setFeedNum(options.length); //feedNum is set to length of options
+        setFeedNum(options.length);
         if (options.length > 0) {
           setSelectedFeed(options[0].value);
         }
       } catch (error) {
-        console.error('Error fetching feed options:', error);
         setFeedOptions([]);
         setFeedNum(0);
       }
@@ -68,9 +84,180 @@ const HomeScreen = () => {
     fetchFeedOptions();
   }, []);
 
+  const fetchAllArticles = async () => {
+    if (!user || feedOptions.length === 0) return;
+    setLoading(true);
+    try {
+      const allResults: Article[] = [];
+      await Promise.all(feedOptions.map(async (feed) => {
+        try {
+          const response = await axios.get(feed.value);
+          if (feed.value.includes('clientmobile.firstlight.am')) {
+            const xmlString = response.data;
+            let currentIndex = 0;
+            while (true) {
+              const itemStart = xmlString.indexOf('<item>', currentIndex);
+              if (itemStart === -1) break;
+              const itemEnd = xmlString.indexOf('</item>', itemStart);
+              if (itemEnd === -1) break;
+              const itemXml = xmlString.substring(itemStart, itemEnd + 7);
+              const extract = (tag) => {
+                //This regex matches <tag ...>content</tag> and captures the content
+                const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`);
+                const match = itemXml.match(regex);
+                return match ? match[1].trim() : '';
+              };
+              const title = decodeHtml(extract('title'));
+              const link = extract('link');
+              const pubDate = extract('pubDate');
+              const description = decodeHtml(extract('description'));
+              const author = extract('source');
+              if (title && link && pubDate) {
+                allResults.push({
+                  title,
+                  link,
+                  author,
+                  pubDate: new Date(pubDate).toISOString(),
+                  description,
+                });
+              }
+              currentIndex = itemEnd + 7;
+            }
+          } else if (response.data.items) {
+            allResults.push(...response.data.items);
+          }
+        } catch (e) {
+          // Ignore individual feed errors
+        }
+      }));
+      setAllArticles(allResults);
+    } catch (e) {
+      setAllArticles([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //Fetch all articles from all feeds for global search
+  //this is NOT DISPLAYED directly within each card
+  //RSSFeed component is useless now because we lifted fetching and search to parent component
+  useEffect(() => {
+    
+    fetchAllArticles();
+  }, [user, feedOptions]);
+
+  //fetch articles for the selected feed only
+  //this IS DISPLAYED on the screen
+  useEffect(() => {
+    const fetchCurrentFeedArticles = async () => {
+      if (!user || !selectedFeed) return;
+      setLoading(true);
+      try {
+        const response = await axios.get(selectedFeed);
+        const results: Article[] = [];
+        if (selectedFeed.includes('clientmobile.firstlight.am')) {
+          const xmlString = response.data;
+          let currentIndex = 0;
+          while (true) {
+            const itemStart = xmlString.indexOf('<item>', currentIndex);
+            if (itemStart === -1) break;
+            const itemEnd = xmlString.indexOf('</item>', itemStart);
+            if (itemEnd === -1) break;
+            const itemXml = xmlString.substring(itemStart, itemEnd + 7);
+            const extract = (tag) => {
+              //This regex matches <tag ...>content</tag> and captures the content
+              const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`);
+              const match = itemXml.match(regex);
+              return match ? match[1].trim() : '';
+            };
+            const title = decodeHtml(extract('title'));
+            const link = extract('link');
+            const pubDate = extract('pubDate');
+            const description = decodeHtml(extract('description'));
+            const author = extract('source');
+            if (title && link && pubDate) {
+              results.push({
+                title,
+                link,
+                author,
+                pubDate: new Date(pubDate).toISOString(),
+                description,
+              });
+            }
+            currentIndex = itemEnd + 7;
+          }
+        } else if (response.data.items) {
+          results.push(...response.data.items);
+        }
+        setCurrentFeedArticles(results);
+      } catch (e) {
+        setCurrentFeedArticles([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCurrentFeedArticles();
+  }, [user, selectedFeed]);
+
+  // Fetch saved article links from Firebase
+  useEffect(() => {
+    if (!user) return;
+    const savedRef = ref(database, `users/${user.uid}/savedArticles`);
+    const unsubscribe = onValue(savedRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setSavedLinks(Object.values(data).map((a: any) => a.link));
+      } else {
+        setSavedLinks([]);
+      }
+    });
+    return () => unsubscribe();
+  }, [user]);
+
   const handleFeedSelect = (feed: string) => {
     setSelectedFeed(feed);
-    // Keep drawer open - user can close it manually when they want
+  };
+
+  //saving the article using the toggleSave button
+  const toggleSave = async (item: Article) => {
+    if (!user) return;
+    const database = getDatabase();
+    const safeKey = item.link
+      .replace(/[.#$\/[\]]/g, '_')
+      .replace(/[:?&=]/g, '_');
+    const savedRef = ref(database, `users/${user.uid}/savedArticles/${safeKey}`);
+
+    if (savedLinks.includes(item.link)) {
+      await remove(savedRef);
+    } else {
+      const articleData = {
+        title: item.title,
+        link: item.link,
+        pubDate: item.pubDate,
+        description: item.description,
+        author: item.author,
+        savedAt: new Date().toISOString(),
+      };
+      await set(savedRef, articleData);
+    }
+  };
+
+  // Filter articles based on searchQuery
+  const filteredArticles = allArticles.filter(article =>
+    article.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  //Decide which articles to show
+  const articlesToShow = searchQuery.trim() === '' ? currentFeedArticles : filteredArticles;
+
+
+  const handleRefresh = async () => {
+     // console.log("refreshing");
+    setRefreshing(true);
+    // setError(null); // if error state exists
+    await fetchAllArticles(); // reuse fetch logic
+    setRefreshing(false);
+    
   };
 
   return (
@@ -82,27 +269,37 @@ const HomeScreen = () => {
         headerImage={
           <>
             {user ? (
-              <View style={styles.dropdownContainer}>
-                <View style={styles.headerRow}>
-                  <TouchableOpacity onPress={() => setIsDrawerVisible(true)}>
-                    <Icon 
-                      name="menu" 
-                      size={30} 
-                      color={colors.text}
-                      style={styles.hamburger}
-                    />
-                  </TouchableOpacity>
-                  <View style={styles.feedTitleContainer}>
-                    <Text style={styles.headerSubtitle}>
-                      Current Feed
-                    </Text>
-                    <Text style={styles.headerTitle}>
-                      {feedOptions.find(feed => feed.value === selectedFeed)?.label
-                      /*this displays the current feed title in the header*/}
-                    </Text>
+              !showSearchBar ? (
+                <View style={styles.dropdownContainer}>
+                  <View style={styles.headerRow}>
+                    <TouchableOpacity onPress={() => setIsDrawerVisible(true)}>
+                      <Icon 
+                        name="menu" 
+                        size={30} 
+                        color={colors.text}
+                        style={styles.hamburger}
+                      />
+                    </TouchableOpacity>
+                    <View style={styles.feedTitleContainer}>
+                      <Text style={styles.headerSubtitle}>
+                        Current Feed
+                      </Text>
+                      <Text style={styles.headerTitle}>
+                        {feedOptions.find(feed => feed.value === selectedFeed)?.label}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => setShowSearchBar(true)}
+                    >
+                      <IconSymbol name="magnifyingglass" size={30} color={colors.text} style={{ marginRight: spacing.sm }} />
+                    </TouchableOpacity>
                   </View>
                 </View>
-              </View>
+              ) : (
+                <View style={{ width: '100%', alignSelf: 'stretch', backgroundColor: colors.background }}>
+                  <Search value={searchQuery} onChangeText={setSearchQuery} showSearchBar={showSearchBar} setShowSearchBar={setShowSearchBar} />
+                </View>
+              )
             ) : (
               <View style={styles.dropdownContainer}>
                 <Text style={styles.message}>Please sign in to view feed.</Text>
@@ -110,18 +307,37 @@ const HomeScreen = () => {
             )}
           </>
         }
+        // pull-from-top to refresh
+        refreshControl={<RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          tintColor={colors.accentBlue}
+        />}
       >
-        <View style={{backgroundColor: "white", flex: 1}}>
-          <RSSFeed //passing from the managed state here
-            feedOptions={feedOptions}
-            setFeedOptions={setFeedOptions}
-            selectedFeed={selectedFeed}
-            setSelectedFeed={setSelectedFeed}
-          />
+        <View style={{backgroundColor: "white", flex: 1, paddingTop: 150, paddingBottom: 20}}>
+          {loading ? (
+            <Text style={{textAlign: 'center', marginTop: 10}}>Loading articles...</Text>
+          ) : articlesToShow.length > 0 ? (
+            articlesToShow.map((item, index) => (
+              <ArticleCard
+                key={index}
+                title={item.title}
+                link={item.link}
+                author={item.author}
+                pubDate={item.pubDate}
+                description={item.description}
+                saved={savedLinks.includes(item.link)}
+                showSavedIcon={true}
+                onSave={() => toggleSave(item)}
+                onShare={() => {}}
+              />
+            ))
+          ) : (
+            <Text style={{textAlign: 'center', marginTop: 40}}>No articles found.</Text>
+          )}
         </View>
       </ParallaxScrollView>
-      
-      <SideDrawer //home page manages feed fetching so that it can be passed
+      <SideDrawer
         isVisible={isDrawerVisible}
         onClose={() => setIsDrawerVisible(false)}
         feedOptions={feedOptions}
