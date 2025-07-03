@@ -53,7 +53,7 @@ export const HomeStyles = StyleSheet.create({
     feedTitleContainer: {
         flex: 1,
         alignItems: 'center',
-        marginRight: 40, // Account for hamburger menu width
+        //marginRight: 40, // Account for hamburger menu width
     },
     dropdown: {
         height: 50,
@@ -63,6 +63,7 @@ export const HomeStyles = StyleSheet.create({
         paddingHorizontal: spacing.sm,
         backgroundColor: colors.background,
         marginBottom: Platform.OS === 'android' ? spacing.sm : 0,
+        flex: 1,
     },
     message: {
         fontSize: typography.body.fontSize,
