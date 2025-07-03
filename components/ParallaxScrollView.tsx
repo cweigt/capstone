@@ -3,13 +3,15 @@
 //when combined with KeyboardAvoidingView
 //this is the solution to that, and is the IDEAL TEMPLATE
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, ReactElement } from 'react';
 import {
     View,
     ScrollView,
     ViewStyle,
     Keyboard,
     Platform,
+    RefreshControl,
+    type RefreshControlProps
 } from 'react-native';
 import Animated, {
     useAnimatedStyle, 
@@ -19,7 +21,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { ParallaxScrollViewStyles as styles } from '../styles/ParallaxScrollView.styles';
 import { colors } from '@/styles/theme';
-import { RefreshControl } from 'react-native';
 // import { ThemedView } from '@/components/ThemedView';
 
 interface ParallaxScrollViewProps {
@@ -31,7 +32,7 @@ interface ParallaxScrollViewProps {
     children: React.ReactNode;
     headerHeight?: number;
     style?: ViewStyle;
-    refreshControl?: RefreshControl
+    refreshControl?: React.ReactElement<RefreshControlProps>;
     
 }
 
@@ -84,14 +85,12 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
     // if no argument is given for refreshControl, then make it so that pulling from top does nothing
     if (refreshControl == undefined || refreshControl == null)
     {
-        // console.log("refreshControlFunction is not defined");
-        refreshControl=
+        refreshControl = (
             <RefreshControl
               refreshing={false}
-              // onRefresh={() => {console.log("refresh control is not defined")}}
               onRefresh={() => {}}
             />
-          
+        );
     } 
 
 
