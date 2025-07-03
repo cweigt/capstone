@@ -11,13 +11,14 @@ import SideDrawer from '@/components/SideDrawer';
 import { HomeStyles as styles } from '../../styles/Home.styles';
 import { useAuth } from '@/context/AuthContext';
 import { Icon } from '@rneui/themed';
-import { colors } from '@/styles/theme';
+import { colors, spacing } from '@/styles/theme';
 import axios from 'axios';
 import Search from '@/components/Search';
 import ArticleCard from '@/components/ArticleCard';
 import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
 import decodeHtml from '@/utils/decodeHTML';
 import { RefreshControl } from 'react-native';
+import { IconSymbol } from '@/components/ui/IconSymbol';
 
 interface FeedOption {
   label: string;
@@ -47,6 +48,7 @@ const HomeScreen = () => {
   const [savedLinks, setSavedLinks] = useState<string[]>([]);
   const database = getDatabase();
   const [refreshing, setRefreshing] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
 
   //Fetch feed options initially
   useEffect(() => {
@@ -257,6 +259,7 @@ const HomeScreen = () => {
     setRefreshing(false);
     
   };
+
   return (
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -266,29 +269,37 @@ const HomeScreen = () => {
         headerImage={
           <>
             {user ? (
-              <View style={styles.dropdownContainer}>
-                <View style={styles.headerRow}>
-                  <TouchableOpacity onPress={() => setIsDrawerVisible(true)}>
-                    <Icon 
-                      name="menu" 
-                      size={30} 
-                      color={colors.text}
-                      style={styles.hamburger}
-                    />
-                  </TouchableOpacity>
-                  <View style={styles.feedTitleContainer}>
-                    <Text style={styles.headerSubtitle}>
-                      Current Feed
-                    </Text>
-                    <Text style={styles.headerTitle}>
-                      {feedOptions.find(feed => feed.value === selectedFeed)?.label}
-                    </Text>
+              !showSearchBar ? (
+                <View style={styles.dropdownContainer}>
+                  <View style={styles.headerRow}>
+                    <TouchableOpacity onPress={() => setIsDrawerVisible(true)}>
+                      <Icon 
+                        name="menu" 
+                        size={30} 
+                        color={colors.text}
+                        style={styles.hamburger}
+                      />
+                    </TouchableOpacity>
+                    <View style={styles.feedTitleContainer}>
+                      <Text style={styles.headerSubtitle}>
+                        Current Feed
+                      </Text>
+                      <Text style={styles.headerTitle}>
+                        {feedOptions.find(feed => feed.value === selectedFeed)?.label}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => setShowSearchBar(true)}
+                    >
+                      <IconSymbol name="magnifyingglass" size={30} color={colors.text} style={{ marginRight: spacing.sm }} />
+                    </TouchableOpacity>
                   </View>
                 </View>
-                <View style={{width: '95%'}}>
-                  <Search value={searchQuery} onChangeText={setSearchQuery} />
+              ) : (
+                <View style={{ width: '100%', alignSelf: 'stretch', backgroundColor: colors.background }}>
+                  <Search value={searchQuery} onChangeText={setSearchQuery} showSearchBar={showSearchBar} setShowSearchBar={setShowSearchBar} />
                 </View>
-              </View>
+              )
             ) : (
               <View style={styles.dropdownContainer}>
                 <Text style={styles.message}>Please sign in to view feed.</Text>
@@ -303,9 +314,9 @@ const HomeScreen = () => {
           tintColor={colors.accentBlue}
         />}
       >
-        <View style={{backgroundColor: "white", flex: 1, paddingTop: 220, paddingBottom: 20}}>
+        <View style={{backgroundColor: "white", flex: 1, paddingTop: 150, paddingBottom: 20}}>
           {loading ? (
-            <Text style={{textAlign: 'center', marginTop: 40}}>Loading articles...</Text>
+            <Text style={{textAlign: 'center', marginTop: 10}}>Loading articles...</Text>
           ) : articlesToShow.length > 0 ? (
             articlesToShow.map((item, index) => (
               <ArticleCard

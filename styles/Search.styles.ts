@@ -3,9 +3,14 @@ import { colors, spacing, typography } from './theme';
 
 export const searchStyles = StyleSheet.create({
     container: {
-      paddingTop: spacing.md,
+      paddingTop: spacing.xl,
       backgroundColor: colors.background,
       flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '100%',
+      padding: spacing.sm,
+      marginTop: 40,
     },
     inputWrapper: {
       flexDirection: 'row',
@@ -13,10 +18,11 @@ export const searchStyles = StyleSheet.create({
       backgroundColor: colors.background,
       borderColor: '#ccc',
       borderWidth: 1,
-      borderRadius: spacing.sm,
+      borderRadius: spacing.lg,
       paddingHorizontal: 10,
       marginBottom: spacing.md,
       height: 40,
+      width: '93.5%',
     },
     input: {
       flex: 1,
@@ -33,4 +39,8 @@ export const searchStyles = StyleSheet.create({
       color: colors.gray,
       marginTop: 20,
     },
+    divider: {
+      borderBottomWidth: 1, 
+      borderBottomColor: '#E0E0E0', 
+  },
   });
