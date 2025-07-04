@@ -1,21 +1,40 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { 
     View, 
     TextInput, 
     TouchableOpacity,
+    Animated,
+    Dimensions,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { searchStyles as styles } from '@/styles/Search.styles';
 import { colors, spacing } from '@/styles/theme';
 import { IconSymbol } from './ui/IconSymbol';
 
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
 const Search = ({ value, onChangeText, showSearchBar, setShowSearchBar }) => {
+  const translateX = useRef(new Animated.Value(showSearchBar ? 0 : SCREEN_WIDTH)).current;
+  const insets = useSafeAreaInsets();
+
+  //ternary operator to open and close
+  useEffect(() => {
+    Animated.timing(translateX, {
+      toValue: showSearchBar ? 0 : SCREEN_WIDTH,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  }, [showSearchBar]);
 
   return (
-    <>
+    <Animated.View
+      style={[styles.animation, {transform: [{translateX}], height: 80+insets.top, paddingTop: insets.top}]}
+      pointerEvents={showSearchBar ? 'auto' : 'none'}
+    >
       <View style={styles.container}>
         <TouchableOpacity 
           onPress={() => setShowSearchBar(false)}
-          style={{marginBottom: spacing.md}}
+          style={{ marginRight: spacing.sm }}
         >
           <IconSymbol name="chevron.left" size={24} color={colors.text} />
         </TouchableOpacity>
@@ -34,7 +53,7 @@ const Search = ({ value, onChangeText, showSearchBar, setShowSearchBar }) => {
         </View>
       </View>
       <View style={styles.divider}/>
-    </>
+    </Animated.View>
   );
 };
 

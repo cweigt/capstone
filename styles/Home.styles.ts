@@ -29,9 +29,7 @@ export const HomeStyles = StyleSheet.create({
     dropdownContainer: {
         width: '100%',
         backgroundColor: colors.background,
-        marginTop: 60,
-        padding: spacing.sm,
-        paddingTop: spacing.lg,
+        paddingBottom: 15,
         paddingHorizontal: Platform.OS === 'ios' ? spacing.sm : spacing.md,
         borderBottomWidth: 1,
         borderBottomColor: colors.border,
