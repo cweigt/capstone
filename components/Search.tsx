@@ -16,6 +16,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const Search = ({ value, onChangeText, showSearchBar, setShowSearchBar }) => {
   const translateX = useRef(new Animated.Value(showSearchBar ? 0 : SCREEN_WIDTH)).current;
   const insets = useSafeAreaInsets();
+  const inputRef = useRef(null);
 
   //ternary operator to open and close
   useEffect(() => {
@@ -24,6 +25,13 @@ const Search = ({ value, onChangeText, showSearchBar, setShowSearchBar }) => {
       duration: 250,
       useNativeDriver: true,
     }).start();
+  }, [showSearchBar]);
+
+  //focus keyboard useEffect
+  useEffect(() => {
+    if (showSearchBar && inputRef.current) {
+      inputRef.current.focus();
+    }
   }, [showSearchBar]);
 
   return (
@@ -46,6 +54,7 @@ const Search = ({ value, onChangeText, showSearchBar, setShowSearchBar }) => {
             value={value}
             onChangeText={onChangeText}
             placeholderTextColor={colors.gray}
+            ref={inputRef}
           />
           <TouchableOpacity onPress={() => onChangeText('')}>
             <IconSymbol name="xmark" size={20} color={colors.gray} style={{ marginLeft: 4 }} />
