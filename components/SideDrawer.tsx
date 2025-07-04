@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -36,26 +36,25 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
   onFeedSelect,
   feedNum,
 }) => {
-  const slideAnim = React.useRef(new Animated.Value(-DRAWER_WIDTH)).current;
+  //const slideAnim = React.useRef(new Animated.Value(-DRAWER_WIDTH)).current;
+  const slideAnim = React.useRef(new Animated.Value(isVisible ? -DRAWER_WIDTH : 0)).current;
+  const [shouldRender, setShouldRender] = useState(isVisible);
 
-  const handleClose = () => {
-    Animated.timing(slideAnim, {
-      toValue: -DRAWER_WIDTH,
-      duration: 300, //able to adjust the closing animation time if necessary
-      useNativeDriver: true,
-    }).start(() => {
-      onClose();
-    });
-  };
 
-  React.useEffect(() => {
-    if (isVisible) {
-      slideAnim.setValue(-DRAWER_WIDTH);
-      Animated.timing(slideAnim, {
+  useEffect(() => {
+    if (isVisible) { //when true, drawer becomes visible
+      setShouldRender(true); //says that this component is in the vDOM tree
+      Animated.timing(slideAnim, { //controls horizontal position
         toValue: 0,
-        duration: 300, //animation time for opening
+        duration: 250,
         useNativeDriver: true,
       }).start();
+    } else {
+      Animated.timing(slideAnim, {
+        toValue: -DRAWER_WIDTH, //closing 
+        duration: 250,
+        useNativeDriver: true,
+      }).start(() => setShouldRender(false)); //after animation finishes, then component unmounts… avoids overlay
     }
   }, [isVisible, slideAnim]);
 
@@ -64,11 +63,11 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
     //Keep drawer open while feed loads, user can close it when they want to for flexibility 
   };
 
-  if (!isVisible) return null;
+  if (!shouldRender) return null;
 
   return (
-    <View style={styles.overlay}>
-      <TouchableOpacity style={styles.backdrop} onPress={handleClose} />
+    <View style={styles.overlay} pointerEvents={isVisible ? 'auto' : 'none'}>
+      <TouchableOpacity style={styles.backdrop} onPress={onClose} />
       <Animated.View //animated for a smoother transition
         style={[
           styles.drawer,
@@ -84,7 +83,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
               style={styles.headerLogo}
               resizeMode="contain"
             />
-            <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
+            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
               <IconSymbol name="chevron.left" size={24} color={colors.text} />
             </TouchableOpacity>
           </View>
