@@ -4,6 +4,7 @@
 .env
 android/
 ios/
+keys/
 
 # dependencies
 node_modules/

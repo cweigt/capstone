@@ -47,6 +47,7 @@ jobs:
 
       - name: Decode and setup Android keystore
         run: |
+          mkdir -p android
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/keystore.jks
           mkdir -p ~/.android
           cat <<EOF > ~/.android/keystore.properties
@@ -58,7 +59,8 @@ jobs:
 
       - name: Decode App Store Connect API key
         run: |
-          echo "$ASC_PRIVATE_KEY" | base64 --decode > AuthKey_${ASC_KEY_ID}.p8
+          mkdir -p ios 
+          echo "$ASC_PRIVATE_KEY" | base64 --decode > ios/AuthKey_${ASC_KEY_ID}.p8
           mkdir -p ~/.eas
           jq -n \
             --arg keyId "$ASC_KEY_ID" \
