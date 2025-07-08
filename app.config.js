@@ -2,8 +2,8 @@ import 'dotenv/config';
 
 export default {
     "expo": {
-        "name": "MobileApp",
-        "slug": "MobileApp",
+        "name": "Aurora Agent",
+        "slug": "Aurora-Agent",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/images/icon.png",
@@ -45,7 +45,7 @@ export default {
         "extra": {
             "router": {},
             "eas": {
-                "projectId": "e81b6cf0-43cc-43b6-b0ae-c4d1092a1881"
+                "projectId": "842fb628-dfeb-4e71-8392-32f190b2dba5"
             },
             "firebaseApiKey": process.env.FIREBASE_API_KEY,
             "firebaseAuthDomain": process.env.FIREBASE_AUTH_DOMAIN,
