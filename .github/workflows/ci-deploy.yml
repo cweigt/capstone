@@ -33,14 +33,14 @@ jobs:
         with:
           node-version: '24.2.0'
 
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
-
-      - name: Login to Expo
-        run: eas login --token $EXPO_TOKEN
 
       - name: Prebuild native projects
         run: npx expo prebuild --clean --platform android,ios
