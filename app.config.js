@@ -3,7 +3,7 @@ import 'dotenv/config';
 export default {
     "expo": {
         "name": "Aurora Agent",
-        "slug": "Aurora-Agent",
+        "slug": "aurora-agent",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/images/icon.png",
