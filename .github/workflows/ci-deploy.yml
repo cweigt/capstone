@@ -82,12 +82,12 @@ jobs:
             --output ./ios/App/build/Archive/Products/Applications/AuroraAgent.app
 
       - name: Archive build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aurora-android-aab
           path: android/app/build/outputs/aab/app-release.aab
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: aurora-ios-app
           path: ios/App/build/Archive/Products/Applications/AuroraAgent.app
