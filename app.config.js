@@ -11,7 +11,15 @@ export default {
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "bundleIdentifier": process.env.IOS_BUNDLE_ID || "com.aurorawdc.auroramobile",
+            "entitlements": {
+                "aps-environment": process.env.NODE_ENV === 'production' ? "production" : "development"
+            },
+            // Universal links / Associated Domains
+            "associatedDomains": [
+                process.env.IOS_ASSOCIATED_DOMAIN || "applinks:aurorawdc.com"
+            ]
         },
         "android": {
             "adaptiveIcon": {
