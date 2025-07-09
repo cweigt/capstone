@@ -5,6 +5,7 @@
 android/
 ios/
 keys/
+credentials.json
 
 # dependencies
 node_modules/

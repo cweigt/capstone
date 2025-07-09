@@ -11,16 +11,9 @@ jobs:
     name: Prebuild & EAS Production Builds
     runs-on: macos-latest
     env:
-      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      EXPO_TOKEN:   ${{ secrets.EXPO_TOKEN }}
       EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
-
-      # Android signing
-      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-      ANDROID_KEY_ALIAS:     ${{ secrets.ANDROID_KEY_ALIAS }}
-      ANDROID_KEY_PASSWORD:  ${{ secrets.ANDROID_KEY_PASSWORD }}
-
-      # Apple App Store Connect API key
+      # Keystore & credentials.json are decoded directly from secrets in steps
       ASC_KEY_ID:      ${{ secrets.ASC_KEY_ID }}
       ASC_ISSUER_ID:   ${{ secrets.ASC_ISSUER_ID }}
       ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
@@ -28,67 +21,57 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '24.2.0'
-
-      - name: Setup EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Prebuild native projects
-        run: npx expo prebuild --clean --platform android,ios
-
-      - name: Decode and setup Android keystore
+      - name: Decode Android Keystore
         run: |
           mkdir -p android
-          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/keystore.jks
-          mkdir -p ~/.android
-          cat <<EOF > ~/.android/keystore.properties
-          storeFile=$GITHUB_WORKSPACE/android/keystore.jks
-          storePassword=$ANDROID_KEYSTORE_PASSWORD
-          keyAlias=$ANDROID_KEY_ALIAS
-          keyPassword=$ANDROID_KEY_PASSWORD
-          EOF
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" \
+            | base64 --decode > android/keystore.jks
+
+      - name: Decode credentials.json
+        run: |
+          echo "${{ secrets.CREDENTIALS_JSON_BASE64 }}" \
+            | base64 --decode > credentials.json
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '24.2.0'
+      - run: npm install -g eas-cli
+
+      - run: yarn install --frozen-lockfile
+      - run: npx expo prebuild --clean --platform android,ios
 
       - name: Decode App Store Connect API key
         run: |
-          mkdir -p ios 
-          echo "$ASC_PRIVATE_KEY" | base64 --decode > ios/AuthKey_${ASC_KEY_ID}.p8
-          mkdir -p ~/.eas
+          mkdir -p ios ~/.eas
+          echo "${{ secrets.ASC_PRIVATE_KEY }}" \
+            | base64 --decode > ios/AuthKey_${{ secrets.ASC_KEY_ID }}.p8
           jq -n \
-            --arg keyId "$ASC_KEY_ID" \
-            --arg issuerId "$ASC_ISSUER_ID" \
-            --arg privateKey "$(sed 's/$/\\n/' AuthKey_${ASC_KEY_ID}.p8)" \
-            '{"keyId":$keyId, "issuerId":$issuerId, "key":$privateKey}' \
+            --arg keyId "${{ secrets.ASC_KEY_ID }}" \
+            --arg issuerId "${{ secrets.ASC_ISSUER_ID }}" \
+            --arg privateKey "$(sed 's/$/\\n/' ios/AuthKey_${{ secrets.ASC_KEY_ID }}.p8)" \
+            '{"keyId":$keyId,"issuerId":$issuerId,"key":$privateKey}' \
             > ~/.eas/appstoreconnect.json
 
-      - name: Run Android production build (local)
+      - name: Android production build (CI)
         run: |
           eas build --local \
             --platform android \
             --profile production \
+            --non-interactive \
             --output ./android/app/build/outputs/aab/app-release.aab
 
-      - name: Run iOS production build (local)
+      - name: iOS production build (CI)
         run: |
           eas build --local \
             --platform ios \
             --profile production \
+            --non-interactive \
             --output ./ios/App/build/Archive/Products/Applications/AuroraAgent.app
 
-      - name: Archive build artifacts
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: aurora-android-aab
           path: android/app/build/outputs/aab/app-release.aab
-
       - uses: actions/upload-artifact@v4
         with:
           name: aurora-ios-app
