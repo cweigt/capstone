@@ -6,6 +6,9 @@ android/
 ios/
 keys/
 credentials.json
+*.csr
+*.cer
+
 
 # dependencies
 node_modules/

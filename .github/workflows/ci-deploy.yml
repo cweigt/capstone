@@ -40,17 +40,22 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: npx expo prebuild --clean --platform android,ios
 
-      - name: Decode App Store Connect API key
+      - name: Decode iOS ios_distribution.p12
         run: |
-          mkdir -p ios ~/.eas
-          echo "${{ secrets.ASC_PRIVATE_KEY }}" \
-            | base64 --decode > ios/AuthKey_${{ secrets.ASC_KEY_ID }}.p8
-          jq -n \
-            --arg keyId "${{ secrets.ASC_KEY_ID }}" \
-            --arg issuerId "${{ secrets.ASC_ISSUER_ID }}" \
-            --arg privateKey "$(sed 's/$/\\n/' ios/AuthKey_${{ secrets.ASC_KEY_ID }}.p8)" \
-            '{"keyId":$keyId,"issuerId":$issuerId,"key":$privateKey}' \
-            > ~/.eas/appstoreconnect.json
+          mkdir -p ios
+          echo "${{ secrets.IOS_P12_BASE64 }}" \
+            | base64 --decode > ios/ios_distribution.p12
+
+      - name: Decode iOS provisioning profile
+        run: |
+          echo "${{ secrets.IOS_PROV_BASE64 }}" \
+            | base64 --decode > ios/auroraagent.mobileprovision
+
+      - name: Decode iOS credentials.json
+        run: |
+          echo "${{ secrets.IOS_CREDENTIALS_JSON_BASE64 }}" \
+            | base64 --decode > credentials.json
+
 
       - name: Android production build (CI)
         run: |

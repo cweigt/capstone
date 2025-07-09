@@ -13,6 +13,9 @@ export default {
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": process.env.IOS_BUNDLE_ID || "com.aurorawdc.auroramobile",
+            "infoPlist": {
+                "ITSAppUsesNonExemptEncryption": false
+            },
             "entitlements": {
                 "aps-environment": process.env.NODE_ENV === 'production' ? "production" : "development"
             },
