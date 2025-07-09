@@ -27,7 +27,15 @@ jobs:
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" \
             | base64 --decode > android/keystore.jks
 
-      - name: Decode credentials.json
+      - name: Decode iOS distribution cert & profile
+        run: |
+          mkdir -p ios
+          echo "${{ secrets.IOS_P12_BASE64 }}" \
+            | base64 --decode > ios/ios_distribution.p12
+          echo "${{ secrets.IOS_PROV_BASE64 }}" \
+            | base64 --decode > ios/auroraagent.mobileprovision
+
+      - name: Decode combined credentials.json
         run: |
           echo "${{ secrets.CREDENTIALS_JSON_BASE64 }}" \
             | base64 --decode > credentials.json
@@ -39,23 +47,6 @@ jobs:
 
       - run: yarn install --frozen-lockfile
       - run: npx expo prebuild --clean --platform android,ios
-
-      - name: Decode iOS ios_distribution.p12
-        run: |
-          mkdir -p ios
-          echo "${{ secrets.IOS_P12_BASE64 }}" \
-            | base64 --decode > ios/ios_distribution.p12
-
-      - name: Decode iOS provisioning profile
-        run: |
-          echo "${{ secrets.IOS_PROV_BASE64 }}" \
-            | base64 --decode > ios/auroraagent.mobileprovision
-
-      - name: Decode iOS credentials.json
-        run: |
-          echo "${{ secrets.IOS_CREDENTIALS_JSON_BASE64 }}" \
-            | base64 --decode > credentials.json
-
 
       - name: Android production build (CI)
         run: |
