@@ -33,7 +33,7 @@ jobs:
           echo "${{ secrets.IOS_P12_BASE64 }}" \
             | base64 --decode > ios/ios_distribution.p12
           echo "${{ secrets.IOS_PROV_BASE64 }}" \
-            | base64 --decode > ios/auroraagent.mobileprovision
+            | base64 --decode > ios/AuroraAgent_App_Store.mobileprovision
 
       - name: Decode combined credentials.json
         run: |
