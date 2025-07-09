@@ -31,9 +31,10 @@ interface SavedArticle {
 }
 
 const SavedArticles = () => {
+    // All hooks at the top
+    const { user } = useAuth();
     const [savedArticles, setSavedArticles] = useState<SavedArticle[]>([]);
     const [loading, setLoading] = useState(true);
-    const { user } = useAuth();
     const database = getDatabase();
 
     //removing the article from Firebase that is associated with that specific card
@@ -83,6 +84,14 @@ const SavedArticles = () => {
 
         return () => listener();
     }, [user]); //runs everytime user changes
+
+    if (user === null) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+                <Text style={{ fontSize: 18, color: '#888' }}>Please sign in to view saved articles.</Text>
+            </View>
+        );
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} edges={['top']}>
