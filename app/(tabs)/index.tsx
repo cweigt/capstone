@@ -20,6 +20,8 @@ import decodeHtml from '@/utils/decodeHTML';
 import { RefreshControl } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
+import { getDefaultRoute, ROUTES } from '@/constants/Routes';
 
 interface FeedOption {
   label: string;
@@ -262,12 +264,28 @@ const HomeScreen = () => {
     
   };
 
+  console.log('user in HomeScreen:', user);
+  useEffect(() => {
+    if (user === null) {
+      router.replace(ROUTES.ACCOUNT);
+    }
+  }, [user]);
+  
+  if (user === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+        <Text style={{ fontSize: 18, color: '#888' }}>Please sign in to view feed.</Text>
+      </View>
+    );
+  }
+
+
   return (
     <>
       <ParallaxScrollView 
         headerImage={
           <>
-            {user ? (
+            {user && (
 
                 <View style={[styles.dropdownContainer, {paddingTop: insets.top}]}>
                   <View style={styles.headerRow}>
@@ -295,10 +313,7 @@ const HomeScreen = () => {
                   </View>
                 </View>
               
-            ) :
-              <View style={styles.dropdownContainer}>
-                <Text style={styles.message}>Please sign in to view feed.</Text>
-              </View>
+            )
             }
           </>
         }
@@ -328,7 +343,7 @@ const HomeScreen = () => {
               />
             ))
           ) : (
-            <Text style={{textAlign: 'center', marginTop: 40}}>No articles found.</Text>
+            <Text style={{textAlign: 'center', marginTop: 0}}>No articles found.</Text>
           )}
         </View>
       </ParallaxScrollView>
