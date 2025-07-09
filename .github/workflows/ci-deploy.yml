@@ -11,6 +11,8 @@ jobs:
     name: Prebuild & EAS Production Builds
     runs-on: macos-latest
     env:
+      NODE_ENV: production
+      EAS_BUILD_AUTOMATIC_UPDATE: true
       EXPO_TOKEN:   ${{ secrets.EXPO_TOKEN }}
       EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
       # Keystore & credentials.json are decoded directly from secrets in steps
