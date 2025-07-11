@@ -9,6 +9,9 @@ credentials.json
 *.csr
 *.cer
 
+# Builds
+builds/
+
 
 # dependencies
 node_modules/
