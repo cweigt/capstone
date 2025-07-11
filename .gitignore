@@ -15,7 +15,6 @@ builds/
 
 # dependencies
 node_modules/
-
 package-lock.json
 
 # Expo
