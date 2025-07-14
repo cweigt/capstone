@@ -10,14 +10,22 @@ import React, { useState } from 'react';
 import SignUp from '@/components/SignUp';
 import SignIn from '@/components/SignIn';
 import { useAuth } from '@/context/AuthContext';
-import { AccountStyles as styles } from '@/styles/Account.styles';
+import { useEffect } from 'react';
 import { router } from 'expo-router';
+import { ROUTES } from '@/constants/Routes';
+import { AccountStyles as styles } from '@/styles/Account.styles';
 import { auth } from '@/firebase';
 import DisplayImage from '@/components/DisplayImage';
 
 const Sign_Up = () => {
     const [showSignUp, setShowSignUp] = useState(false);
-    const {user} = useAuth();
+    const { user } = useAuth();
+
+    useEffect(() => {
+        if (user) {
+            router.replace(ROUTES.FEEDS);
+        }
+    }, [user]);
 
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }} edges={['top']}>

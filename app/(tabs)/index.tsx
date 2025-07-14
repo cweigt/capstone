@@ -19,6 +19,9 @@ import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
 import decodeHtml from '@/utils/decodeHTML';
 import { RefreshControl } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
+import { getDefaultRoute, ROUTES } from '@/constants/Routes';
 
 interface FeedOption {
   label: string;
@@ -49,6 +52,7 @@ const HomeScreen = () => {
   const database = getDatabase();
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
+  const insets = useSafeAreaInsets(); //dynamic way to find the safe area for each device
 
   //Fetch feed options initially
   useEffect(() => {
@@ -260,17 +264,30 @@ const HomeScreen = () => {
     
   };
 
+  console.log('user in HomeScreen:', user);
+  useEffect(() => {
+    if (user === null) {
+      router.replace(ROUTES.ACCOUNT);
+    }
+  }, [user]);
+  
+  if (user === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+        <Text style={{ fontSize: 18, color: '#888' }}>Please sign in to view feed.</Text>
+      </View>
+    );
+  }
+
+
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
+    <>
       <ParallaxScrollView 
         headerImage={
           <>
-            {user ? (
-              !showSearchBar ? (
-                <View style={styles.dropdownContainer}>
+            {user && (
+
+                <View style={[styles.dropdownContainer, {paddingTop: insets.top}]}>
                   <View style={styles.headerRow}>
                     <TouchableOpacity onPress={() => setIsDrawerVisible(true)}>
                       <Icon 
@@ -295,16 +312,9 @@ const HomeScreen = () => {
                     </TouchableOpacity>
                   </View>
                 </View>
-              ) : (
-                <View style={{ width: '100%', alignSelf: 'stretch', backgroundColor: colors.background }}>
-                  <Search value={searchQuery} onChangeText={setSearchQuery} showSearchBar={showSearchBar} setShowSearchBar={setShowSearchBar} />
-                </View>
-              )
-            ) : (
-              <View style={styles.dropdownContainer}>
-                <Text style={styles.message}>Please sign in to view feed.</Text>
-              </View>
-            )}
+              
+            )
+            }
           </>
         }
         // pull-from-top to refresh
@@ -314,7 +324,7 @@ const HomeScreen = () => {
           tintColor={colors.accentBlue}
         />}
       >
-        <View style={{backgroundColor: "white", flex: 1, paddingTop: 150, paddingBottom: 20}}>
+        <View style={{backgroundColor: "white", flex: 1, paddingTop: 140, paddingBottom: 20}}>
           {loading ? (
             <Text style={{textAlign: 'center', marginTop: 10}}>Loading articles...</Text>
           ) : articlesToShow.length > 0 ? (
@@ -333,10 +343,17 @@ const HomeScreen = () => {
               />
             ))
           ) : (
-            <Text style={{textAlign: 'center', marginTop: 40}}>No articles found.</Text>
+            <Text style={{textAlign: 'center', marginTop: 0}}>No articles found.</Text>
           )}
         </View>
       </ParallaxScrollView>
+      {/*ensures that Search always stays rendered so animation actually works*/}
+      <Search 
+        value={searchQuery} 
+        onChangeText={setSearchQuery} 
+        showSearchBar={showSearchBar} 
+        setShowSearchBar={setShowSearchBar} 
+      />
       <SideDrawer
         isVisible={isDrawerVisible}
         onClose={() => setIsDrawerVisible(false)}
@@ -345,7 +362,7 @@ const HomeScreen = () => {
         onFeedSelect={handleFeedSelect}
         feedNum={feedNum}
       />
-    </KeyboardAvoidingView>
+    </>
   );
 }
 
