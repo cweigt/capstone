@@ -3,15 +3,17 @@ import {
     Text,
     Image,
     TextInput,
-    Button 
+    Button, 
+    Alert
 } from 'react-native';
 import { ParallaxScrollView } from '@/components/ParallaxScrollView';
 import React, { useState } from 'react';
 import { 
+  deleteUser,
     getAuth,
     updateProfile,
 } from 'firebase/auth';
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, remove, set } from 'firebase/database';
 import UploadImage from '@/components/UploadImage';
 import { SettingsStyles as styles } from '../styles/Settings.styles';
 import { router } from 'expo-router';
@@ -49,6 +51,37 @@ const Settings = () => {
       alert('Failed to update name. Please try again.');
     }
   };
+
+const handleDeleteAccount = async () => {
+  const user = auth.currentUser;
+
+  if (!user) return;
+
+  try {
+    const userId = user.uid;
+
+    // delete saved articles
+    const savedRef = ref(database, `users/${user.uid}/savedArticles`);
+    await remove(savedRef);
+
+    // delete profile picture
+    const profilePictureRef = ref(database, `users/${user.uid}/photoURL`);
+    await remove(profilePictureRef)
+
+    // Delete Firebase Authentication account (I believe this should include email, 
+    // password hash, OAuth credentials)
+    await deleteUser(user);
+
+    // Optionally redirect to login screen
+  } catch (error: any) {
+    if (error.code === 'auth/requires-recent-login') { // chatGPT suggested handling this error code
+      Alert.alert('Error', 'Please log in again to delete your account.');
+    } else {
+      Alert.alert('Error', error.message);
+    }
+  }
+};
+
 
   return (
     <ParallaxScrollView
@@ -107,3 +140,7 @@ const Settings = () => {
 }
 
 export default Settings;
+function deleteDoc(arg0: any) {
+  throw new Error('Function not implemented.');
+}
+
