@@ -2,8 +2,8 @@ import 'dotenv/config';
 
 export default {
     "expo": {
-        "name": "MobileApp",
-        "slug": "MobileApp",
+        "name": "Aurora Agent",
+        "slug": "aurora-agent",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/images/icon.png",
@@ -11,7 +11,18 @@ export default {
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "bundleIdentifier": process.env.IOS_BUNDLE_ID || "com.aurorawdc.auroramobile",
+            "infoPlist": {
+                "ITSAppUsesNonExemptEncryption": false
+            },
+            "entitlements": {
+                "aps-environment": process.env.NODE_ENV === 'production' ? "production" : "development"
+            },
+            // Universal links / Associated Domains
+            "associatedDomains": [
+                process.env.IOS_ASSOCIATED_DOMAIN || "applinks:aurorawdc.com"
+            ]
         },
         "android": {
             "adaptiveIcon": {
@@ -45,7 +56,7 @@ export default {
         "extra": {
             "router": {},
             "eas": {
-                "projectId": "e81b6cf0-43cc-43b6-b0ae-c4d1092a1881"
+                "projectId": "842fb628-dfeb-4e71-8392-32f190b2dba5"
             },
             "firebaseApiKey": process.env.FIREBASE_API_KEY,
             "firebaseAuthDomain": process.env.FIREBASE_AUTH_DOMAIN,
