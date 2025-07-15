@@ -16,6 +16,7 @@ import { ROUTES } from '@/constants/Routes';
 import { AccountStyles as styles } from '@/styles/Account.styles';
 import { auth } from '@/firebase';
 import DisplayImage from '@/components/DisplayImage';
+import DeleteAccountButton from '@/components/DeleteAccountButton';
 
 const Sign_Up = () => {
     const [showSignUp, setShowSignUp] = useState(false);
@@ -77,6 +78,9 @@ const Sign_Up = () => {
                     >
                         <Text style={styles.signOut}>Sign Out</Text>
                     </TouchableOpacity>
+
+                    <DeleteAccountButton/>
+                    
                 </View>
               </>
             ) : (
