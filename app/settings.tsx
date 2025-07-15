@@ -144,12 +144,8 @@ const Settings = () => {
                   router.replace(ROUTES.ACCOUNT);
                 }}
               />
-            </View>
-
-            <View>
               <Button title="Delete Account" color="red" onPress={confirmDelete} />
             </View>
-            
         </View>
 
         
