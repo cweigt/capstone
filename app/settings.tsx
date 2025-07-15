@@ -82,20 +82,17 @@ const Settings = () => {
     }
   };
 
-  // delete button
-  const DeleteAccountButton = () => {
-    const confirmDelete = () => {
-      Alert.alert(
-        'Delete Account',
-        'Are you sure you want to delete your account and all associated data? This action cannot be undone.',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Delete', style: 'destructive', onPress: handleDeleteAccount },
-        ]
-      );
-    };
-    return <Button title="Delete Account" color="red" onPress={confirmDelete} />;
-  }
+  // delete confirmation function
+  const confirmDelete = () => {
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to delete your account and all associated data? This action cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Delete', style: 'destructive', onPress: handleDeleteAccount },
+      ]
+    );
+  };
 
 
   return (
@@ -148,7 +145,15 @@ const Settings = () => {
                 }}
               />
             </View>
+
+            <View>
+              <Button title="Delete Account" color="red" onPress={confirmDelete} />
+            </View>
+            
         </View>
+
+        
+        
       </View>
     </ParallaxScrollView>
   );
