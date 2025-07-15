@@ -126,6 +126,7 @@ const SavedArticles = () => {
                 </View>
                 )}
             </View>
+            <View style={{marginBottom: 20}}/>
             </ScrollView>
         </SafeAreaView>
     );
