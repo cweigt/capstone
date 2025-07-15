@@ -78,9 +78,6 @@ const Sign_Up = () => {
                     >
                         <Text style={styles.signOut}>Sign Out</Text>
                     </TouchableOpacity>
-
-                    <DeleteAccountButton/>
-                    
                 </View>
               </>
             ) : (
