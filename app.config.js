@@ -11,6 +11,7 @@ export default {
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
         "ios": {
+            "googleServicesFile": process.env.GOOGLE_SERVICES_PLIST,
             "supportsTablet": true,
             "bundleIdentifier": process.env.IOS_BUNDLE_ID || "com.aurorawdc.auroramobile",
             "infoPlist": {
@@ -24,6 +25,7 @@ export default {
                 process.env.IOS_ASSOCIATED_DOMAIN || "applinks:aurorawdc.com"
             ]
         },
+        "googleServicesFile": process.env.GOOGLE_SERVICES_JSON,
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/adaptive-icon.png",
