@@ -55,8 +55,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       <View style={styles.cardActionRow}>
         {showSavedIcon && onSave && (
           <TouchableOpacity style={styles.actionButton} onPress={onSave}
-          accessibilityLabel='Unsave/Save article'
-          accessibilityRole='button'
+            accessible={true}
+            accessibilityLabel={saved ? 'Unsave article' : 'Save article'}
+            accessibilityHint={saved ? 'Removes this article from your saved list' : 'Saves this article to your saved list'}
+            accessibilityRole='button'
           >
             <Icon
               name={saved ? 'star' : 'star-outline'}
@@ -67,18 +69,22 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             </Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity style={styles.actionButton} //onPress={onShare}
+        <TouchableOpacity style={styles.actionButton}
           onPress={() => Alert.alert('This feature is currently in development!')}
-          accessibilityLabel='Share Article'
+          accessible={true}
+          accessibilityLabel="Share article"
+          accessibilityHint="Shares this article"
           accessibilityRole='button'
         >
           <Icon name="share" type="feather" color={colors.gray} />
           <Text style={styles.actionLabel} allowFontScaling={true}>Share</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton} onPress={() => handleOpenLink(link)}
-          accessibilityLabel='View article'
+          accessible={true}
+          accessibilityLabel="View article"
+          accessibilityHint="Opens the article in the browser"
           accessibilityRole='link'
-          >
+        >
           <Text style={styles.viewLabel} allowFontScaling={true}>View</Text>
           <Icon name="external-link" type="feather" color={colors.accentBlue || colors.primary} size={18} style={{ marginLeft: spacing.xs }} />
         </TouchableOpacity>

@@ -126,6 +126,9 @@ const Sign_Up = ({ setUser }) => {
                             style={styles.input}
                             value={firstName}
                             onChangeText={setFirstName}
+                            accessible={true}
+                            accessibilityLabel="First name"
+                            accessibilityHint="Enter your first name"
                         />
                         <Text style={styles.requirements} allowFontScaling={true}>
                             Last name
@@ -134,6 +137,9 @@ const Sign_Up = ({ setUser }) => {
                             style={styles.input}
                             value={lastName}
                             onChangeText={setLastName}
+                            accessible={true}
+                            accessibilityLabel="Last name"
+                            accessibilityHint="Enter your last name"
                         />
                         <Text style={styles.requirements} allowFontScaling={true}>
                             Email
@@ -143,6 +149,9 @@ const Sign_Up = ({ setUser }) => {
                             value={email}
                             onChangeText={setEmail}
                             keyboardType="email-address"
+                            accessible={true}
+                            accessibilityLabel="Email address"
+                            accessibilityHint="Enter your email address"
                         />
                         <Text style={styles.requirements} allowFontScaling={true}>
                             Password
@@ -153,10 +162,16 @@ const Sign_Up = ({ setUser }) => {
                                 secureTextEntry={!showPassword1}
                                 value={password1}
                                 onChangeText={setPassword1}
+                                accessible={true}
+                                accessibilityLabel="Password"
+                                accessibilityHint="Enter your password"
                             />
                             <TouchableOpacity 
                                 onPress={() => setShowPassword1(!showPassword1)}
                                 style={styles.eye}
+                                accessible={true}
+                                accessibilityLabel={showPassword1 ? 'Hide password' : 'Show password'}
+                                accessibilityHint="Toggles password visibility"
                             >
                                 <Ionicons
                                     name={showPassword1 ? 'eye-off' : 'eye'}
@@ -174,10 +189,16 @@ const Sign_Up = ({ setUser }) => {
                                 secureTextEntry={!showPassword2}
                                 value={password2}
                                 onChangeText={setPassword2}
+                                accessible={true}
+                                accessibilityLabel="Confirm password"
+                                accessibilityHint="Re-enter your password"
                             />
                             <TouchableOpacity 
                                 onPress={() => setShowPassword2(!showPassword2)}
                                 style={styles.eye}
+                                accessible={true}
+                                accessibilityLabel={showPassword2 ? 'Hide password' : 'Show password'}
+                                accessibilityHint="Toggles password visibility"
                             >
                                 <Ionicons
                                     name={showPassword2 ? 'eye-off' : 'eye'}
@@ -192,11 +213,17 @@ const Sign_Up = ({ setUser }) => {
                         <TouchableOpacity 
                             style={[{marginTop: 20}]} 
                             onPress={signUp}
+                            accessible={true}
+                            accessibilityLabel="Sign Up"
+                            accessibilityHint="Creates a new account"
                         >
                             <Text style={styles.reset} allowFontScaling={true}>Sign Up</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => setUser(false)}
+                            accessible={true}
+                            accessibilityLabel="Sign In"
+                            accessibilityHint="Go to the sign in screen"
                         >
                             <Text style={styles.toggleText} allowFontScaling={true}>
                                 Already have an account? Sign in.

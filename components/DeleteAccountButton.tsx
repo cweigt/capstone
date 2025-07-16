@@ -75,6 +75,9 @@ const DeleteAccountButton = () => {
             <TouchableOpacity
                 onPress={confirmDelete}
                 style={{ alignItems: 'center', paddingTop: 40 }}
+                accessible={true}
+                accessibilityLabel="Delete Account"
+                accessibilityHint="Deletes your account and all associated data. This action cannot be undone."
             >
                 <Text style={styles.deleteAccount}>Delete Account</Text>
             </TouchableOpacity>
@@ -97,10 +100,16 @@ const DeleteAccountButton = () => {
                                 value={password}
                                 onChangeText={setPassword}
                                 autoFocus
+                                accessible={true}
+                                accessibilityLabel="Password"
+                                accessibilityHint="Type your password in to delete the account."
                             />
                             <TouchableOpacity
                                 onPress={() => setShowPassword(!showPassword)}
                                 style={styles.eye}
+                                accessible={true}
+                                accessibilityLabel={showPassword ? 'Hide password' : 'Show password'}
+                                accessibilityHint="Toggles password visibility"
                             >
                                 <Ionicons
                                     name={showPassword ? 'eye-off' : 'eye'}
@@ -111,10 +120,18 @@ const DeleteAccountButton = () => {
                         </View>
                         {error ? <Text style={styles.errorMessage}>{error}</Text> : null}
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                            <TouchableOpacity onPress={() => { setShowPasswordModal(false); setPassword(""); setError(""); setPendingDelete(false); }} style={{ marginRight: 16 }}>
+                            <TouchableOpacity onPress={() => { setShowPasswordModal(false); setPassword(""); setError(""); setPendingDelete(false); }} style={{ marginRight: 16 }}
+                                accessible={true}
+                                accessibilityLabel="Cancel"
+                                accessibilityHint="Cancel account deletion and close the password prompt."
+                            >
                                 <Text style={{color: colors.text}}>Cancel</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleReauthAndDelete}>
+                            <TouchableOpacity onPress={handleReauthAndDelete}
+                                accessible={true}
+                                accessibilityLabel="Delete Account"
+                                accessibilityHint="Confirm account deletion after entering your password."
+                            >
                                 <Text style={styles.deleteButton}>Delete</Text>
                             </TouchableOpacity>
                         </View>
