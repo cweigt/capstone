@@ -24,25 +24,25 @@ export const spacing = {
 
 export const typography = {
   h1: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
   },
   h2: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  h3: {
     fontSize: 20,
     fontWeight: 'bold',
   },
+  h3: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
   body: {
-    fontSize: 16,
+    fontSize: 13,
   },
   caption: {
-    fontSize: 12, //label font size
+    fontSize: 11, //label font size
   },
   regular: {
-    fontSize: 14,
+    fontSize: 12,
   },
 };
 
