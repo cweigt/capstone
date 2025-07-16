@@ -41,13 +41,13 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.cardHeaderRow}>
-        <Text style={styles.cardSource}>{author || 'Source'}</Text>
-        <Text style={styles.cardDate}>{new Date(pubDate).toLocaleDateString()}</Text>
+        <Text style={styles.cardSource} allowFontScaling={true}>{author || 'Source'}</Text>
+        <Text style={styles.cardDate} allowFontScaling={true}>{new Date(pubDate).toLocaleDateString()}</Text>
       </View> 
-      <Text style={styles.cardTitle}>{title}</Text>
+      <Text style={styles.cardTitle} allowFontScaling={true}>{title}</Text>
       
       {description && (
-        <Text style={styles.cardDescription} numberOfLines={3}>
+        <Text style={styles.cardDescription} numberOfLines={3} allowFontScaling={true}>
           {description}
         </Text>
       )}
@@ -62,7 +62,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
               name={saved ? 'star' : 'star-outline'}
               color={saved ? colors.saveIconActive : colors.gray}
             />
-            <Text style={[styles.actionLabel, { color: saved ? colors.text : colors.gray }]}>
+            <Text style={[styles.actionLabel, { color: saved ? colors.text : colors.gray }]} allowFontScaling={true}>
               {saved ? 'Saved' : 'Save'}
             </Text>
           </TouchableOpacity>
@@ -73,13 +73,13 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           accessibilityRole='button'
         >
           <Icon name="share" type="feather" color={colors.gray} />
-          <Text style={styles.actionLabel}>Share</Text>
+          <Text style={styles.actionLabel} allowFontScaling={true}>Share</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton} onPress={() => handleOpenLink(link)}
           accessibilityLabel='View article'
           accessibilityRole='link'
           >
-          <Text style={styles.viewLabel}>View</Text>
+          <Text style={styles.viewLabel} allowFontScaling={true}>View</Text>
           <Icon name="external-link" type="feather" color={colors.accentBlue || colors.primary} size={18} style={{ marginLeft: spacing.xs }} />
         </TouchableOpacity>
       </View>

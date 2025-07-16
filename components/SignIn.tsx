@@ -57,11 +57,11 @@ const Sign_In = ({ setUser }) => {
             <View style={styles.container}>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={styles.formContainer}>
-                        <Text style={styles.title}>Sign In</Text>
-                        <Text style={styles.requirements}>
+                        <Text style={styles.title} allowFontScaling={true}>Sign In</Text>
+                        <Text style={styles.requirements} allowFontScaling={true}>
                             To reset your password, enter your email address and click, "Reset Password".
                         </Text>
-                        <Text style={[styles.requirements, {marginTop: 10}]}>
+                        <Text style={[styles.requirements, {marginTop: 10}]} allowFontScaling={true}>
                             Email
                         </Text>
                         <TextInput
@@ -70,7 +70,7 @@ const Sign_In = ({ setUser }) => {
                             onChangeText={setEmail}
                             keyboardType="email-address"
                         />
-                        <Text style={styles.requirements}>
+                        <Text style={styles.requirements} allowFontScaling={true}>
                             Password
                         </Text>
                         <View style={{ position: 'relative' }}>
@@ -92,24 +92,24 @@ const Sign_In = ({ setUser }) => {
                             </TouchableOpacity>
                         </View>
                         {errorMessage !== '' && (
-                            <Text style={styles.errorText}>{errorMessage}</Text>
+                            <Text style={styles.errorText} allowFontScaling={true}>{errorMessage}</Text>
                         )}
                         <TouchableOpacity 
                             onPress={signIn}
                             style={[{marginTop: 20}]}
                          >
-                            <Text style={styles.reset}>Sign In</Text>
+                            <Text style={styles.reset} allowFontScaling={true}>Sign In</Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
                             style={[{marginTop: 10}]} 
                             onPress={sendPasswordEmail}
                         >
-                            <Text style={styles.reset}>Reset Password</Text>
+                            <Text style={styles.reset} allowFontScaling={true}>Reset Password</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => setUser(true)}
                         >
-                            <Text style={styles.toggleText}>
+                            <Text style={styles.toggleText} allowFontScaling={true}>
                                 Don't have an account? Sign up.
                             </Text>
                         </TouchableOpacity>
