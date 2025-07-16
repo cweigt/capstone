@@ -110,8 +110,8 @@ const Sign_Up = ({ setUser }) => {
             <ScrollView style={styles.container}>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={styles.formContainer}>
-                        <Text style={styles.title}>Sign Up</Text>
-                        <Text style={styles.requirements}>
+                        <Text style={styles.title} allowFontScaling={true}>Sign Up</Text>
+                        <Text style={styles.requirements} allowFontScaling={true}>
                             Password must be:
                             At least 10 characters long.
                             At least one uppercase letter.
@@ -119,7 +119,7 @@ const Sign_Up = ({ setUser }) => {
                             At least one number.
                             At least one special character.
                         </Text>
-                        <Text style={styles.requirements}>
+                        <Text style={styles.requirements} allowFontScaling={true}>
                             First name
                         </Text>
                         <TextInput
@@ -127,7 +127,7 @@ const Sign_Up = ({ setUser }) => {
                             value={firstName}
                             onChangeText={setFirstName}
                         />
-                        <Text style={styles.requirements}>
+                        <Text style={styles.requirements} allowFontScaling={true}>
                             Last name
                         </Text>
                         <TextInput
@@ -135,7 +135,7 @@ const Sign_Up = ({ setUser }) => {
                             value={lastName}
                             onChangeText={setLastName}
                         />
-                        <Text style={styles.requirements}>
+                        <Text style={styles.requirements} allowFontScaling={true}>
                             Email
                         </Text>
                         <TextInput
@@ -144,7 +144,7 @@ const Sign_Up = ({ setUser }) => {
                             onChangeText={setEmail}
                             keyboardType="email-address"
                         />
-                        <Text style={styles.requirements}>
+                        <Text style={styles.requirements} allowFontScaling={true}>
                             Password
                         </Text>
                         <View style={{position: 'relative'}}>
@@ -165,7 +165,7 @@ const Sign_Up = ({ setUser }) => {
                                 />
                             </TouchableOpacity>
                         </View>
-                        <Text style={styles.requirements}>
+                        <Text style={styles.requirements} allowFontScaling={true}>
                             Confirm Password
                         </Text>
                         <View style={{position: 'relative'}}>
@@ -187,18 +187,18 @@ const Sign_Up = ({ setUser }) => {
                             </TouchableOpacity>
                         </View>
                         {errorMessage !== '' && (
-                            <Text style={styles.errorText}>{errorMessage}</Text>
+                            <Text style={styles.errorText} allowFontScaling={true}>{errorMessage}</Text>
                         )}
                         <TouchableOpacity 
                             style={[{marginTop: 20}]} 
                             onPress={signUp}
                         >
-                            <Text style={styles.reset}>Sign Up</Text>
+                            <Text style={styles.reset} allowFontScaling={true}>Sign Up</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => setUser(false)}
                         >
-                            <Text style={styles.toggleText}>
+                            <Text style={styles.toggleText} allowFontScaling={true}>
                                 Already have an account? Sign in.
                             </Text>
                         </TouchableOpacity>
