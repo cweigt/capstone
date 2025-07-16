@@ -3,15 +3,17 @@ import {
     Text,
     Image,
     TextInput,
-    Button 
+    Button, 
+    Alert
 } from 'react-native';
 import { ParallaxScrollView } from '@/components/ParallaxScrollView';
 import React, { useState } from 'react';
 import { 
+  deleteUser,
     getAuth,
     updateProfile,
 } from 'firebase/auth';
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, remove, set } from 'firebase/database';
 import UploadImage from '@/components/UploadImage';
 import { SettingsStyles as styles } from '../styles/Settings.styles';
 import { router } from 'expo-router';
@@ -90,7 +92,7 @@ const Settings = () => {
             </Text>
             <Text style={styles.message}>
               Placeholder for Privacy Policy
-            </Text>
+            </Text>sign out
             <View style={{marginTop: 20}}>
               <Button
                 title="Sign Out"
@@ -101,9 +103,16 @@ const Settings = () => {
               />
             </View>
         </View>
+
+        
+        
       </View>
     </ParallaxScrollView>
   );
 }
 
 export default Settings;
+function deleteDoc(arg0: any) {
+  throw new Error('Function not implemented.');
+}
+

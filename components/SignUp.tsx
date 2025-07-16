@@ -6,7 +6,8 @@ import {
     Button, 
     TouchableOpacity,
     KeyboardAvoidingView,
-    Platform
+    Platform,
+    Alert
  } from 'react-native';
 import React, { useState } from 'react';
 import { auth } from '@/firebase';
@@ -33,31 +34,37 @@ const Sign_Up = ({ setUser }) => {
     const signUp = async() => {
         try {
             if (password1 !== password2) {
+                //Alert.alert('Sign Up Error', 'Passwords do not match.');
                 setErrorMessage('Passwords do not match.');
                 return;
             }
 
             else if(password1.length < 10) {
+                //Alert.alert('Sign Up Error', 'Password must be at least 10 characters long.');
                 setErrorMessage('Password must be at least 10 characters long.');
                 return;
             }
 
             else if(!/[A-Z]/.test(password1)) {
+                //Alert.alert('Sign Up Error', 'Password must contain at least one uppercase letter.');
                 setErrorMessage('Password must contain at least one uppercase letter.');
                 return;
             }
 
             else if(!/[a-z]/.test(password1)) {
+                //Alert.alert('Sign Up Error', 'Password must contain at least one lowercase letter.');
                 setErrorMessage('Password must contain at least one lowercase letter.');
                 return;
             }
 
             else if(!/[0-9]/.test(password1)) {
+                //Alert.alert('Sign Up Error', 'Password must contain at least one number.');
                 setErrorMessage('Password must contain at least one number.');
                 return;
             }
 
             else if(!/[!@#$%^&*(),.?":{}|<>]/.test(password1)) {
+                //Alert.alert('Sign Up Error', 'Password must contain at least one special character.');
                 setErrorMessage('Password must contain at least one special character.');
                 return;
             } 
@@ -86,8 +93,11 @@ const Sign_Up = ({ setUser }) => {
             setEmail('');
             setFirstName('');
             setLastName('');
+            //Alert.alert('Sign Up Successful', 'Your account has been created!');
         } catch (error) {
-            setErrorMessage('Error creating account. Please try again.');
+            //console.log('Sign Up Error:', error);
+            //Alert.alert('Sign Up Error', error.message || 'Error creating account. Please try again.');
+            setErrorMessage(error.message || 'Error creating account. Please try again.');
         }
     };
 
@@ -176,6 +186,9 @@ const Sign_Up = ({ setUser }) => {
                                 />
                             </TouchableOpacity>
                         </View>
+                        {errorMessage !== '' && (
+                            <Text style={styles.errorText}>{errorMessage}</Text>
+                        )}
                         <TouchableOpacity 
                             style={[{marginTop: 20}]} 
                             onPress={signUp}

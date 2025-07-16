@@ -35,7 +35,8 @@ export const SignUpStyles = StyleSheet.create({
         color: colors.error,
         fontSize: typography.caption.fontSize,
         marginBottom: spacing.sm,
-        marginTop: spacing.xs,
+        marginTop: spacing.sm,
+
     },
     message: {
         fontSize: typography.caption.fontSize,

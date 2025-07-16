@@ -89,7 +89,7 @@ const Name_Change = () => {
                 <TouchableOpacity
                   onPress={changeName}
                 >
-                  <Text style={styles.toggleText}>
+                  <Text style={styles.save}>
                     Save Name
                   </Text>
                 </TouchableOpacity>

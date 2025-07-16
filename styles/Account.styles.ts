@@ -52,6 +52,18 @@ export const AccountStyles = StyleSheet.create({
         borderRadius: 5,
         color: colors.error,
     },
+    deleteAccount: {
+        fontWeight: '500',
+        fontSize: typography.body.fontSize,
+        fontFamily: 'System',
+        borderWidth: 0,
+        backgroundColor: '#F2F2F7',
+        borderColor: colors.text,
+        paddingVertical: spacing.sm,
+        paddingHorizontal: spacing.lg,
+        borderRadius: 5,
+        color: colors.error,
+    },
     editProfile: {
         fontWeight: '500',
         fontSize: typography.body.fontSize,

@@ -41,24 +41,17 @@ export const NameChangeStyles = StyleSheet.create({
         marginTop: spacing.sm, //for some reason, this is actually md
         textAlign: 'left',
     },
-    toggleText: {
+    save: {
         fontWeight: '500',
         fontSize: typography.body.fontSize,
         fontFamily: 'System',
-        backgroundColor: colors.backgroundColor,
+        borderWidth: 0,
+        backgroundColor: '#F2F2F7',
         borderColor: colors.text,
         paddingVertical: spacing.sm,
         paddingHorizontal: spacing.lg,
         borderRadius: 5,
         color: colors.text,
-        alignSelf: 'center',
-    },
-    save: {
-        backgroundColor: colors.backgroundColor,
-        paddingVertical: typography.caption.fontSize,
-        paddingHorizontal: spacing.xl,
-        borderRadius: spacing.sm,
-        alignItems: 'center',
         alignSelf: 'center',
     },
 }); 

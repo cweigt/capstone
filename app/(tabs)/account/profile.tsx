@@ -14,6 +14,7 @@ import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native';
 import { spacing } from '@/styles/theme';
+import DeleteAccountButton from '@/components/DeleteAccountButton';
 
 const Profile = () => {
   return (
@@ -47,6 +48,7 @@ const Profile = () => {
             <NameChange />
             <View style={[styles.divider, {marginTop: 20}]} />
             <ResetPassword />
+            <DeleteAccountButton/>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
