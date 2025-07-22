@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const colors = {
+export const lightTheme = {
   primary: '#007AFF', //active tint 
   secondary: '#5856D6',
   background: '#FFFFFF', //tab bar bkg
@@ -12,6 +12,24 @@ export const colors = {
   saveIconActive: '#FFD700',
   gray: '#888888',
   containerColor: '#F2F2F7',
+  backgroundColor: '#F2F2F7' ,
+  shadowColor: '#F2F2F7',
+};
+
+export const darkTheme ={
+  primary: '#0A84FF',       // brighter blue for dark mode
+  secondary: '#5E5CE6',     // slightly lighter than original to pop on dark
+  background: '#1C1C1E',    // main background (dark gray, not pure black)
+  text: '#FFFFFF',          // readable on dark
+  border: '#3A3A3C',        // subtle border color for dark backgrounds
+  error: '#FF453A',         // Apple-style dark mode error red
+  success: '#30D158',       // vivid green that pops on dark
+  accentBlue: '#64AFFF',    // softer blue for accents
+  saveIconActive: '#FFD700',// gold still pops well on dark
+  gray: '#A1A1A1',          // lighter gray for contrast
+  containerColor: '#2C2C2E',// darker "container" background
+  backgroundColor: '#2C2C2E',
+  shadowColor: '#2C2C2E',
 };
 
 export const spacing = {
@@ -49,7 +67,7 @@ export const typography = {
 export const commonStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.containerColor,
+    //backgroundColor: theme.containerColor,
   },
   row: {
     flexDirection: 'row',
@@ -60,7 +78,7 @@ export const commonStyles = StyleSheet.create({
     alignItems: 'center',
   },
   shadow: {
-    shadowColor: colors.containerColor,
+    //shadowColor: theme.containerColor,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -73,4 +91,4 @@ export const commonStyles = StyleSheet.create({
     borderRadius: 8,
 
   },
-}); 
+});
