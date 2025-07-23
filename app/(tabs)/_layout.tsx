@@ -4,27 +4,29 @@ import { Platform, Image } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { colors, typography } from '@/styles/theme';
+import { typography } from '@/styles/theme';
 import { useImage } from '@/context/ImageContext';
 import { useAuth } from '@/context/AuthContext';
+import { useTheme } from '@/context/ThemeContext';
 
 const TabLayout = () => {
   const { image } = useImage();
   const { user } = useAuth();
+  const { theme } = useTheme();
   
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.text,
+        tabBarActiveTintColor: theme.primary,
+        tabBarInactiveTintColor: theme.text,
         tabBarLabelStyle: { 
           fontSize: typography.caption.fontSize
         },
         tabBarStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: theme.background,
           ...Platform.select({
             ios: {
-              shadowColor: colors.text,
+              shadowColor: theme.text,
               shadowOffset: { width: 0, height: -2 },
               shadowOpacity: 0.1,
               shadowRadius: 4,

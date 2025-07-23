@@ -6,6 +6,8 @@ const decodeHtml = (html: string) => {
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
         .replace(/&amp;/g, '&')
+        .replace(/&mdash;/g, '—')
+        .replace(/&ndash;/g, '-')
         .replace(/&quot;/g, '"')
         .replace(/&#039;/g, "'")
         .replace(/&apos;/g, "'")
@@ -14,7 +16,10 @@ const decodeHtml = (html: string) => {
         .replace(/&rsquo;/g, "'")
         .replace(/<p>/gi, '')
         .replace(/<\/p>/gi, '')
-        .replace(/<br\s*\/?>/gi, '');
+        .replace(/<br\s*\/?>/gi, '')
+        .replace(/&ldquo;/g, '"')
+        .replace(/&rdquo;/g, '"')
+
 };
 
 export default decodeHtml;

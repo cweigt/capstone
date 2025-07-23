@@ -15,6 +15,16 @@ export const AccountStyles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: '500',
     },
+    profileButton: {
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 8,
+        alignSelf: 'center',
+        minWidth: 140,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 20,
+    },
     title: {
         fontSize: typography.h3.fontSize,
         fontWeight: '500',
@@ -34,11 +44,13 @@ export const AccountStyles = StyleSheet.create({
         color: colors.text,
     },
     links: {
-        color: colors.primary, 
-        fontSize: typography.body.fontSize,
-        justifyContent: 'center',
+        paddingVertical: 1,
+        paddingHorizontal: 24,
+        borderRadius: 8,
+        alignSelf: 'center',
+        minWidth: 140,
         alignItems: 'center',
-        paddingBottom: 5,
+        justifyContent: 'center',
     },
     signOut: {
         fontWeight: '500',
@@ -51,6 +63,7 @@ export const AccountStyles = StyleSheet.create({
         paddingHorizontal: spacing.lg,
         borderRadius: 5,
         color: colors.error,
+        marginTop: 15
     },
     deleteAccount: {
         fontWeight: '500',

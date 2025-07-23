@@ -26,7 +26,7 @@ import axios from 'axios';
 import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
 import { useAuth } from '@/context/AuthContext';
 import { RSSFeedStyles as styles } from '../styles/RSSFeed.styles';
-import { colors } from '../styles/theme';
+import { useTheme } from '@/context/ThemeContext';
 import ArticleCard from './ArticleCard';
 import { Icon } from '@rneui/base';
 import { TouchableOpacity } from 'react-native';
@@ -65,6 +65,7 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
     const [refreshing, setRefreshing] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const { user } = useAuth();
+    const { theme } = useTheme();
     const database = getDatabase();
 
     const extractContent = (xml: string, tag: string): string => {
@@ -215,7 +216,7 @@ const RSSFeed: React.FC<RSSFeedProps> = ({
     if (loading) {
     return (
         <View style={[styles.container, styles.center]}>
-        <ActivityIndicator size="large" color={colors.primary} />
+        <ActivityIndicator size="large" color={theme.primary} />
         </View>
     );
     }

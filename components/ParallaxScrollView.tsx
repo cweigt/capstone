@@ -20,7 +20,7 @@ import Animated, {
     interpolate,
 } from 'react-native-reanimated';
 import { ParallaxScrollViewStyles as styles } from '../styles/ParallaxScrollView.styles';
-import { colors } from '@/styles/theme';
+import { useTheme } from '@/context/ThemeContext';
 // import { ThemedView } from '@/components/ThemedView';
 
 interface ParallaxScrollViewProps {
@@ -46,6 +46,7 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
 }) => {
     const scrollY = useSharedValue(0);
     const [keyboardVisible, setKeyboardVisible] = useState(false);
+    const { theme } = useTheme();
 
     React.useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
@@ -96,12 +97,12 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
 
 
     return (
-        <View style={[styles.container, style]}>
+        <View style={[styles.container, style, { backgroundColor: theme.background }]}>
             <Animated.View
                 style={[
                     styles.header,
                     headerAnimatedStyle,
-                    { backgroundColor: headerBackgroundColor?.light || '#FFFFFF' }
+                    { backgroundColor: headerBackgroundColor?.light || theme.background }
                 ]}
             >
                 {headerImage}
@@ -120,7 +121,7 @@ export const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = ({
                 keyboardShouldPersistTaps="handled"
                 keyboardDismissMode={Platform.OS === 'ios' ? 'on-drag' : 'none'}
             >
-                <View style={{ backgroundColor: 'white' }}>
+                <View style={{ backgroundColor: theme.background }}>
                     {children}
                 </View>
             </Animated.ScrollView>

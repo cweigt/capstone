@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { searchStyles as styles } from '@/styles/Search.styles';
-import { colors, spacing } from '@/styles/theme';
+import { spacing } from '@/styles/theme';
 import { IconSymbol } from './ui/IconSymbol';
+import { useTheme } from '@/context/ThemeContext';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -17,6 +18,7 @@ const Search = ({ value, onChangeText, showSearchBar, setShowSearchBar }) => {
   const translateX = useRef(new Animated.Value(showSearchBar ? 0 : SCREEN_WIDTH)).current;
   const insets = useSafeAreaInsets();
   const inputRef = useRef(null);
+  const { theme } = useTheme();
 
   //ternary operator to open and close
   useEffect(() => {
@@ -36,32 +38,32 @@ const Search = ({ value, onChangeText, showSearchBar, setShowSearchBar }) => {
 
   return (
     <Animated.View
-      style={[styles.animation, {transform: [{translateX}], height: 80+insets.top, paddingTop: insets.top}]}
+      style={[styles.animation, {transform: [{translateX}], height: 80+insets.top, paddingTop: insets.top, backgroundColor: theme.background}]}
       pointerEvents={showSearchBar ? 'auto' : 'none'}
     >
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: theme.background }]}>
         <TouchableOpacity 
           onPress={() => setShowSearchBar(false)}
           style={{ marginRight: spacing.sm }}
         >
-          <IconSymbol name="chevron.left" size={24} color={colors.text} />
+          <IconSymbol name="chevron.left" size={24} color={theme.text} />
         </TouchableOpacity>
-        <View style={styles.inputWrapper}>
-          <IconSymbol name="magnifyingglass" size={20} color={colors.gray} style={{ marginRight: spacing.sm }} />
+        <View style={[styles.inputWrapper, { backgroundColor: theme.bar, borderColor: theme.border }]}>
+          <IconSymbol name="magnifyingglass" size={20} color={theme.text} style={{ marginRight: spacing.sm }} />
           <TextInput
-            style={styles.input}
+            style={[styles.input, { color: theme.text }]}
             placeholder="Search all feeds..."
             value={value}
             onChangeText={onChangeText}
-            placeholderTextColor={colors.gray}
+            placeholderTextColor={theme.text}
             ref={inputRef}
           />
           <TouchableOpacity onPress={() => onChangeText('')}>
-            <IconSymbol name="xmark" size={20} color={colors.gray} style={{ marginLeft: 4 }} />
+            <IconSymbol name="xmark" size={20} color={theme.text} style={{ marginLeft: 4 }} />
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.divider}/>
+      <View style={[styles.divider, { borderBottomColor: theme.border }]}/>
     </Animated.View>
   );
 };

@@ -3,14 +3,15 @@ import { Alert, TouchableOpacity, Text, Modal, View, TextInput } from "react-nat
 import { deleteUser, getAuth, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import { getDatabase, ref, remove } from "firebase/database";
 //import { AccountStyles as styles } from '@/styles/Account.styles';
-import { colors } from "@/styles/theme";
 import {DeleteAccountButtonStyles as styles} from '@/styles/DeleteAccountButton.styles';
 import { Ionicons } from '@expo/vector-icons';
 import {signOut} from "firebase/auth";
+import { useTheme } from '@/context/ThemeContext';
 
 const DeleteAccountButton = () => {
     const auth = getAuth();
     const database = getDatabase();
+    const { theme } = useTheme();
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState("");
@@ -74,12 +75,16 @@ const DeleteAccountButton = () => {
         <>
             <TouchableOpacity
                 onPress={confirmDelete}
-                style={{ alignItems: 'center', paddingTop: 40 }}
+                style={{ alignItems: 'center', paddingTop: 10 }}
                 accessible={true}
                 accessibilityLabel="Delete Account"
                 accessibilityHint="Deletes your account and all associated data. This action cannot be undone."
             >
-                <Text style={styles.deleteAccount}>Delete Account</Text>
+                <Text style={[styles.deleteAccount, { 
+                  backgroundColor: theme.containerColor,
+                  borderColor: theme.border,
+                  color: theme.error 
+                }]}>Delete Account</Text>
             </TouchableOpacity>
             <Modal
                 visible={showPasswordModal}
@@ -87,15 +92,15 @@ const DeleteAccountButton = () => {
                 animationType="slide"
                 onRequestClose={() => setShowPasswordModal(false)}
             >
-                <View style={styles.bkgContainer}>
-                    <View style={styles.container}>
-                        <Text style={styles.passwordTitle}>Re-enter Password</Text>
-                        <Text style={{ marginBottom: 12 }}>For security, please enter your password to confirm account deletion.</Text>
+                <View style={[styles.bkgContainer, { backgroundColor: 'rgba(0,0,0,0.5)' }]}>
+                    <View style={[styles.container, { backgroundColor: theme.background }]}>
+                        <Text style={[styles.passwordTitle, { color: theme.text }]}>Re-enter Password</Text>
+                        <Text style={{ marginBottom: 12, color: theme.text }}>For security, please enter your password to confirm account deletion.</Text>
                         <View style={{ position: 'relative', marginBottom: 12 }}>
                             <TextInput
-                                style={styles.modalInput}
+                                style={[styles.modalInput, { backgroundColor: theme.background, borderColor: theme.border, color: theme.text }]}
                                 placeholder="Password..."
-                                placeholderTextColor={colors.text}
+                                placeholderTextColor={theme.gray}
                                 secureTextEntry={!showPassword}
                                 value={password}
                                 onChangeText={setPassword}
@@ -114,25 +119,37 @@ const DeleteAccountButton = () => {
                                 <Ionicons
                                     name={showPassword ? 'eye-off' : 'eye'}
                                     size={22}
-                                    color={colors.gray}
+                                    color={theme.gray}
                                 />
                             </TouchableOpacity>
                         </View>
-                        {error ? <Text style={styles.errorMessage}>{error}</Text> : null}
+                        {error ? <Text style={[styles.errorMessage, { color: theme.error }]}>{error}</Text> : null}
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                             <TouchableOpacity onPress={() => { setShowPasswordModal(false); setPassword(""); setError(""); setPendingDelete(false); }} style={{ marginRight: 16 }}
                                 accessible={true}
                                 accessibilityLabel="Cancel"
                                 accessibilityHint="Cancel account deletion and close the password prompt."
                             >
-                                <Text style={{color: colors.text}}>Cancel</Text>
+                                <Text style={{color: theme.text}}>Cancel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handleReauthAndDelete}
+                                style={{
+                                    backgroundColor: theme.error,
+                                    paddingVertical: 8,
+                                    paddingHorizontal: 16,
+                                    borderRadius: 6,
+                                }}
                                 accessible={true}
                                 accessibilityLabel="Delete Account"
                                 accessibilityHint="Confirm account deletion after entering your password."
                             >
-                                <Text style={styles.deleteButton}>Delete</Text>
+                                <Text style={{
+                                    color: theme.text,
+                                    fontWeight: '600',
+                                    fontSize: 14,
+                                }}>
+                                    Delete
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>

@@ -8,6 +8,8 @@ import 'react-native-reanimated';
 import { useColorScheme } from 'react-native';
 import { AuthProvider } from '@/context/AuthContext';
 import { ImageProvider } from '@/context/ImageContext';
+import { ThemeProvider } from '@/context/ThemeContext';
+import { ThemeWrapper } from '@/components/ThemeWrapper';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -29,16 +31,21 @@ export default function RootLayout() {
   }
 
   return (
-    <ImageProvider>
-      <AuthProvider>
-        <Stack screenOptions={{
-          headerShown: false,
-        }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="dark" backgroundColor="#C0C0C0" /> 
-      </AuthProvider>
-    </ImageProvider>
+    <ThemeProvider>
+      <ThemeWrapper>
+        <ImageProvider>
+          <AuthProvider>
+            <Stack screenOptions={{
+              headerShown: false,
+            }}>
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+            <StatusBar style="auto" /> 
+            {/*the bar will be light when settings is dark and vice versa… built in to this comp*/}
+          </AuthProvider>
+        </ImageProvider>
+      </ThemeWrapper>
+    </ThemeProvider>
   );
 }

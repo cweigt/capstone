@@ -14,6 +14,10 @@ export const lightTheme = {
   containerColor: '#F2F2F7',
   backgroundColor: '#F2F2F7' ,
   shadowColor: '#F2F2F7',
+  bar: '#FFFFFF', //search bar
+  cardIcons: '#A1A1A1',
+  header: '#FFFFFF',
+  back: '#007AFF',
 };
 
 export const darkTheme ={
@@ -21,7 +25,7 @@ export const darkTheme ={
   secondary: '#5E5CE6',     // slightly lighter than original to pop on dark
   background: '#1C1C1E',    // main background (dark gray, not pure black)
   text: '#FFFFFF',          // readable on dark
-  border: '#3A3A3C',        // subtle border color for dark backgrounds
+  border: '#FFFFFF',        // subtle border color for dark backgrounds
   error: '#FF453A',         // Apple-style dark mode error red
   success: '#30D158',       // vivid green that pops on dark
   accentBlue: '#64AFFF',    // softer blue for accents
@@ -30,7 +34,15 @@ export const darkTheme ={
   containerColor: '#2C2C2E',// darker "container" background
   backgroundColor: '#2C2C2E',
   shadowColor: '#2C2C2E',
-};
+  bar: '#0A84FF',
+  cardIcons: '#FFFFFF',
+  header: '#0A84FF',
+  back: '#FFFFFF',
+};  
+
+// For backward compatibility - this will be deprecated
+// Use useTheme() hook instead for dynamic theming
+export const colors = lightTheme;
 
 export const spacing = {
   xs: 4, //these are spacing theme tokens

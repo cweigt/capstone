@@ -11,7 +11,8 @@ import SideDrawer from '@/components/SideDrawer';
 import { HomeStyles as styles } from '../../styles/Home.styles';
 import { useAuth } from '@/context/AuthContext';
 import { Icon } from '@rneui/themed';
-import { colors, spacing } from '@/styles/theme';
+import { spacing } from '@/styles/theme';
+import { useTheme } from '@/context/ThemeContext';
 import axios from 'axios';
 import Search from '@/components/Search';
 import ArticleCard from '@/components/ArticleCard';
@@ -42,6 +43,7 @@ const HomeScreen = () => {
   const [selectedFeed, setSelectedFeed] = useState('');
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const {user} = useAuth();
+  const { theme } = useTheme();
   const [feedNum, setFeedNum] = useState(0); //this tracks number of feeds
   const [searchQuery, setSearchQuery] = useState(''); //for search bar
   const [allArticles, setAllArticles] = useState<Article[]>([]); //for all articles
@@ -273,8 +275,8 @@ const HomeScreen = () => {
   
   if (user === null) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
-        <Text style={{ fontSize: 18, color: '#888' }}>Please sign in to view feed.</Text>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.background }}>
+        <Text style={{ fontSize: 18, color: theme.text }}>Please sign in to view feed.</Text>
       </View>
     );
   }
@@ -287,28 +289,28 @@ const HomeScreen = () => {
           <>
             {user && (
 
-                <View style={[styles.dropdownContainer, {paddingTop: insets.top}]}>
+                <View style={[styles.dropdownContainer, {paddingTop: insets.top, backgroundColor: theme.header }]}>
                   <View style={styles.headerRow}>
                     <TouchableOpacity onPress={() => setIsDrawerVisible(true)}>
                       <Icon 
                         name="menu" 
                         size={30} 
-                        color={colors.text}
+                        color={theme.text}
                         style={styles.hamburger}
                       />
                     </TouchableOpacity>
                     <View style={styles.feedTitleContainer}>
-                      <Text style={styles.headerSubtitle}>
+                      <Text style={[styles.headerSubtitle, { color: theme.text }]}>
                         Current Feed
                       </Text>
-                      <Text style={styles.headerTitle}>
+                      <Text style={[styles.headerTitle, { color: theme.text }]}>
                         {feedOptions.find(feed => feed.value === selectedFeed)?.label}
                       </Text>
                     </View>
                     <TouchableOpacity
                       onPress={() => setShowSearchBar(true)}
                     >
-                      <IconSymbol name="magnifyingglass" size={30} color={colors.text} style={{ marginRight: spacing.sm }} />
+                      <IconSymbol name="magnifyingglass" size={30} color={theme.text} style={{ marginRight: spacing.sm }} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -321,12 +323,12 @@ const HomeScreen = () => {
         refreshControl={<RefreshControl
           refreshing={refreshing}
           onRefresh={handleRefresh}
-          tintColor={colors.accentBlue}
+          tintColor={theme.accentBlue}
         />}
       >
-        <View style={{backgroundColor: "white", flex: 1, paddingTop: 140, paddingBottom: 20}}>
+        <View style={{backgroundColor: theme.background, flex: 1, paddingTop: 140, paddingBottom: 20}}>
           {loading ? (
-            <Text style={{textAlign: 'center', marginTop: 10}}>Loading articles...</Text>
+            <Text style={{textAlign: 'center', marginTop: 10, color: theme.text}}>Loading articles...</Text>
           ) : articlesToShow.length > 0 ? (
             articlesToShow.map((item, index) => (
               <ArticleCard
@@ -343,7 +345,7 @@ const HomeScreen = () => {
               />
             ))
           ) : (
-            <Text style={{textAlign: 'center', marginTop: 0}}>No articles found.</Text>
+            <Text style={{textAlign: 'center', marginTop: 0, color: theme.text}}>No articles found.</Text>
           )}
         </View>
       </ParallaxScrollView>
@@ -357,11 +359,32 @@ const HomeScreen = () => {
       <SideDrawer
         isVisible={isDrawerVisible}
         onClose={() => setIsDrawerVisible(false)}
-        feedOptions={feedOptions}
-        selectedFeed={selectedFeed}
-        onFeedSelect={handleFeedSelect}
         feedNum={feedNum}
-      />
+      >
+        {feedOptions.map((feed, index) => (
+          <TouchableOpacity
+            key={index}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: 8,
+              marginVertical: 4,
+              borderRadius: 8,
+              backgroundColor: selectedFeed === feed.value ? theme.containerColor : 'transparent'
+            }}
+            onPress={() => handleFeedSelect(feed.value)}
+            activeOpacity={1}
+          >
+            <Text style={{
+              fontSize: 13,
+              fontWeight: selectedFeed === feed.value ? '600' : '400',
+              color: theme.text
+            }}>
+              {feed.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </SideDrawer>
     </>
   );
 }

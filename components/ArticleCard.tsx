@@ -8,7 +8,8 @@ import {
 import { Card } from '@rneui/themed';
 import { Icon } from '@rneui/themed';
 import { RSSFeedStyles as styles } from '@/styles/RSSFeed.styles';
-import { colors, spacing } from '@/styles/theme';
+import { spacing } from '@/styles/theme';
+import { useTheme } from '@/context/ThemeContext';
 import * as WebBrowser from 'expo-web-browser';
 
 interface ArticleCardProps {
@@ -38,16 +39,18 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   onShare,
   showSavedIcon = true,
 }) => {
+  const { theme } = useTheme();
+
   return (
-    <Card containerStyle={styles.card}>
+    <Card containerStyle={[styles.card, { backgroundColor: theme.background }]}>
       <View style={styles.cardHeaderRow}>
-        <Text style={styles.cardSource} allowFontScaling={true}>{author || 'Source'}</Text>
-        <Text style={styles.cardDate} allowFontScaling={true}>{new Date(pubDate).toLocaleDateString()}</Text>
+        <Text style={[styles.cardSource, { color: theme.cardIcons }]} allowFontScaling={true}>{author || 'Source'}</Text>
+        <Text style={[styles.cardDate, { color: theme.cardIcons }]} allowFontScaling={true}>{new Date(pubDate).toLocaleDateString()}</Text>
       </View> 
-      <Text style={styles.cardTitle} allowFontScaling={true}>{title}</Text>
+      <Text style={[styles.cardTitle, { color: theme.text }]} allowFontScaling={true}>{title}</Text>
       
       {description && (
-        <Text style={styles.cardDescription} numberOfLines={3} allowFontScaling={true}>
+        <Text style={[styles.cardDescription, { color: theme.text }]} numberOfLines={3} allowFontScaling={true}>
           {description}
         </Text>
       )}
@@ -62,9 +65,9 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           >
             <Icon
               name={saved ? 'star' : 'star-outline'}
-              color={saved ? colors.saveIconActive : colors.gray}
+              color={saved ? theme.saveIconActive : theme.cardIcons}
             />
-            <Text style={[styles.actionLabel, { color: saved ? colors.text : colors.gray }]} allowFontScaling={true}>
+            <Text style={[styles.actionLabel, { color: saved ? theme.text : theme.cardIcons }]} allowFontScaling={true}>
               {saved ? 'Saved' : 'Save'}
             </Text>
           </TouchableOpacity>
@@ -76,8 +79,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           accessibilityHint="Shares this article"
           accessibilityRole='button'
         >
-          <Icon name="share" type="feather" color={colors.gray} />
-          <Text style={styles.actionLabel} allowFontScaling={true}>Share</Text>
+          <Icon name="share" type="feather" color={theme.cardIcons} />
+          <Text style={[styles.actionLabel, { color: theme.cardIcons }]} allowFontScaling={true}>Share</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton} onPress={() => handleOpenLink(link)}
           accessible={true}
@@ -85,8 +88,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           accessibilityHint="Opens the article in the browser"
           accessibilityRole='link'
         >
-          <Text style={styles.viewLabel} allowFontScaling={true}>View</Text>
-          <Icon name="external-link" type="feather" color={colors.accentBlue || colors.primary} size={18} style={{ marginLeft: spacing.xs }} />
+          <Text style={[styles.viewLabel, { color: theme.cardIcons }]} allowFontScaling={true}>View</Text>
+          <Icon name="external-link" type="feather" color={theme.accentBlue || theme.primary} size={20} />
         </TouchableOpacity>
       </View>
     </Card>
