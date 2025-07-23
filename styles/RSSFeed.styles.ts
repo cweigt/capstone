@@ -15,7 +15,7 @@ export const RSSFeedStyles = StyleSheet.create({
     // iOS shadow
     ...Platform.select({
       ios: {
-        shadowColor: colors.text,
+        shadowColor: colors.cardIcons,
         shadowOffset: { width: 0, height: -2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
@@ -59,7 +59,7 @@ export const RSSFeedStyles = StyleSheet.create({
   },
   card: {
     borderRadius: commonStyles.card.borderRadius,
-    shadowColor: commonStyles.shadow.shadowColor,
+    shadowColor: colors.cardIcons,
     shadowOffset: commonStyles.shadow.shadowOffset,
 
     //marginBottom: 16,
@@ -136,7 +136,7 @@ export const RSSFeedStyles = StyleSheet.create({
   headerContainer:{
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    shadowColor: commonStyles.shadow.shadowColor,
+    shadowColor: colors.cardIcons,
     shadowOffset: commonStyles.shadow.shadowOffset,
     shadowOpacity: commonStyles.shadow.shadowOpacity,
     shadowRadius: commonStyles.shadow.shadowRadius,

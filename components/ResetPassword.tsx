@@ -14,11 +14,12 @@ import {
  } from 'firebase/auth';
 import { ResetPasswordStyles as styles } from '../styles/ResetPassword.styles';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, spacing } from '@/styles/theme';
-// import { ThemedView } from '@/components/ThemedView';
+import { spacing } from '@/styles/theme';
+import { useTheme } from '@/context/ThemeContext';
 
 const Reset_Password = () => {
     const auth = getAuth();
+    const { theme } = useTheme();
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -49,86 +50,91 @@ const Reset_Password = () => {
     }
     
     return (
-        <View style={styles.container}>
-            <View style={{ backgroundColor: 'white' }}>
-                <View style={styles.formContainer}>
-                            <Text style={styles.requirements}>
-                                Current Password
-                            </Text>
-                            <View style={{ position: 'relative', marginBottom: spacing.md }}>
-                              <TextInput
-                                  style={[styles.input, { paddingRight: 40 }]}
-                                  placeholderTextColor={colors.text}
-                                  secureTextEntry={!showPasswordOld}
-                                  value={oldPassword}
-                                  onChangeText={setOldPassword}
-                              />
-                              <TouchableOpacity
-                                onPress={() => setShowPasswordOld(!showPasswordOld)}
-                                style={styles.eye}
-                              >
-                                <Ionicons
-                                  name={showPasswordOld ? 'eye-off' : 'eye'}
-                                  size={22}
-                                  color={colors.gray}
-                                />
-                              </TouchableOpacity>
-                            </View>
+        <View style={[styles.container, { backgroundColor: theme.background }]}>
+            <View style={[styles.formContainer, { backgroundColor: theme.background }]}>
+                        <Text style={[styles.requirements, { color: theme.text }]}>
+                            Current Password
+                        </Text>
+                        <View style={{ position: 'relative', marginBottom: spacing.md }}>
+                          <TextInput
+                              style={[styles.input, { paddingRight: 40, backgroundColor: theme.background, borderColor: theme.border, color: theme.text }]}
+                              placeholderTextColor={theme.gray}
+                              secureTextEntry={!showPasswordOld}
+                              value={oldPassword}
+                              onChangeText={setOldPassword}
+                          />
+                          <TouchableOpacity
+                            onPress={() => setShowPasswordOld(!showPasswordOld)}
+                            style={styles.eye}
+                          >
+                            <Ionicons
+                              name={showPasswordOld ? 'eye-off' : 'eye'}
+                              size={22}
+                              color={theme.gray}
+                            />
+                          </TouchableOpacity>
+                        </View>
 
-                            <Text style={styles.requirements}>
-                                New Password
-                            </Text>
-                            <View style={{ position: 'relative', marginBottom: spacing.md }}>
-                              <TextInput
-                                  style={[styles.input, { paddingRight: 40 }]}
-                                  placeholderTextColor={colors.text}
-                                  secureTextEntry={!showPasswordNew}
-                                  value={newPassword}
-                                  onChangeText={setNewPassword}
-                              />
-                              <TouchableOpacity
-                                onPress={() => setShowPasswordNew(!showPasswordNew)}
-                                style={styles.eye}
-                              >
-                                <Ionicons
-                                  name={showPasswordNew ? 'eye-off' : 'eye'}
-                                  size={22}
-                                  color={colors.gray}
-                                />
-                              </TouchableOpacity>
-                            </View>
+                        <Text style={[styles.requirements, { color: theme.text }]}>
+                            New Password
+                        </Text>
+                        <View style={{ position: 'relative', marginBottom: spacing.md }}>
+                          <TextInput
+                              style={[styles.input, { paddingRight: 40, backgroundColor: theme.background, borderColor: theme.border, color: theme.text }]}
+                              placeholderTextColor={theme.gray}
+                              secureTextEntry={!showPasswordNew}
+                              value={newPassword}
+                              onChangeText={setNewPassword}
+                          />
+                          <TouchableOpacity
+                            onPress={() => setShowPasswordNew(!showPasswordNew)}
+                            style={styles.eye}
+                          >
+                            <Ionicons
+                              name={showPasswordNew ? 'eye-off' : 'eye'}
+                              size={22}
+                              color={theme.gray}
+                            />
+                          </TouchableOpacity>
+                        </View>
 
-                            <Text style={[styles.requirements, {marginTop: -10}]}>
-                                Confirm New Password
+                        <Text style={[styles.requirements, { color: theme.text }]}>
+                            Confirm New Password
+                        </Text>
+                        <View style={{ position: 'relative', marginBottom: spacing.md }}>
+                          <TextInput
+                              style={[styles.input, { paddingRight: 40, backgroundColor: theme.background, borderColor: theme.border, color: theme.text }]}
+                              placeholderTextColor={theme.gray}
+                              secureTextEntry={!showPasswordNewConfirm}
+                              value={confirmPassword}
+                              onChangeText={setConfirmPassword}
+                          />
+                          <TouchableOpacity
+                            onPress={() => setShowPasswordNewConfirm(!showPasswordNewConfirm)}
+                            style={styles.eye}
+                          >
+                            <Ionicons
+                              name={showPasswordNewConfirm ? 'eye-off' : 'eye'}
+                              size={22}
+                              color={theme.gray}
+                            />
+                          </TouchableOpacity>
+                        </View>
+
+                        {error ? (
+                            <Text style={[styles.errorText, { color: theme.error }]} allowFontScaling={true}>
+                                {error}
                             </Text>
-                            <View style={{ position: 'relative', marginBottom: spacing.md }}>
-                              <TextInput
-                                  style={[styles.input, { paddingRight: 40 }]}
-                                  placeholderTextColor={colors.text}
-                                  secureTextEntry={!showPasswordNewConfirm}
-                                  value={confirmPassword}
-                                  onChangeText={setConfirmPassword}
-                              />
-                              <TouchableOpacity
-                                onPress={() => setShowPasswordNewConfirm(!showPasswordNewConfirm)}
-                                style={styles.eye}
-                              >
-                                <Ionicons
-                                  name={showPasswordNewConfirm ? 'eye-off' : 'eye'}
-                                  size={22}
-                                  color={colors.gray}
-                                />
-                              </TouchableOpacity>
-                            </View>
-                            {error ? <Text style={styles.errorText}>{error}</Text> : null}
-                            <TouchableOpacity
-                              onPress={reauthenticate}
-                            >
-                              <Text style={styles.reset}>
+                        ) : null}
+
+                        <TouchableOpacity
+                            onPress={reauthenticate}
+                            style={[styles.reset, { backgroundColor: theme.containerColor, borderColor: theme.border }]}
+                        >
+                            <Text style={[styles.toggleText, { color: theme.text }]} allowFontScaling={true}>
                                 Reset Password
-                              </Text>
-                            </TouchableOpacity>
-                </View>
+                            </Text>
+                        </TouchableOpacity>
             </View>
         </View>
     );

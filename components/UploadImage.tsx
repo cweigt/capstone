@@ -13,12 +13,15 @@ import { useImage } from '@/context/ImageContext';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
 import { UploadImageStyles as styles } from '../styles/UploadImage.styles';
+import { ResetPasswordStyles as resetStyles } from '@/styles/ResetPassword.styles';
+import { useTheme } from '@/context/ThemeContext';
 
 //this component includes a call to the other component for the image
 //also includes the logic and rendering for the Edit Image thing and Image Picker
 //allows user to change their image
 //"fuller functionality"
 const UploadImage = () => {
+  const { theme } = useTheme();
   const { image, setImage } = useImage();
   const auth = getAuth();
   const database = getDatabase();
@@ -58,8 +61,11 @@ const UploadImage = () => {
             <View style={{ width: 100, height: 125 }}>
                 <DisplayImage />
             </View>
-            <TouchableOpacity onPress={addImage} style={styles.uploadBtn}>
-                <Text style={styles.uploadText}>Change Profile Photo</Text>
+            <TouchableOpacity 
+              onPress={addImage} 
+              style={[resetStyles.reset, { backgroundColor: theme.containerColor, borderColor: theme.border, margin: 10 }]}
+            >
+                <Text style={[styles.uploadText, { color: theme.text }]}>Change Profile Photo</Text>
             </TouchableOpacity>
         </View>
     </View>
