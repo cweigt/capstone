@@ -4,27 +4,29 @@ import { Platform, Image } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { colors, typography } from '@/styles/theme';
+import { typography } from '@/styles/theme';
 import { useImage } from '@/context/ImageContext';
 import { useAuth } from '@/context/AuthContext';
+import { useTheme } from '@/context/ThemeContext';
 
 const TabLayout = () => {
   const { image } = useImage();
   const { user } = useAuth();
+  const { theme } = useTheme();
   
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.text,
+        tabBarActiveTintColor: theme.primary,
+        tabBarInactiveTintColor: theme.text,
         tabBarLabelStyle: { 
           fontSize: typography.caption.fontSize
         },
         tabBarStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: theme.background,
           ...Platform.select({
             ios: {
-              shadowColor: colors.text,
+              shadowColor: theme.text,
               shadowOffset: { width: 0, height: -2 },
               shadowOpacity: 0.1,
               shadowRadius: 4,
@@ -41,6 +43,7 @@ const TabLayout = () => {
         name="index"
         options={{
           title: 'Feeds',
+          tabBarAccessibilityLabel: 'Feeds Tab', // Voice control label
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="doc.text" color={color} />,
         }}
       />
@@ -48,6 +51,7 @@ const TabLayout = () => {
         name="account"
         options={{
           title: 'Account',
+          tabBarAccessibilityLabel: 'Account Tab', // Voice control label
           tabBarIcon: ({ color }) => (
               <IconSymbol size={28} name="person" color={color} />
      ),
@@ -57,6 +61,7 @@ const TabLayout = () => {
         name="savedArticles"
         options={{
           title: 'Saved',
+          tabBarAccessibilityLabel: 'Saved Articles Tab', // Voice control label
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="star" color={color} />,
         }}
       />

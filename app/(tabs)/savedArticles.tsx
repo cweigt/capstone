@@ -19,6 +19,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context'; // Import SafeAreaView
 import ArticleCard from '@/components/ArticleCard';
+import { useTheme } from '@/context/ThemeContext';
 
 //this is basically the Card that needs to be rendered into this page
 interface SavedArticle {
@@ -33,6 +34,7 @@ interface SavedArticle {
 const SavedArticles = () => {
     // All hooks at the top
     const { user } = useAuth();
+    const { theme } = useTheme();
     const [savedArticles, setSavedArticles] = useState<SavedArticle[]>([]);
     const [loading, setLoading] = useState(true);
     const database = getDatabase();
@@ -87,45 +89,50 @@ const SavedArticles = () => {
 
     if (user === null) {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
-                <Text style={{ fontSize: 18, color: '#888' }}>Please sign in to view saved articles.</Text>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.background }}>
+                <Text style={{ fontSize: 18, color: theme.text }}>Please sign in to view saved articles.</Text>
             </View>
         );
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} edges={['top']}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }} edges={['bottom']}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-            <Text style={styles.title}>
-                Saved Articles
-            </Text>
-            <View style={styles.divider}></View>
-
-            <View>
-                {Array.isArray(savedArticles) && savedArticles.length > 0 && user ? (
-                savedArticles.map((item, index) => (
-                    <ArticleCard
-                    key={index}
-                    title={item.title}
-                    link={item.link}
-                    author={item.author}
-                    pubDate={item.pubDate}
-                    description={item.description}
-                    saved={true}
-                    showSavedIcon={true}
-                    onSave={() => removeArticle(item)}
-                    onShare={() => {
-                        // TODO: Implement share functionality
-                        console.log('Share article:', item.title);
-                    }}
-                    />
-                ))
-                ) : (
-                <View style={feedStyles.emptyContainer}>
-                <Text style={feedStyles.emptyText}>No articles available</Text>
+                {/* Blue Header */}
+                <View style={{ backgroundColor: theme.header, paddingTop: 50, paddingBottom: 20, paddingHorizontal: 20 }}>
+                    <Text style={{ color: theme.text, fontSize: 24, fontWeight: '600', textAlign: 'center', marginTop: 10 }}>
+                        Saved Articles
+                    </Text>
                 </View>
-                )}
-            </View>
+
+                <View style={{ backgroundColor: theme.border, height: 1 }} />
+
+                <View style={{ backgroundColor: theme.background, flex: 1, marginBottom: 20 }}>
+                    {Array.isArray(savedArticles) && savedArticles.length > 0 && user ? (
+                    savedArticles.map((item, index) => (
+                        <ArticleCard
+                        key={index}
+                        title={item.title}
+                        link={item.link}
+                        author={item.author}
+                        pubDate={item.pubDate}
+                        description={item.description}
+                        saved={true}
+                        showSavedIcon={true}
+                        onSave={() => removeArticle(item)}
+                        onShare={() => {
+                            // TODO: Implement share functionality
+                            console.log('Share article:', item.title);
+                        }}
+                        />
+                    ))
+                    ) : (
+                    <View style={[feedStyles.emptyContainer, { backgroundColor: theme.background }]}>
+                        <Text style={[feedStyles.emptyText, { color: theme.text }]}>No articles available</Text>
+                    </View>
+                    )}
+                </View>
+                <View style={{marginBottom: 20}}/>
             </ScrollView>
         </SafeAreaView>
     );

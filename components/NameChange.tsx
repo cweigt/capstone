@@ -12,13 +12,15 @@ import {
 } from 'firebase/auth';
 import { getDatabase, ref, update } from 'firebase/database';
 import { NameChangeStyles as styles } from '@/styles/NameChange.styles';
+import { ResetPasswordStyles as resetStyles } from '@/styles/ResetPassword.styles';
 import { useAuth } from '@/context/AuthContext';
-import { colors } from '@/styles/theme';
+import { useTheme } from '@/context/ThemeContext';
 
 const Name_Change = () => {
   const auth = getAuth();
   const database = getDatabase();
   const { user, setUser } = useAuth();
+  const { theme } = useTheme();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [showNameChange, setShowNameChange] = useState(false);
@@ -62,38 +64,42 @@ const Name_Change = () => {
   };
 
   return (
-    <View style={styles.container}>
-        <View style={{ backgroundColor: 'white' }}>
-            <View style={styles.formContainer}>
-                <Text style={styles.requirements}>
-                    First Name
-                </Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder={currentFirstName}
-                    placeholderTextColor={colors.text}
-                    value={firstName}
-                    onChangeText={setFirstName}
-                />
-                <Text style={[styles.requirements, {paddingTop: 10 }]}>
-                    Last Name
-                </Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder={currentLastName}
-                    placeholderTextColor={colors.text}
-                    value={lastName}
-                    onChangeText={setLastName}
-                />
-                <View style={{ paddingBottom: 20 }}></View>
-                <TouchableOpacity
-                  onPress={changeName}
-                >
-                  <Text style={styles.toggleText}>
-                    Save Name
-                  </Text>
-                </TouchableOpacity>
-            </View>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+        <View style={[styles.formContainer, { backgroundColor: theme.background }]}>
+            <Text style={[styles.requirements, { color: theme.text }]}>
+                First Name
+            </Text>
+            <TextInput
+                style={[styles.input, { backgroundColor: theme.background, borderColor: theme.border, color: theme.text }]}
+                placeholder={currentFirstName}
+                placeholderTextColor={theme.gray}
+                value={firstName}
+                onChangeText={setFirstName}
+                accessibilityLabel="First name"
+                accessibilityHint="Enter your first name"
+            />
+            <Text style={[styles.requirements, {paddingTop: 10, color: theme.text }]}>
+                Last Name
+            </Text>
+            <TextInput
+                style={[styles.input, { backgroundColor: theme.background, borderColor: theme.border, color: theme.text }]}
+                placeholder={currentLastName}
+                placeholderTextColor={theme.gray}
+                value={lastName}
+                onChangeText={setLastName}
+                accessibilityLabel="Last name"
+                accessibilityHint="Enter your last name"
+            />
+            <View style={{ paddingBottom: 20 }}></View>
+            <TouchableOpacity
+              onPress={changeName}
+              accessibilityLabel='Save Name Button'
+              style={[resetStyles.reset, { backgroundColor: theme.containerColor, borderColor: theme.border }]}
+            >
+              <Text style={[resetStyles.toggleText, { color: theme.text }]} allowFontScaling={true}>
+                Save Name
+              </Text>
+            </TouchableOpacity>
         </View>
     </View>
   );

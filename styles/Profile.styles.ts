@@ -20,7 +20,7 @@ export const ProfileStyles = StyleSheet.create({
         backgroundColor: 'white',
       },
     divider: {
-        borderBottomWidth: 1.5, 
+        borderBottomWidth: 1, 
         borderBottomColor: '#E0E0E0', 
         marginBottom: 20,
         marginHorizontal: -20,

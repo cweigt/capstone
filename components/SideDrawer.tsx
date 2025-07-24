@@ -1,129 +1,122 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Animated,
+import React, { useEffect, useRef, useState } from 'react';
+import { 
+  View, 
+  Text, 
+  TouchableOpacity, 
+  Animated, 
   Dimensions,
   Image,
+  StyleSheet
 } from 'react-native';
-import { colors } from '@/styles/theme';
-import { sideDrawerStyles as styles } from '@/styles/SideDrawer.styles';
+
 import { IconSymbol } from './ui/IconSymbol';
-
-interface FeedOption {
-  label: string;
-  value: string;
-}
-
-interface SideDrawerProps {
-  isVisible: boolean;
-  onClose: () => void;
-  feedOptions: FeedOption[];
-  selectedFeed: string;
-  onFeedSelect: (feed: string) => void;
-  feedNum;
-}
+import { useTheme } from '@/context/ThemeContext';
+import { sideDrawerStyles as styles } from '@/styles/SideDrawer.styles';
 
 const { width } = Dimensions.get('window');
 const DRAWER_WIDTH = width * 0.8;
 
-const SideDrawer: React.FC<SideDrawerProps> = ({ 
-  isVisible, 
-  onClose, 
-  feedOptions, 
-  selectedFeed, 
-  onFeedSelect,
-  feedNum,
-}) => {
-  //const slideAnim = React.useRef(new Animated.Value(-DRAWER_WIDTH)).current;
-  const slideAnim = React.useRef(new Animated.Value(isVisible ? -DRAWER_WIDTH : 0)).current;
-  const [shouldRender, setShouldRender] = useState(isVisible);
+interface SideDrawerProps {
+  isVisible: boolean;
+  onClose: () => void;
+  children?: React.ReactNode;
+  feedNum?: number;
+}
 
+const SideDrawer: React.FC<SideDrawerProps> = ({ isVisible, onClose, children, feedNum }) => {
+  const translateX = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [shouldRender, setShouldRender] = useState(false);
+  const { theme, mode } = useTheme();
+
+  // Conditional logo selection based on theme
+  const getLogoSource = () => {
+    if (mode === 'dark') {
+      return require('@/assets/images/Aurora_Logo-new-RGB-white_v2.png');
+    } else {
+      return require('@/assets/images/aurora-wdc.png');
+    }
+  };
 
   useEffect(() => {
-    if (isVisible) { //when true, drawer becomes visible
-      setShouldRender(true); //says that this component is in the vDOM tree
-      Animated.timing(slideAnim, { //controls horizontal position
-        toValue: 0,
-        duration: 250,
-        useNativeDriver: true,
-      }).start();
+    if (isVisible) {
+      setShouldRender(true);
+      Animated.parallel([
+        Animated.timing(translateX, {
+          toValue: 0,
+          duration: 250,
+          useNativeDriver: true,
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 250,
+          useNativeDriver: true,
+        }),
+      ]).start();
     } else {
-      Animated.timing(slideAnim, {
-        toValue: -DRAWER_WIDTH, //closing 
-        duration: 250,
-        useNativeDriver: true,
-      }).start(() => setShouldRender(false)); //after animation finishes, then component unmounts… avoids overlay
+      Animated.parallel([
+        Animated.timing(translateX, {
+          toValue: -DRAWER_WIDTH,
+          duration: 250,
+          useNativeDriver: true,
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 250,
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        setShouldRender(false);
+      });
     }
-  }, [isVisible, slideAnim]);
-
-  const handleFeedSelect = (feed: string) => {
-    onFeedSelect(feed);
-    //Keep drawer open while feed loads, user can close it when they want to for flexibility 
-  };
+  }, [isVisible]);
 
   if (!shouldRender) return null;
 
   return (
-    <View style={styles.overlay} pointerEvents={isVisible ? 'auto' : 'none'}>
-      <TouchableOpacity style={styles.backdrop} onPress={onClose} />
-      <Animated.View //animated for a smoother transition
+    <View style={styles.overlay}>
+      <Animated.View 
+        style={[styles.backdrop, { opacity: fadeAnim }]} 
+        onTouchEnd={onClose}
+      />
+      <Animated.View
         style={[
           styles.drawer,
-          {
-            transform: [{ translateX: slideAnim }],
-          },
+          { 
+            transform: [{ translateX }],
+            backgroundColor: theme.background,
+            shadowColor: theme.text
+          }
         ]}
       >
-        <View style={styles.header}>
+        <View style={[styles.header, { borderBottomColor: theme.border }]}>
           <View style={styles.headerTop}>
-            <Image 
-              source={require('@/assets/images/aurora-wdc.png')}
+            <Image
+              source={getLogoSource()}
               style={styles.headerLogo}
               resizeMode="contain"
             />
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <IconSymbol name="chevron.left" size={24} color={colors.text} />
+              <IconSymbol name="chevron.left" size={24} color={theme.text} />
             </TouchableOpacity>
           </View>
-          <View style={styles.headerSubtitleContainer}>
-            <Text style={styles.headerSubtitle}>
-              All Feeds{'  '}
-            </Text>
-            <Text style={styles.headerSubtitleNumber}>
-              {feedNum /*this allows for the number of feeds to be dynamically updated*/} 
-            </Text>
-          </View>
+                      <View style={styles.headerSubtitleContainer}>
+              <Text style={[styles.headerSubtitle, { color: theme.text }]}>
+                All Feeds {'  '}
+              </Text>
+              <Text style={[styles.headerSubtitleNumber, { color: theme.gray }]}>
+                {feedNum}
+              </Text>
+            </View>
         </View>
         
         <View style={styles.menuContainer}>
-          {feedOptions.length > 0 ? (
-            feedOptions.map((feed, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.menuItem,
-                  selectedFeed === feed.value && styles.selectedMenuItem
-                ]}
-                onPress={() => handleFeedSelect(feed.value)}
-                activeOpacity={1}
-              >
-                <Text style={[
-                  styles.menuText,
-                  selectedFeed === feed.value && styles.selectedMenuText
-                ]}>
-                  {feed.label}
-                </Text>
-              </TouchableOpacity>
-            ))
-          ) : (
-            <Text style={styles.menuText}>No feeds available</Text>
-          )}
+          {children}
         </View>
       </Animated.View>
     </View>
   );
 };
+
 
 export default SideDrawer; 
