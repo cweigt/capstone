@@ -75,6 +75,8 @@ const Name_Change = () => {
                 placeholderTextColor={theme.gray}
                 value={firstName}
                 onChangeText={setFirstName}
+                accessibilityLabel="First name"
+                accessibilityHint="Enter your first name"
             />
             <Text style={[styles.requirements, {paddingTop: 10, color: theme.text }]}>
                 Last Name
@@ -85,10 +87,13 @@ const Name_Change = () => {
                 placeholderTextColor={theme.gray}
                 value={lastName}
                 onChangeText={setLastName}
+                accessibilityLabel="Last name"
+                accessibilityHint="Enter your last name"
             />
             <View style={{ paddingBottom: 20 }}></View>
             <TouchableOpacity
               onPress={changeName}
+              accessibilityLabel='Save Name Button'
               style={[resetStyles.reset, { backgroundColor: theme.containerColor, borderColor: theme.border }]}
             >
               <Text style={[resetStyles.toggleText, { color: theme.text }]} allowFontScaling={true}>
