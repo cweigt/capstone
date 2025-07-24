@@ -27,7 +27,16 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isVisible, onClose, children, f
   const translateX = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [shouldRender, setShouldRender] = useState(false);
-  const { theme } = useTheme();
+  const { theme, mode } = useTheme();
+
+  // Conditional logo selection based on theme
+  const getLogoSource = () => {
+    if (mode === 'dark') {
+      return require('@/assets/images/aurora-wdc.png');
+    } else {
+      return require('@/assets/images/aurora-wdc.png');
+    }
+  };
 
   useEffect(() => {
     if (isVisible) {
@@ -83,7 +92,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isVisible, onClose, children, f
         <View style={[styles.header, { borderBottomColor: theme.border }]}>
           <View style={styles.headerTop}>
             <Image
-              source={require('@/assets/images/aurora-wdc.png')}
+              source={getLogoSource()}
               style={styles.headerLogo}
               resizeMode="contain"
             />
