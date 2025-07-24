@@ -32,7 +32,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isVisible, onClose, children, f
   // Conditional logo selection based on theme
   const getLogoSource = () => {
     if (mode === 'dark') {
-      return require('@/assets/images/aurora-wdc.png');
+      return require('@/assets/images/Aurora_Logo-new-RGB-white_v2.png');
     } else {
       return require('@/assets/images/aurora-wdc.png');
     }
