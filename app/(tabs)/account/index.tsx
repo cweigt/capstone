@@ -18,6 +18,7 @@ import { auth } from '@/firebase';
 import DisplayImage from '@/components/DisplayImage';
 import DeleteAccountButton from '@/components/DeleteAccountButton';
 import { useTheme } from '@/context/ThemeContext';
+import ToggleMode from '@/components/ToggleMode';
 
 const Sign_Up = () => {
     const [showSignUp, setShowSignUp] = useState(false);
@@ -63,6 +64,7 @@ const Sign_Up = () => {
                       Edit Profile →
                     </Text>
                   </TouchableOpacity>
+                  <ToggleMode />
 
                 <View style={{ paddingBottom: 200 }}></View>
 
