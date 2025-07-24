@@ -43,6 +43,7 @@ const TabLayout = () => {
         name="index"
         options={{
           title: 'Feeds',
+          tabBarAccessibilityLabel: 'Feeds Tab', // Voice control label
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="doc.text" color={color} />,
         }}
       />
@@ -50,6 +51,7 @@ const TabLayout = () => {
         name="account"
         options={{
           title: 'Account',
+          tabBarAccessibilityLabel: 'Account Tab', // Voice control label
           tabBarIcon: ({ color }) => (
               <IconSymbol size={28} name="person" color={color} />
      ),
@@ -59,6 +61,7 @@ const TabLayout = () => {
         name="savedArticles"
         options={{
           title: 'Saved',
+          tabBarAccessibilityLabel: 'Saved Articles Tab', // Voice control label
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="star" color={color} />,
         }}
       />

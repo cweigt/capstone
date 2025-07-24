@@ -62,6 +62,8 @@ const Reset_Password = () => {
                               secureTextEntry={!showPasswordOld}
                               value={oldPassword}
                               onChangeText={setOldPassword}
+                              accessibilityLabel="Current Password"
+                              accessibilityHint="Enter your current password"
                           />
                           <TouchableOpacity
                             onPress={() => setShowPasswordOld(!showPasswordOld)}
@@ -85,6 +87,8 @@ const Reset_Password = () => {
                               secureTextEntry={!showPasswordNew}
                               value={newPassword}
                               onChangeText={setNewPassword}
+                              accessibilityLabel="New Password"
+                              accessibilityHint="Enter your new password"
                           />
                           <TouchableOpacity
                             onPress={() => setShowPasswordNew(!showPasswordNew)}
@@ -108,6 +112,8 @@ const Reset_Password = () => {
                               secureTextEntry={!showPasswordNewConfirm}
                               value={confirmPassword}
                               onChangeText={setConfirmPassword}
+                              accessibilityLabel="Confirm new password"
+                              accessibilityHint="Reenter your new password"
                           />
                           <TouchableOpacity
                             onPress={() => setShowPasswordNewConfirm(!showPasswordNewConfirm)}
@@ -129,6 +135,7 @@ const Reset_Password = () => {
 
                         <TouchableOpacity
                             onPress={reauthenticate}
+                            accessibilityLabel='Reset Password Button'
                             style={[styles.reset, { backgroundColor: theme.containerColor, borderColor: theme.border }]}
                         >
                             <Text style={[styles.toggleText, { color: theme.text }]} allowFontScaling={true}>

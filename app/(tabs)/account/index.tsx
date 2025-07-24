@@ -52,6 +52,7 @@ const Sign_Up = () => {
 
                 <TouchableOpacity
                     onPress={() => router.push('/account/profile')}
+                    accessibilityLabel='Edit Profile Button'
                     style={[styles.profileButton, { backgroundColor: theme.containerColor, borderColor: theme.border }]}
                   >
                     <Text style={{
@@ -71,12 +72,15 @@ const Sign_Up = () => {
                    </Text>
                     <TouchableOpacity
                       onPress={() => router.push('/eula')}
+                      accessibilityLabel='End User License Agreement Button'
                       style={[styles.links, { marginBottom: 5 }]}
                     >
+                      
                       <Text style={[styles.links, { color: theme.primary }]}>End User License Agreement</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => router.push('/privacy-policy')}
+                      accessibilityLabel='Privacy Policy Button'
                       style={styles.links}
                     >
                       <Text style={[styles.links, { color: theme.primary }]}>Privacy Policy</Text>
@@ -86,6 +90,7 @@ const Sign_Up = () => {
                             auth.signOut();
                             //router.replace(ROUTES.ACCOUNT);
                         }}
+                        accessibilityLabel='Sign Out Button'
                         style={[styles.signOut, { 
                           backgroundColor: theme.containerColor,
                           borderColor: theme.border,
