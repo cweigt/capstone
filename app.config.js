@@ -25,8 +25,8 @@ export default {
                 process.env.IOS_ASSOCIATED_DOMAIN || "applinks:aurorawdc.com"
             ]
         },
-        "googleServicesFile": process.env.GOOGLE_SERVICES_JSON,
         "android": {
+            "googleServicesFile": process.env.GOOGLE_SERVICES_JSON,
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
