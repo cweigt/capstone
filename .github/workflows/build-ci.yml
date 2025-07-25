@@ -84,7 +84,8 @@ jobs:
       KEY_PASSWORD:           ${{ secrets.KEY_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3 with: { node-version: '24.2.0' }
+      - uses: actions/setup-node@v3 
+        with: { node-version: '24.2.0' }
 
       - name: Install deps & Expo CLI
         run: |
