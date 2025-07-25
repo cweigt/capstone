@@ -2,6 +2,7 @@
   "name": "aurora-agent",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -9,7 +10,11 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "clean-native": "rm -rf android ios",
+    "prebuild": "expo prebuild --clean",
+    "build:android": "npm run prebuild && cd android && ./gradlew assembleRelease",
+    "build:ios": "npm run prebuild && cd ios && xcodebuild -workspace aurora-agent.xcworkspace -scheme aurora-agent -configuration Release -sdk iphoneos -archivePath build/aurora-agent.xcarchive archive && xcodebuild -exportArchive -archivePath build/YourAppaurora-agent.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath build"
   },
   "jest": {
     "preset": "jest-expo"
@@ -68,6 +73,5 @@
   },
   "overrides": {
     "xmldom": "npm:@xmldom/xmldom@^0.8.10"
-  },
-  "private": true
+  }
 }

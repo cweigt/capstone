@@ -4,10 +4,14 @@
 .env
 android/
 ios/
-keys/
+keys/Android
+keys/iOS
+keys/misc
 credentials.json
 *.csr
 *.cer
+.eas
+.github
 
 # Builds
 builds/

@@ -11,7 +11,7 @@ export default {
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
         "ios": {
-            "googleServicesFile": process.env.GOOGLE_SERVICES_PLIST,
+            "googleServicesFile": "./keys/Firebase/ios/GoogleService-Info.plist",
             "supportsTablet": true,
             "bundleIdentifier": process.env.IOS_BUNDLE_ID || "com.aurorawdc.auroramobile",
             "infoPlist": {
@@ -26,7 +26,7 @@ export default {
             ]
         },
         "android": {
-            "googleServicesFile": process.env.GOOGLE_SERVICES_JSON,
+            "googleServicesFile": "./keys/Firebase/android/google-services.json",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
