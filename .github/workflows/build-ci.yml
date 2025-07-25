@@ -59,7 +59,7 @@ jobs:
           ./gradlew assembleRelease
 
       - name: Upload Dev APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aurora-agent.apk
           path: android/app/build/outputs/apk/release/aurora-agent.apk
@@ -84,7 +84,7 @@ jobs:
       KEY_PASSWORD:           ${{ secrets.KEY_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3 
+      - uses: actions/setup-node@v4 
         with: { node-version: '24.2.0' }
       - name: Install deps & Expo CLI
         run: |
@@ -112,7 +112,7 @@ jobs:
           ./gradlew bundleRelease
 
       - name: Upload AAB
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aurora-agent.aab
           path: android/app/build/outputs/bundle/release/aurora-agent.aab
@@ -137,7 +137,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with: { node-version: '24.2.0' }
 
       - name: Install deps & Expo CLI
@@ -168,7 +168,7 @@ jobs:
         run: npm run build:ios
 
       - name: Upload IPA
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aurora-agent.ipa
           path: ios/build/aurora-agent.ipa
