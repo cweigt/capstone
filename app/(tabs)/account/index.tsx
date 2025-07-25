@@ -66,7 +66,7 @@ const Sign_Up = () => {
                   </TouchableOpacity>
                   <ToggleMode />
 
-                <View style={{ paddingBottom: 200 }}></View>
+                <View style={{ paddingBottom: 180 }}></View>
 
                 <View style={styles.legalContainer}>
                    <Text style={[styles.legal, { color: theme.text }]}>
