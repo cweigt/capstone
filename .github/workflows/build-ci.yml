@@ -86,7 +86,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3 
         with: { node-version: '24.2.0' }
-
       - name: Install deps & Expo CLI
         run: |
           npm ci
