@@ -1,5 +1,8 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
+# Automation 
+*github/
+
 # Secrets
 .env
 android/
@@ -54,6 +57,3 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
-
-# Automation 
-*github/
