@@ -56,4 +56,4 @@ yarn-error.*
 app-example
 
 # Automation 
-.github
+*github/
