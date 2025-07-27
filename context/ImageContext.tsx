@@ -19,22 +19,22 @@ export const ImageProvider = ({ children }: { children: React.ReactNode }) => {
   // Listen for auth state changes
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
-      console.log('Auth state changed:', user?.uid);
+      // console.log('Auth state changed:', user?.uid);
       if (user) {
         // Check database first for base64 image data
         try {
           const userRef = ref(database, `users/${user.uid}/photoURL`);
           const snapshot = await get(userRef);
           const photoURL = snapshot.val();
-          console.log('Database photoURL:', photoURL ? photoURL.substring(0, 50) + '...' : 'null');
+          // console.log('Database photoURL:', photoURL ? photoURL.substring(0, 50) + '...' : 'null');
           if (photoURL && photoURL.startsWith('data:')) {
             // This is a base64 data URL from our app
             setImage(photoURL);
-            console.log('Set image from database base64 data');
+            // console.log('Set image from database base64 data');
           } else if (user.photoURL && !user.photoURL.startsWith('data:')) {
             // This is a regular URL from Firebase Auth (legacy)
             setImage(user.photoURL);
-            console.log('Set image from auth profile (legacy)');
+            // console.log('Set image from auth profile (legacy)');
           }
         } catch (error) {
           console.error('Error fetching photo from database:', error);
@@ -44,7 +44,7 @@ export const ImageProvider = ({ children }: { children: React.ReactNode }) => {
           }
         }
       } else {
-        console.log('User logged out, clearing image');
+        // console.log('User logged out, clearing image');
         setImage(null);
       }
     });
@@ -56,11 +56,11 @@ export const ImageProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!auth.currentUser) return;
 
-    console.log('Setting up database listener for user:', auth.currentUser.uid);
+    // console.log('Setting up database listener for user:', auth.currentUser.uid);
     const userRef = ref(database, `users/${auth.currentUser.uid}/photoURL`);
     const unsubscribeDB = onValue(userRef, (snapshot) => {
       const photoURL = snapshot.val();
-      console.log('Database photoURL changed:', photoURL ? photoURL.substring(0, 50) + '...' : 'null');
+      // console.log('Database photoURL changed:', photoURL ? photoURL.substring(0, 50) + '...' : 'null');
       if (photoURL && photoURL.startsWith('data:')) {
         setImage(photoURL);
       }

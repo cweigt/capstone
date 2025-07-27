@@ -16,10 +16,10 @@ const DisplayImage = () => {
   const { image } = useImage();
   const { theme } = useTheme();
   
-  console.log('DisplayImage - image value:', image ? 'has image' : 'no image');
+  // console.log('DisplayImage - image value:', image ? 'has image' : 'no image');
   
   if (!image) {
-    console.log('DisplayImage - showing placeholder');
+    // console.log('DisplayImage - showing placeholder');
     return (
       <View style={[styles.container, { backgroundColor: theme.border }]}>
         <Ionicons 
@@ -31,7 +31,7 @@ const DisplayImage = () => {
     );
   }
   
-  console.log('DisplayImage - showing image with URI');
+  // console.log('DisplayImage - showing image with URI');
   return (
     <View style={styles.container}>
         <Image 

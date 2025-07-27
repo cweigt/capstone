@@ -313,6 +313,7 @@ const HomeScreen = () => {
                       <IconSymbol name="magnifyingglass" size={30} color={theme.text} style={{ marginRight: spacing.sm }} />
                     </TouchableOpacity>
                   </View>
+                  <View style={[styles.divider, { borderBottomColor: theme.border, marginTop: 13 }]} />
                 </View>
               
             )

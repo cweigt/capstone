@@ -28,7 +28,7 @@ const UploadImage = () => {
 
   const addImage = async () => {
     try {
-      console.log('Starting image upload process...');
+      // console.log('Starting image upload process...');
       const profile = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: 'images',
         allowsEditing: true,
@@ -41,22 +41,22 @@ const UploadImage = () => {
         const imageUri = profile.assets[0].uri;
         const base64Data = profile.assets[0].base64;
         
-        console.log('Image selected, URI length:', imageUri.length);
-        console.log('Base64 data length:', base64Data ? base64Data.length : 'null');
+        // console.log('Image selected, URI length:', imageUri.length);
+        // console.log('Base64 data length:', base64Data ? base64Data.length : 'null');
         
         // Create data URL for the image
         const dataUrl = `data:image/jpeg;base64,${base64Data}`;
-        console.log('Data URL created, length:', dataUrl.length);
+        // console.log('Data URL created, length:', dataUrl.length);
         
         // Only update Realtime Database (not Firebase Auth due to length limits)
-        console.log('Updating Realtime Database...');
+        // console.log('Updating Realtime Database...');
         await set(ref(database, `users/${auth.currentUser.uid}/photoURL`), dataUrl);
-        console.log('Realtime Database updated');
+        // console.log('Realtime Database updated');
         
         // Update local state
-        console.log('Updating local state...');
+        // console.log('Updating local state...');
         setImage(dataUrl);
-        console.log('Image upload complete');
+        // console.log('Image upload complete');
       }
     } catch (error) {
       console.error('Error updating profile:', error);
