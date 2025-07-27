@@ -266,7 +266,7 @@ const HomeScreen = () => {
     
   };
 
-  console.log('user in HomeScreen:', user);
+  //console.log('user in HomeScreen:', user);
   useEffect(() => {
     if (user === null) {
       router.replace(ROUTES.ACCOUNT);
