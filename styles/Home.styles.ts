@@ -37,6 +37,10 @@ export const HomeStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    divider: {
+        borderBottomWidth: 1,
+        borderBottomColor: colors.border,
+    },
     hamburger: {
         justifyContent: 'flex-start', 
         alignItems: 'flex-start', 

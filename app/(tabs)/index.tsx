@@ -266,7 +266,7 @@ const HomeScreen = () => {
     
   };
 
-  console.log('user in HomeScreen:', user);
+  //console.log('user in HomeScreen:', user);
   useEffect(() => {
     if (user === null) {
       router.replace(ROUTES.ACCOUNT);
@@ -313,6 +313,7 @@ const HomeScreen = () => {
                       <IconSymbol name="magnifyingglass" size={30} color={theme.text} style={{ marginRight: spacing.sm }} />
                     </TouchableOpacity>
                   </View>
+                  <View style={[styles.divider, { borderBottomColor: theme.border, marginTop: 13 }]} />
                 </View>
               
             )

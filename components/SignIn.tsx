@@ -5,7 +5,8 @@ import {
     Button, 
     TouchableOpacity, 
     KeyboardAvoidingView, 
-    Platform 
+    Platform,
+    Image 
 } from 'react-native';
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
@@ -21,8 +22,17 @@ const Sign_In = ({ setUser }) => {
     const [email, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const router = useRouter();
-    const { theme } = useTheme();
+    const { theme, mode } = useTheme();
 
+
+    //Conditional logo selection based on theme
+    const getLogoSource = () => {
+        if (mode === 'dark') {
+        return require('@/assets/images/Aurora_Logo-new-RGB-white_v2.png');
+        } else {
+        return require('@/assets/images/aurora-wdc.png');
+        }
+    };
     const signIn = async() => {
         try {
             //creating account in Authentication
@@ -56,21 +66,23 @@ const Sign_In = ({ setUser }) => {
             keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
         >
             {/* Blue Header */}
-            <View style={{ backgroundColor: theme.header, paddingTop: 50, paddingBottom: 20, paddingHorizontal: 20 }}>
-                <Text style={{ color: theme.text, fontSize: 24, fontWeight: '600', textAlign: 'center', marginTop: 10 }}>
-                    Sign In
-                </Text>
+            <View style={[{ backgroundColor: theme.header }, styles.heading]}>
+                <Image
+                source={getLogoSource()}
+                style={styles.headerLogo}
+                resizeMode="contain"
+                />
             </View>
             {/* White Underline */}
-        <View style={{ backgroundColor: theme.border, height: 1 }} />
+        <View style={{ backgroundColor: theme.white, height: 1 }} />
 
             <View style={[styles.container, { backgroundColor: theme.background }]}>
                 <View style={[styles.formContainer, { backgroundColor: theme.background }]}>
                     <Text style={[styles.title, { color: theme.text }]} allowFontScaling={true}>Welcome Back</Text>
-                    <Text style={[styles.requirements, { color: theme.text }]} allowFontScaling={true}>
-                        To reset your password, enter your email address and click, "Reset Password".
+                    <Text style={[styles.subtitle, { color: theme.text }]} allowFontScaling={true}>
+                        Login to your account
                     </Text>
-                    <Text style={[styles.requirements, {marginTop: 10, color: theme.text}]} allowFontScaling={true}>
+                    <Text style={[styles.requirements, {color: theme.text}]} allowFontScaling={true}>
                         Email
                     </Text>
                     <TextInput
@@ -119,26 +131,26 @@ const Sign_In = ({ setUser }) => {
                     ) : null}
 
                     <TouchableOpacity
-                        style={[styles.signInButton, { backgroundColor: theme.containerColor, borderColor: theme.border, marginTop: 10 }]}
-                        onPress={signIn}
-                        accessible={true}
-                        accessibilityLabel="Sign in"
-                        accessibilityHint="Signs in with the provided email and password"
-                    >
-                        <Text style={[styles.buttonText, { color: theme.text }]}>
-                            Sign In
-                        </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={[styles.resetPasswordButton, { backgroundColor: theme.containerColor, borderColor: theme.border, marginTop: 10, marginBottom: 10 }]}
                         onPress={sendPasswordEmail}
                         accessible={true}
                         accessibilityLabel="Reset password"
                         accessibilityHint="Sends a password reset email"
                     >
-                        <Text style={[styles.buttonText, { color: theme.text }]}>
-                            Reset Password
+                        <Text style={[styles.forgot, { color: theme.text }]}>
+                            Forgot Password?
+                        </Text>
+                    </TouchableOpacity>
+                    <View style={{marginTop: 60}}/>
+
+                    <TouchableOpacity
+                        style={[styles.signInButton, { backgroundColor: theme.primary, borderColor: theme.border, marginTop: 10 }]}
+                        onPress={signIn}
+                        accessible={true}
+                        accessibilityLabel="Sign in"
+                        accessibilityHint="Signs in with the provided email and password"
+                    >
+                        <Text style={[styles.buttonText, { color: theme.white }]}>
+                            Log In
                         </Text>
                     </TouchableOpacity>
                     
@@ -153,7 +165,7 @@ const Sign_In = ({ setUser }) => {
                             Don't have an account? Sign up.
                         </Text>
                     </TouchableOpacity>
-                     */}
+                    */}
                     
                     <Text style={[styles.toggleText, { color: theme.primary }]} allowFontScaling={true}>
                         Access to this application is restricted to authorized users.
