@@ -27,8 +27,7 @@ export default {
             'expo-build-properties',
                 {
                     android: {
-                    // Pin to the Kotlin version that r-n-safe-area-context needs
-                    kotlinVersion: '1.8.10',
+                    kotlinVersion: '1.8.10'
                     }
                 }
             ]
