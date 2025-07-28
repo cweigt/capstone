@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "142728050041",
+    "firebase_url": "https://aurorawdc-app-5a801-default-rtdb.firebaseio.com",
+    "project_id": "aurorawdc-app-5a801",
+    "storage_bucket": "aurorawdc-app-5a801.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142728050041:android:019b00e6b04e24ede1eba8",
+        "android_client_info": {
+          "package_name": "com.aurorawdc.auroramobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByEar5QjwUQTFJ-o8ivfapfVb_HoI5jyc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
