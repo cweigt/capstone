@@ -26,7 +26,7 @@ export default {
             ]
         },
         "android": {
-            "googleServicesFile": "./keys/Firebase/android/google-services.json",
+            "googleServicesFile": "./keys/Firebase/google-services.json",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
