@@ -10,6 +10,29 @@ export default {
         "scheme": "myapp",
         "userInterfaceStyle": "automatic",
         "newArchEnabled": false,
+        "plugins": [
+            "expo-router",
+            [
+                "expo-splash-screen",
+                {
+                    "image": "./assets/images/splash-icon.png",
+                    "imageWidth": 200,
+                    "resizeMode": "contain",
+                    "backgroundColor": "#ffffff"
+                }
+            ],
+            "expo-font",
+            "expo-web-browser",
+            [
+            'expo-build-properties',
+                {
+                    android: {
+                    // Pin to the Kotlin version that r-n-safe-area-context needs
+                    kotlinVersion: '1.8.10',
+                    }
+                }
+            ]
+        ],
         "ios": {
             "googleServicesFile": "./keys/Firebase/GoogleService-Info.plist",
             "supportsTablet": true,
@@ -38,20 +61,6 @@ export default {
             "output": "static",
             "favicon": "./assets/images/favicon.png"
         },
-        "plugins": [
-            "expo-router",
-            [
-                "expo-splash-screen",
-                {
-                    "image": "./assets/images/splash-icon.png",
-                    "imageWidth": 200,
-                    "resizeMode": "contain",
-                    "backgroundColor": "#ffffff"
-                }
-            ],
-            "expo-font",
-            "expo-web-browser"
-        ],
         "experiments": {
             "typedRoutes": true
         },
