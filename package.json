@@ -11,10 +11,10 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "clean-native": "rm -rf android ios",
-    "prebuild": "expo prebuild --clean",
-    "build:android": "npm run prebuild && cd android && ./gradlew assembleRelease",
-    "build:ios": "npm run prebuild && cd ios && xcodebuild -workspace aurora-agent.xcworkspace -scheme aurora-agent -configuration Release -sdk iphoneos -archivePath build/aurora-agent.xcarchive archive && xcodebuild -exportArchive -archivePath build/YourAppaurora-agent.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath build"
+    "clean-native": "echo \"Skipping rm -rf android ios\"",
+    "prebuild": "echo \"Skipping expo prebuild --clean\"",
+    "build:android": "echo \"Skipping npm run prebuild && cd android && ./gradlew assembleRelease\"",
+    "build:ios": "echo \"Skipping npm run prebuild && cd ios && xcodebuild -workspace aurora-agent.xcworkspace -scheme aurora-agent -configuration Release -sdk iphoneos -archivePath build/aurora-agent.xcarchive archive && xcodebuild -exportArchive -archivePath build/YourAppaurora-agent.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath build\""
   },
   "jest": {
     "preset": "jest-expo"
