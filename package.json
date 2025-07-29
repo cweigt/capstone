@@ -11,7 +11,6 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "preinstall": "npx npm-force-resolutions",
     "clean-native": "echo \"Skipping rm -rf android ios\"",
     "prebuild": "echo \"Skipping expo prebuild --clean\"",
     "build:android": "echo \"Skipping npm run prebuild && cd android && ./gradlew assembleRelease\"",
@@ -76,5 +75,9 @@
   "overrides": {
     "xmldom": "npm:@xmldom/xmldom@^0.8.10",
     "react-native-safe-area-context": "5.4.0"
+  },
+  "resolutions": {
+    "react-native-safe-area-context": "5.4.0",
+    "xmldom": "npm:@xmldom/xmldom@^0.8.10"
   }
 }
