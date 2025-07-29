@@ -29,7 +29,7 @@ expo: {
         'expo-build-properties',
         {
         android: {
-            kotlinVersion: '1.8.22',
+            // kotlinVersion: '1.8.22',
             gradleProperties: {
               // enable AndroidX & jetifier
             'android.useAndroidX': 'true',
