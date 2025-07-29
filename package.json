@@ -74,6 +74,6 @@
   },
   "overrides": {
     "xmldom": "npm:@xmldom/xmldom@^0.8.10",
-    "react-native-safe-area-context": "4.14.1"
+    "react-native-safe-area-context": "^4.14.1"
   }
 }
