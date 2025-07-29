@@ -39,6 +39,7 @@ expo: {
             newArchEnabled: 'false',
               // bump Gradle heap
             'org.gradle.jvmargs': '-Xmx4608m',
+            kotlinVersion: '1.8.22'
             },
         },
           // (You can add `ios: { swiftVersion: '5.0' }` here if needed)
