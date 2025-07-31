@@ -64,59 +64,6 @@ const HomeScreen = () => {
       try {
 
         
-        //const response = await axios.get('https://clientmobile.firstlight.am/api/feed-links?api_key=d304f61e787a6605da41cdc7085e8176fc986b19effcf53e68820b6aef50805f');
-        //console.log('Full response:', response);
-        //console.log('Response data:', response.data);
-        //console.log('Response data type:', typeof response.data);
-        //console.log('Is array?', Array.isArray(response.data));
-        
-        // Handle different response formats
-        /*let feedData;
-        if (response.data && Array.isArray(response.data)) {
-          feedData = response.data;
-        } else if (response.data && response.data.data && Array.isArray(response.data.data)) {
-          feedData = response.data.data;
-        } else if (response.data && response.data.links && Array.isArray(response.data.links)) {
-          // New format: fetch titles from each RSS feed using regex parsing
-          const options = [];
-          for (const link of response.data.links) {
-            try {
-              const xmlResponse = await axios.get(link);
-              const xmlString = xmlResponse.data;
-              
-              // Extract title using regex (same approach as used elsewhere in the code)
-              const titleMatch = xmlString.match(/<title[^>]*>([\s\S]*?)<\/title>/);
-              const title = titleMatch ? decodeHtml(titleMatch[1].trim()) : 'Unknown Title';
-              
-              if (title !== 'Unknown Title') {
-                options.push({
-                  label: title,
-                  value: link
-                });
-              }
-            } catch (error) {
-              console.log(`Failed to fetch or parse ${link}: ${error}`);
-            }
-          }
-          
-          setFeedOptions(options);
-          setFeedNum(options.length);
-          if (options.length > 0) {
-            setSelectedFeed(options[0].value);
-          }
-          return; // Exit early since we've set the options
-        } else if (response.data && response.data.feeds && Array.isArray(response.data.feeds)) {
-          feedData = response.data.feeds;
-        } else {
-          console.log('Available keys in response.data:', Object.keys(response.data || {}));
-          throw new Error('No valid feed data found in API response');
-        }
-        
-        const options = feedData.map((feed: { title: string; url: string }) => ({
-          label: feed.title.replace(/\[ID:\d+\]/, '').trim(),
-          value: feed.url.replace(/\/+/g, '/'),
-        }));*/
-        
         const rssLinksURL = "https://clientmobile.firstlight.am/api/feed-links?api_key=d304f61e787a6605da41cdc7085e8176fc986b19effcf53e68820b6aef50805f"
         const jsonResponse = await axios.get(rssLinksURL);
         const links: string[] = jsonResponse.data.links;
@@ -144,20 +91,7 @@ const HomeScreen = () => {
             console.log(`Failed to fetch or parse ${link}: ${error}`)
           }
         }
-        /*
-        const options = [
-          { label: "AI in HR", value: "https://clientmobile.firstlight.am/widget/rss/118" },
-          { label: "AI in the DoD", value: "https://clientmobile.firstlight.am/widget/rss/119" },
-          { label: "Amazon", value: "https://clientmobile.firstlight.am/widget/rss/120" },
-          { label: "Citigroup", value: "https://clientmobile.firstlight.am/widget/rss/115" },
-          { label: "OneDigital", value: "https://clientmobile.firstlight.am/widget/rss/116" },
-          { label: "KFF", value: "https://clientmobile.firstlight.am/widget/rss/121" },
-          { label: "Semiconductors", value: "https://clientmobile.firstlight.am/widget/rss/117" },
-          { label: "UHC", value: "https://clientmobile.firstlight.am/widget/rss/123" },
-          { label: "Walgreens", value: "https://clientmobile.firstlight.am/widget/rss/124" },
-          { label: "WH Executive Orders", value: "https://clientmobile.firstlight.am/widget/rss/125" }
-        ];
-        */
+     
         setFeedOptions(options);
         setFeedNum(options.length);
         if (options.length > 0) {
