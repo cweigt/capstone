@@ -14,7 +14,7 @@ import { Icon } from '@rneui/themed';
 import { spacing } from '@/styles/theme';
 import { useTheme } from '@/context/ThemeContext';
 import axios from 'axios';
-import {XMLParser} from 'fast-xml-parser'
+import { XMLParser } from 'fast-xml-parser';
 import Search from '@/components/Search';
 import ArticleCard from '@/components/ArticleCard';
 import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
@@ -64,14 +64,14 @@ const HomeScreen = () => {
       try {
 
         
-        const response = await axios.get('https://clientmobile.firstlight.am/api/feed-links?api_key=d304f61e787a6605da41cdc7085e8176fc986b19effcf53e68820b6aef50805f');
+        //const response = await axios.get('https://clientmobile.firstlight.am/api/feed-links?api_key=d304f61e787a6605da41cdc7085e8176fc986b19effcf53e68820b6aef50805f');
         //console.log('Full response:', response);
         //console.log('Response data:', response.data);
         //console.log('Response data type:', typeof response.data);
         //console.log('Is array?', Array.isArray(response.data));
         
         // Handle different response formats
-        let feedData;
+        /*let feedData;
         if (response.data && Array.isArray(response.data)) {
           feedData = response.data;
         } else if (response.data && response.data.data && Array.isArray(response.data.data)) {
@@ -115,9 +115,9 @@ const HomeScreen = () => {
         const options = feedData.map((feed: { title: string; url: string }) => ({
           label: feed.title.replace(/\[ID:\d+\]/, '').trim(),
           value: feed.url.replace(/\/+/g, '/'),
-        }));
+        }));*/
         
-        /*const rssLinksURL = "https://clientmobile.firstlight.am/api/feed-links?api_key=d304f61e787a6605da41cdc7085e8176fc986b19effcf53e68820b6aef50805f"
+        const rssLinksURL = "https://clientmobile.firstlight.am/api/feed-links?api_key=d304f61e787a6605da41cdc7085e8176fc986b19effcf53e68820b6aef50805f"
         const jsonResponse = await axios.get(rssLinksURL);
         const links: string[] = jsonResponse.data.links;
         const parser = new XMLParser();
@@ -143,7 +143,7 @@ const HomeScreen = () => {
           } catch (error) {
             console.log(`Failed to fetch or parse ${link}: ${error}`)
           }
-        }*/
+        }
         /*
         const options = [
           { label: "AI in HR", value: "https://clientmobile.firstlight.am/widget/rss/118" },
