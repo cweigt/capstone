@@ -18,6 +18,10 @@ credentials.json
 # Builds
 builds/
 
+# Distros
+*.ipa
+*.aab
+
 
 # dependencies
 node_modules/
