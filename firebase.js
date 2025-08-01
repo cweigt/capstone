@@ -17,7 +17,7 @@ const { extra } = Constants.expoConfig;
 const firebaseConfig = {
   apiKey: extra.firebaseApiKey,
   authDomain: extra.firebaseAuthDomain,
-  databaseURL: extra.firebaseduburl,
+  databaseURL: extra.firebaseDatabaseURL,
   projectId: extra.firebaseProjectId,
   storageBucket: extra.firebaseStorageBucket,
   messagingSenderId: extra.firebaseMessagingSenderId,

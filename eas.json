@@ -7,7 +7,7 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "android": {"credentialsSource": "local"}
+      "android": { "credentialsSource": "local" }
     },
     "preview": {
       "distribution": "internal",
@@ -17,8 +17,10 @@
     },
     "production": {
       "autoIncrement": true,
-      "android": {"credentialsSource": "local"},
-      "ios": {"credentialsSource": "local" }
+      "android": {
+        "credentialsSource": "local"
+      },
+      "ios": { "credentialsSource": "local" }
     }
   },
   "submit": {
