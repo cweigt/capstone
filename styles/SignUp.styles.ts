@@ -6,14 +6,14 @@ export const SignUpStyles = StyleSheet.create({
         flex: 1,
     },
     formContainer: {
-        padding: spacing.md,
+        padding: spacing.xl,
     },
     title: {
-        fontSize: typography.h3.fontSize,
-        fontWeight: '500',
+        fontSize: typography.h1.fontSize,
+        fontWeight: 'bold',
         textAlign: 'center',
-        marginTop: spacing.sm,
-        marginBottom: spacing.md,
+        marginTop: spacing.md,
+        //marginBottom: spacing.sm,
     },
     eye: {
         position: 'absolute',
@@ -30,6 +30,7 @@ export const SignUpStyles = StyleSheet.create({
         borderWidth: 1,
         marginTop: spacing.sm,
         paddingLeft: spacing.sm,
+        borderRadius: 8,
     },
     errorText: {
         color: colors.error,
@@ -64,7 +65,7 @@ export const SignUpStyles = StyleSheet.create({
         marginTop: 10,
     },
     toggleText: {
-        marginTop: 0,
+        marginTop: 10,
         marginBottom: spacing.sm,
         color: colors.primary,
         textAlign: 'center',
@@ -73,10 +74,9 @@ export const SignUpStyles = StyleSheet.create({
     signUpButton: {
         backgroundColor: '#F2F2F7',
         paddingVertical: 12,
-        paddingHorizontal: 24,
         borderRadius: 8,
         alignSelf: 'center',
-        minWidth: 140,
+        minWidth: 337,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
@@ -85,5 +85,15 @@ export const SignUpStyles = StyleSheet.create({
         color: '#000000',
         fontWeight: '500',
         fontSize: 16,
+    },
+    headerLogo: {
+        height: 75,
+        width: 225,
+    },
+    heading: {
+        paddingTop: 80, 
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 }); 

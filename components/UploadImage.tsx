@@ -63,7 +63,7 @@ const UploadImage = () => {
     <View style={styles.container}>
         <View style={styles.row}>
             <View style={{ width: 100, height: 125 }}>
-                <DisplayImage /> {/*calls this component to render the image*/}
+                <DisplayImage />
             </View>
             <TouchableOpacity 
               onPress={addImage} 
