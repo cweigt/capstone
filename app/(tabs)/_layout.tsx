@@ -1,3 +1,5 @@
+//this controls the navigation bar tabs and what is their, but also their graphics
+
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform, Image } from 'react-native';

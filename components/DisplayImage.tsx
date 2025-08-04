@@ -14,12 +14,10 @@ import { useTheme } from '@/context/ThemeContext';
 //"partial functionality"
 const DisplayImage = () => {
   const { image } = useImage();
+  //this displayImage shows the image that the imageContext finds
   const { theme } = useTheme();
   
-  // console.log('DisplayImage - image value:', image ? 'has image' : 'no image');
-  
   if (!image) {
-    // console.log('DisplayImage - showing placeholder');
     return (
       <View style={[styles.container, { backgroundColor: theme.border }]}>
         <Ionicons 
@@ -31,7 +29,6 @@ const DisplayImage = () => {
     );
   }
   
-  // console.log('DisplayImage - showing image with URI');
   return (
     <View style={styles.container}>
         <Image 

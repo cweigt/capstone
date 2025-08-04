@@ -1,5 +1,5 @@
 import { useAuth } from '@/context/AuthContext';
-
+//this is the route manager so that we have more control and flexibility of what pages exist
 export const ROUTES = {
   FEEDS: '/',
   SETTINGS: '/settings',

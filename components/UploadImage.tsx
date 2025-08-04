@@ -24,12 +24,13 @@ const UploadImage = () => {
   const { theme } = useTheme();
   const { image, setImage } = useImage();
   const auth = getAuth();
-  const database = getDatabase();
+  const database = getDatabase(); //stores this in database so that it can be fetched across all devices for a user
 
   const addImage = async () => {
     try {
-      // console.log('Starting image upload process...');
+      //base64 allows this to be displayed on the profile because of the size… mitigates errors on the image
       const profile = await ImagePicker.launchImageLibraryAsync({
+        //controls the image picker screen that shows up
         mediaTypes: 'images',
         allowsEditing: true,
         aspect: [1, 1],
@@ -41,22 +42,16 @@ const UploadImage = () => {
         const imageUri = profile.assets[0].uri;
         const base64Data = profile.assets[0].base64;
         
-        // console.log('Image selected, URI length:', imageUri.length);
-        // console.log('Base64 data length:', base64Data ? base64Data.length : 'null');
-        
-        // Create data URL for the image
+        //create data URL for the image
         const dataUrl = `data:image/jpeg;base64,${base64Data}`;
-        // console.log('Data URL created, length:', dataUrl.length);
         
-        // Only update Realtime Database (not Firebase Auth due to length limits)
-        // console.log('Updating Realtime Database...');
+        //only update Realtime Database (not Firebase Auth due to length limits)
+        //storing the image in the database
         await set(ref(database, `users/${auth.currentUser.uid}/photoURL`), dataUrl);
-        // console.log('Realtime Database updated');
-        
-        // Update local state
-        // console.log('Updating local state...');
+      
+        //update local state
+        //once pulled from database, it is set in the user's environment
         setImage(dataUrl);
-        // console.log('Image upload complete');
       }
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -68,7 +63,7 @@ const UploadImage = () => {
     <View style={styles.container}>
         <View style={styles.row}>
             <View style={{ width: 100, height: 125 }}>
-                <DisplayImage />
+                <DisplayImage /> {/*calls this component to render the image*/}
             </View>
             <TouchableOpacity 
               onPress={addImage} 

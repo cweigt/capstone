@@ -23,13 +23,14 @@ interface SideDrawerProps {
   feedNum?: number;
 }
 
+//side drawer animation for open and closing
 const SideDrawer: React.FC<SideDrawerProps> = ({ isVisible, onClose, children, feedNum }) => {
   const translateX = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [shouldRender, setShouldRender] = useState(false);
   const { theme, mode } = useTheme();
 
-  // Conditional logo selection based on theme
+  //conditional logo selection based on theme
   const getLogoSource = () => {
     if (mode === 'dark') {
       return require('@/assets/images/Aurora_Logo-new-RGB-white_v2.png');
@@ -40,6 +41,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isVisible, onClose, children, f
 
   useEffect(() => {
     if (isVisible) {
+      //this is for the opening of the sideDrawer
       setShouldRender(true);
       Animated.parallel([
         Animated.timing(translateX, {
@@ -53,10 +55,10 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isVisible, onClose, children, f
           useNativeDriver: true,
         }),
       ]).start();
-    } else {
+    } else { //this is for the closing of the sideDrawer
       Animated.parallel([
         Animated.timing(translateX, {
-          toValue: -DRAWER_WIDTH,
+          toValue: -DRAWER_WIDTH, //moves left the amount that it needs to for it to be hidden
           duration: 250,
           useNativeDriver: true,
         }),
@@ -66,12 +68,12 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isVisible, onClose, children, f
           useNativeDriver: true,
         }),
       ]).start(() => {
-        setShouldRender(false);
+        setShouldRender(false); //unrendering the component to get rid of the opaque gray
       });
     }
   }, [isVisible]);
 
-  if (!shouldRender) return null;
+  if (!shouldRender) return null; //if there is nothing that needs to be rendered, then don't
 
   return (
     <View style={styles.overlay}>
@@ -103,9 +105,11 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isVisible, onClose, children, f
                       <View style={styles.headerSubtitleContainer}>
               <Text style={[styles.headerSubtitle, { color: theme.text }]}>
                 All Feeds {'  '}
+                {/*the rendering of the dropdown options happens in the home page…
+                that page has the needed information to be able to do so*/}
               </Text>
               <Text style={[styles.headerSubtitleNumber, { color: theme.gray }]}>
-                {feedNum}
+                {feedNum /*this tracks how many feeds there are*/}
               </Text>
             </View>
         </View>

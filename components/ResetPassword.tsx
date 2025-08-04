@@ -28,6 +28,8 @@ const Reset_Password = () => {
     const [showPasswordNew, setShowPasswordNew] = useState(false);
     const [showPasswordNewConfirm, setShowPasswordNewConfirm] = useState(false);
 
+    //this is the same function as shown in deleting an account
+    //needs to reauthenticate for resetting the password as well
     const reauthenticate = async() => {
         setError('');
         if (newPassword !== confirmPassword) {

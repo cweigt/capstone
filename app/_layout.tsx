@@ -29,6 +29,7 @@ export default function RootLayout() {
     return null;
   }
 
+  //this contains the overall app structure 
   return (
     <ThemeProvider>
       <ThemeWrapper>

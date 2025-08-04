@@ -12,6 +12,9 @@
         //Uses real-time updates to sync the star state with Firebase
         //Handles article saving/unsaving through the toggleSave function
 
+
+//DO NOT USE ANYMORE, THE CARD IS STORED IN ARTICLE CARD AND THE FETCHING IS DONE IN HOME PAGE
+
 import React, { useState, useEffect, useCallback } from 'react';
 import {
     View,

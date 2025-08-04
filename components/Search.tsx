@@ -12,19 +12,21 @@ import { spacing } from '@/styles/theme';
 import { IconSymbol } from './ui/IconSymbol';
 import { useTheme } from '@/context/ThemeContext';
 
+//this component can always stay rendered and just slide in unlike Side Drawer because of transparency
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const Search = ({ value, onChangeText, showSearchBar, setShowSearchBar }) => {
   const translateX = useRef(new Animated.Value(showSearchBar ? 0 : SCREEN_WIDTH)).current;
-  const insets = useSafeAreaInsets();
-  const inputRef = useRef(null);
+  const insets = useSafeAreaInsets(); //certain amount of padding at the top
+  const inputRef = useRef(null); //this is what the search is based on
   const { theme } = useTheme();
 
   //ternary operator to open and close
+  //slides in from right
   useEffect(() => {
     Animated.timing(translateX, {
       toValue: showSearchBar ? 0 : SCREEN_WIDTH,
-      duration: 250,
+      duration: 250, //how long the opening and closing animation is
       useNativeDriver: true,
     }).start();
   }, [showSearchBar]);
@@ -32,7 +34,7 @@ const Search = ({ value, onChangeText, showSearchBar, setShowSearchBar }) => {
   //focus keyboard useEffect
   useEffect(() => {
     if (showSearchBar && inputRef.current) {
-      inputRef.current.focus();
+      inputRef.current.focus(); //automatic focus cursor on the search bar so the user can instantly search
     }
   }, [showSearchBar]);
 

@@ -1,3 +1,4 @@
+//this allows the Theme Context to be used
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
