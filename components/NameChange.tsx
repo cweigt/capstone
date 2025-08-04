@@ -25,7 +25,8 @@ const Name_Change = () => {
   const [lastName, setLastName] = useState('');
   const [showNameChange, setShowNameChange] = useState(false);
   
-  //Get current first and last name from display name
+  //get current first and last name from display name
+  //this is so it can be displayed into the name fields for name change
   const currentFirstName = user?.displayName?.split(' ')[0] || '';
   const currentLastName = user?.displayName?.split(' ')[1] || '';
   
@@ -38,23 +39,25 @@ const Name_Change = () => {
       
       const displayName = `${firstName} ${lastName}`;
       
-      //Update Authentication profile
+      //update Authentication profile when user clicks "save name"
       await updateProfile(auth.currentUser, {
         displayName: displayName
       });
 
-      // Reload user to get updated profile
+      //reload user to get updated profile
       await auth.currentUser.reload();
       const updatedUser = auth.currentUser;
-      setUser({ ...updatedUser}); //forcing re render
+      setUser({ ...updatedUser}); //forcing re render using spread operator
 
-      //Update Realtime Database - only update name fields
+      //update Realtime Database - only update name fields
+      //all the other fields remain because of th e UID access, was a bug that needed fixing
       await update(ref(database, `users/${auth.currentUser.uid}`), {
         firstName: firstName,
         lastName: lastName,
         displayName: displayName
       });
 
+      //clearing out the fields and replacing the with the name placeholders
       setFirstName('');
       setLastName('');
     } catch (error) {

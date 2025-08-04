@@ -5,6 +5,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { lightTheme, darkTheme } from '@/styles/theme';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getDatabase, ref, set, get, onValue } from 'firebase/database';
 
 type Theme = typeof lightTheme;
 
@@ -29,18 +31,39 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const systemColorScheme = useColorScheme();
   const [mode, setMode] = useState<'light' | 'dark'>(systemColorScheme === 'dark' ? 'dark' : 'light');
   const [isManualOverride, setIsManualOverride] = useState(false);
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const auth = getAuth();
+  const database = getDatabase();
+
+  // Listen for auth state changes
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user?.uid || null);
+    });
+
+    return () => unsubscribeAuth();
+  }, []);
 
   // Load saved theme preference on app start
   useEffect(() => {
     const loadSavedTheme = async () => {
       try {
-        const savedMode = await AsyncStorage.getItem(THEME_PREFERENCE_KEY);
-        const savedOverride = await AsyncStorage.getItem(MANUAL_OVERRIDE_KEY);
-        
-        if (savedMode && savedOverride === 'true') {
-          setMode(savedMode as 'light' | 'dark');
-          setIsManualOverride(true);
-        } else if (systemColorScheme) {
+        if (currentUser) {
+          // User is logged in - load from database
+          const userRef = ref(database, `users/${currentUser}/themePreference`);
+          const snapshot = await get(userRef);
+          const savedTheme = snapshot.val();
+          
+          if (savedTheme && savedTheme.mode) {
+            setMode(savedTheme.mode);
+            setIsManualOverride(savedTheme.isManualOverride || false);
+          } else {
+            // No saved preference, use system preference
+            setMode(systemColorScheme === 'dark' ? 'dark' : 'light');
+            setIsManualOverride(false);
+          }
+        } else {
+          // No user logged in - use system preference
           setMode(systemColorScheme === 'dark' ? 'dark' : 'light');
           setIsManualOverride(false);
         }
@@ -55,13 +78,40 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     };
 
     loadSavedTheme();
-  }, [systemColorScheme]);
+  }, [systemColorScheme, currentUser]);
+
+  // Listen for theme changes in database when user is logged in
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const userRef = ref(database, `users/${currentUser}/themePreference`);
+    const unsubscribeDB = onValue(userRef, (snapshot) => {
+      const savedTheme = snapshot.val();
+      if (savedTheme && savedTheme.mode) {
+        setMode(savedTheme.mode);
+        setIsManualOverride(savedTheme.isManualOverride || false);
+      }
+    });
+
+    return () => unsubscribeDB();
+  }, [currentUser]);
 
   // Save theme preference when manually changed
   const setManualMode = async (newMode: 'light' | 'dark') => {
     try {
-      await AsyncStorage.setItem(THEME_PREFERENCE_KEY, newMode);
-      await AsyncStorage.setItem(MANUAL_OVERRIDE_KEY, 'true');
+      if (currentUser) {
+        // User is logged in - save to database
+        const userRef = ref(database, `users/${currentUser}/themePreference`);
+        await set(userRef, {
+          mode: newMode,
+          isManualOverride: true,
+          updatedAt: new Date().toISOString()
+        });
+      } else {
+        // No user logged in - save to AsyncStorage (fallback)
+        await AsyncStorage.setItem(THEME_PREFERENCE_KEY, newMode);
+        await AsyncStorage.setItem(MANUAL_OVERRIDE_KEY, 'true');
+      }
       
       setMode(newMode);
       setIsManualOverride(true);

@@ -6,14 +6,14 @@ export const SignInStyles = StyleSheet.create({
         flex: 1,
     },
     formContainer: {
-        padding: spacing.md,
+        padding: spacing.xl,
     },
     title: {
-        fontSize: typography.h3.fontSize,
-        fontWeight: '500',
+        fontSize: typography.h1.fontSize,
+        fontWeight: 'bold',
         textAlign: 'center',
-        marginTop: spacing.sm,
-        marginBottom: spacing.md,
+        marginTop: spacing.md,
+        //marginBottom: spacing.sm,
     },
     input: {
         height: 40,
@@ -21,6 +21,7 @@ export const SignInStyles = StyleSheet.create({
         borderWidth: 1,
         marginTop: spacing.sm,
         paddingLeft: spacing.sm,
+        borderRadius: 8,
     },
     errorText: {
         color: colors.error,
@@ -68,7 +69,7 @@ export const SignInStyles = StyleSheet.create({
         alignItems: 'center',
     },
     toggleText: {
-        marginTop: 0,
+        marginTop: 10,
         marginBottom: spacing.sm,
         color: colors.primary,
         textAlign: 'center',
@@ -77,13 +78,12 @@ export const SignInStyles = StyleSheet.create({
     signInButton: {
         //backgroundColor: '#F2F2F7',
         paddingVertical: 12,
-        paddingHorizontal: 24,
         borderRadius: 8,
         alignSelf: 'center',
-        minWidth: 140,
+        minWidth: 337,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10,
+        marginTop: 60,
     },
     resetPasswordButton: {
         backgroundColor: '#F2F2F7',
@@ -96,8 +96,31 @@ export const SignInStyles = StyleSheet.create({
         justifyContent: 'center',
     },
     buttonText: {
-        color: '#000000',
         fontWeight: '500',
         fontSize: 16,
+    },
+    headerLogo: {
+        height: 75,
+        width: 225,
+    },
+    heading: {
+        paddingTop: 80, 
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    subtitle: {
+        fontSize: typography.h2.fontSize,
+        opacity: 0.5,
+        //marginTop: spacing.sm,
+        textAlign: 'center',
+    },
+    forgot: {
+        fontSize: typography.h3.fontSize,
+        opacity: 0.5,
+        textAlign: 'center',
+        marginTop: spacing.sm,
+        fontWeight: '400',
+        marginBottom: spacing.sm,
     },
 }); 

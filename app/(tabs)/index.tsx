@@ -14,6 +14,7 @@ import { Icon } from '@rneui/themed';
 import { spacing } from '@/styles/theme';
 import { useTheme } from '@/context/ThemeContext';
 import axios from 'axios';
+import { XMLParser } from 'fast-xml-parser';
 import Search from '@/components/Search';
 import ArticleCard from '@/components/ArticleCard';
 import { getDatabase, ref, set, remove, get, onValue } from 'firebase/database';
@@ -23,6 +24,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { getDefaultRoute, ROUTES } from '@/constants/Routes';
+
 
 interface FeedOption {
   label: string;
@@ -60,29 +62,44 @@ const HomeScreen = () => {
   useEffect(() => {
     const fetchFeedOptions = async () => {
       try {
-        /*const response = await axios.get('https://waleed.firstlight.am/feeds/list');
-        const options = response.data.map((feed: { title: string; url: string }) => ({
-          label: feed.title.replace(/\[ID:\d+\]/, '').trim(),
-          value: feed.url.replace(/\/+/g, '/'),
-        }));*/
-        const options = [
-          { label: "AI in HR", value: "https://clientmobile.firstlight.am/widget/rss/118" },
-          { label: "AI in the DoD", value: "https://clientmobile.firstlight.am/widget/rss/119" },
-          { label: "Amazon", value: "https://clientmobile.firstlight.am/widget/rss/120" },
-          { label: "Citigroup", value: "https://clientmobile.firstlight.am/widget/rss/115" },
-          { label: "OneDigital", value: "https://clientmobile.firstlight.am/widget/rss/116" },
-          { label: "KFF", value: "https://clientmobile.firstlight.am/widget/rss/121" },
-          { label: "Semiconductors", value: "https://clientmobile.firstlight.am/widget/rss/117" },
-          { label: "UHC", value: "https://clientmobile.firstlight.am/widget/rss/123" },
-          { label: "Walgreens", value: "https://clientmobile.firstlight.am/widget/rss/124" },
-          { label: "WH Executive Orders", value: "https://clientmobile.firstlight.am/widget/rss/125" }
-        ];
+
+        
+        const rssLinksURL = "https://clientmobile.firstlight.am/api/feed-links?api_key=d304f61e787a6605da41cdc7085e8176fc986b19effcf53e68820b6aef50805f"
+        const jsonResponse = await axios.get(rssLinksURL);
+        const links: string[] = jsonResponse.data.links;
+        const parser = new XMLParser();
+
+        const options = [];
+        // extract feed options from rssLinksURL
+        for (const link of links)
+        {
+          try {
+            const xmlResponse = await axios.get(link);
+            const xmlData = parser.parse(xmlResponse.data);
+            const title = xmlData.rss?.channel?.title ?? 'Unknown Title';
+            
+            if (title === 'Unknown Title')
+              continue;
+
+            options.push(
+              {
+                label: title,
+                value: link
+              }
+            )
+          } catch (error) {
+            console.log(`Failed to fetch or parse ${link}: ${error}`)
+          }
+        }
+     
         setFeedOptions(options);
         setFeedNum(options.length);
         if (options.length > 0) {
           setSelectedFeed(options[0].value);
         }
       } catch (error) {
+        console.log("Error:");
+        console.log(error);
         setFeedOptions([]);
         setFeedNum(0);
       }
@@ -266,7 +283,7 @@ const HomeScreen = () => {
     
   };
 
-  console.log('user in HomeScreen:', user);
+  //console.log('user in HomeScreen:', user);
   useEffect(() => {
     if (user === null) {
       router.replace(ROUTES.ACCOUNT);
@@ -313,6 +330,7 @@ const HomeScreen = () => {
                       <IconSymbol name="magnifyingglass" size={30} color={theme.text} style={{ marginRight: spacing.sm }} />
                     </TouchableOpacity>
                   </View>
+                  <View style={[styles.divider, { borderBottomColor: theme.border, marginTop: 13 }]} />
                 </View>
               
             )

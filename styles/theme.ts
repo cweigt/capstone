@@ -18,6 +18,7 @@ export const lightTheme = {
   cardIcons: '#A1A1A1',
   header: '#FFFFFF',
   back: '#007AFF',
+  white: '#FFFFFF',
 };
 
 export const darkTheme ={
@@ -38,6 +39,7 @@ export const darkTheme ={
   cardIcons: '#FFFFFF',
   header: '#0A84FF',
   back: '#FFFFFF',
+  white: '#FFFFFF',
 };  
 
 // For backward compatibility - this will be deprecated

@@ -24,30 +24,34 @@ const UploadImage = () => {
   const { theme } = useTheme();
   const { image, setImage } = useImage();
   const auth = getAuth();
-  const database = getDatabase();
+  const database = getDatabase(); //stores this in database so that it can be fetched across all devices for a user
 
   const addImage = async () => {
     try {
+      //base64 allows this to be displayed on the profile because of the size… mitigates errors on the image
       const profile = await ImagePicker.launchImageLibraryAsync({
+        //controls the image picker screen that shows up
         mediaTypes: 'images',
         allowsEditing: true,
         aspect: [1, 1],
-        quality: 1
+        quality: 0.8,
+        base64: true
       });
       
       if (!profile.canceled) {
         const imageUri = profile.assets[0].uri;
+        const base64Data = profile.assets[0].base64;
         
-        // First update Firebase Auth profile
-        await updateProfile(auth.currentUser, {
-          photoURL: imageUri
-        });
+        //create data URL for the image
+        const dataUrl = `data:image/jpeg;base64,${base64Data}`;
         
-        // Then update Realtime Database
-        await set(ref(database, `users/${auth.currentUser.uid}/photoURL`), imageUri);
-        
-        // Finally update local state
-        setImage(imageUri);
+        //only update Realtime Database (not Firebase Auth due to length limits)
+        //storing the image in the database
+        await set(ref(database, `users/${auth.currentUser.uid}/photoURL`), dataUrl);
+      
+        //update local state
+        //once pulled from database, it is set in the user's environment
+        setImage(dataUrl);
       }
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -59,7 +63,7 @@ const UploadImage = () => {
     <View style={styles.container}>
         <View style={styles.row}>
             <View style={{ width: 100, height: 125 }}>
-                <DisplayImage />
+                <DisplayImage /> {/*calls this component to render the image*/}
             </View>
             <TouchableOpacity 
               onPress={addImage} 

@@ -1,3 +1,5 @@
+//this is not used anymore, we have changed the colors using a different method for the views
+
 import { View, type ViewProps } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
