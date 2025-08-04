@@ -19,7 +19,7 @@ const DisplayImage = () => {
   
   if (!image) {
     return (
-      <View style={[styles.container, { backgroundColor: theme.border }]}>
+      <View style={[styles.container, { backgroundColor: theme.border, justifyContent: 'center', alignItems: 'center' }]}>
         <Ionicons 
           name="person" 
           size={40} 

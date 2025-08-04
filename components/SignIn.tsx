@@ -154,8 +154,6 @@ const Sign_In = ({ setUser }) => {
                         </Text>
                     </TouchableOpacity>
                     
-                    {/* 
-                    //this commented out section is for the Registration form
                     <TouchableOpacity
                         onPress={() => setUser(true)}
                         accessible={true}
@@ -166,11 +164,10 @@ const Sign_In = ({ setUser }) => {
                             Don't have an account? Sign up.
                         </Text>
                     </TouchableOpacity>
-                    */}
                     
-                    <Text style={[styles.toggleText, { color: theme.primary }]} allowFontScaling={true}>
+                    {/*<Text style={[styles.toggleText, { color: theme.primary }]} allowFontScaling={true}>
                         Access to this application is restricted to authorized users.
-                    </Text>
+                    </Text>*/}
                 </View>
             </View>
         </KeyboardAvoidingView>

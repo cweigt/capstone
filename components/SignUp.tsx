@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     Platform,
-    Alert
+    Alert,
+    Image
  } from 'react-native';
 import React, { useState } from 'react';
 import { auth } from '@/firebase';
@@ -29,7 +30,16 @@ const Sign_Up = ({ setUser }) => {
     const [errorMessage, setErrorMessage] = useState('');
     const database = getDatabase();
     const router = useRouter();
-    const { theme } = useTheme();
+    const { theme, mode } = useTheme();
+
+    //conditional logo selection based on theme
+    const getLogoSource = () => {
+        if (mode === 'dark') {
+        return require('@/assets/images/Aurora_Logo-new-RGB-white_v2.png');
+        } else {
+        return require('@/assets/images/aurora-wdc.png');
+        }
+    };
 
     const signUp = async() => {
         try {
@@ -103,12 +113,15 @@ const Sign_Up = ({ setUser }) => {
             keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
         >
             {/* Blue Header */}
-            <View style={{ backgroundColor: theme.header, paddingTop: 50, paddingBottom: 20, paddingHorizontal: 20 }}>
-                <Text style={{ color: theme.text, fontSize: 24, fontWeight: '600', textAlign: 'center', marginTop: 10 }}>
-                    Sign Up
-                </Text>
+            <View style={[{ backgroundColor: theme.header }, styles.heading]}>
+                <Image
+                source={getLogoSource()}
+                style={styles.headerLogo}
+                resizeMode="contain"
+                />
             </View>
-            <View style={{ backgroundColor: theme.border, height: 1 }} />
+            {/* White Underline */}
+        <View style={{ backgroundColor: theme.white, height: 1 }} />
 
             <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
                 <View style={{ backgroundColor: theme.background }}>
@@ -122,7 +135,7 @@ const Sign_Up = ({ setUser }) => {
                             At least one number.
                             At least one special character.
                         </Text>
-                        <Text style={[styles.requirements, { color: theme.text }]} allowFontScaling={true}>
+                        <Text style={[styles.requirements, {color: theme.text}]} allowFontScaling={true}>
                             First name
                         </Text>
                         <TextInput
@@ -134,7 +147,7 @@ const Sign_Up = ({ setUser }) => {
                             accessibilityLabel="First name"
                             accessibilityHint="Enter your first name"
                         />
-                        <Text style={[styles.requirements, { color: theme.text }]} allowFontScaling={true}>
+                        <Text style={[styles.requirements, {color: theme.text}]} allowFontScaling={true}>
                             Last name
                         </Text>
                         <TextInput
@@ -146,7 +159,7 @@ const Sign_Up = ({ setUser }) => {
                             accessibilityLabel="Last name"
                             accessibilityHint="Enter your last name"
                         />
-                        <Text style={[styles.requirements, { color: theme.text }]} allowFontScaling={true}>
+                        <Text style={[styles.requirements, {color: theme.text}]} allowFontScaling={true}>
                             Email
                         </Text>
                         <TextInput
@@ -162,7 +175,7 @@ const Sign_Up = ({ setUser }) => {
                         <Text style={[styles.requirements, { color: theme.text }]} allowFontScaling={true}>
                             Password
                         </Text>
-                        <View style={{position: 'relative'}}>
+                        <View style={{ position: 'relative' }}>
                             <TextInput
                                 style={[styles.input, { backgroundColor: theme.background, borderColor: theme.border, color: theme.text }]}
                                 secureTextEntry={!showPassword1}
@@ -173,7 +186,7 @@ const Sign_Up = ({ setUser }) => {
                                 accessibilityLabel="Password"
                                 accessibilityHint="Enter your password"
                             />
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 onPress={() => setShowPassword1(!showPassword1)}
                                 style={styles.eye}
                                 accessible={true}
@@ -190,7 +203,7 @@ const Sign_Up = ({ setUser }) => {
                         <Text style={[styles.requirements, { color: theme.text }]} allowFontScaling={true}>
                             Confirm Password
                         </Text>
-                        <View style={{position: 'relative'}}>
+                        <View style={{ position: 'relative' }}>
                             <TextInput
                                 style={[styles.input, { backgroundColor: theme.background, borderColor: theme.border, color: theme.text }]}
                                 secureTextEntry={!showPassword2}
@@ -201,7 +214,7 @@ const Sign_Up = ({ setUser }) => {
                                 accessibilityLabel="Confirm password"
                                 accessibilityHint="Re-enter your password"
                             />
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 onPress={() => setShowPassword2(!showPassword2)}
                                 style={styles.eye}
                                 accessible={true}
@@ -218,14 +231,18 @@ const Sign_Up = ({ setUser }) => {
                         {errorMessage ? (
                             <Text style={[styles.errorText, { color: theme.error }]} allowFontScaling={true}>{errorMessage}</Text>
                         ) : null}
-                        <TouchableOpacity 
-                            style={[styles.signUpButton, { backgroundColor: theme.containerColor, borderColor: theme.border, marginBottom: 10 }]} 
+                        <View style={{marginTop: 40}}/>
+
+                        <TouchableOpacity
+                            style={[styles.signUpButton, { backgroundColor: theme.primary, borderColor: theme.border, marginTop: 10 }]}
                             onPress={signUp}
                             accessible={true}
                             accessibilityLabel="Sign Up"
                             accessibilityHint="Creates a new account"
                         >
-                            <Text style={[styles.buttonText, { color: theme.text }]}>Sign Up</Text>
+                            <Text style={[styles.buttonText, { color: theme.white }]}>
+                                Sign Up
+                            </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => setUser(false)}
