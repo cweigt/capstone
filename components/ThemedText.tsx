@@ -2,6 +2,7 @@ import { Text, type TextProps } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedTextStyles as styles } from '../styles/ThemedText.styles';
 
+//this functino is for anything related to the Text component, such as adding the allowFontScaling
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;

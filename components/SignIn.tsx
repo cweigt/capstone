@@ -25,7 +25,7 @@ const Sign_In = ({ setUser }) => {
     const { theme, mode } = useTheme();
 
 
-    //Conditional logo selection based on theme
+    //conditional logo selection based on theme
     const getLogoSource = () => {
         if (mode === 'dark') {
         return require('@/assets/images/Aurora_Logo-new-RGB-white_v2.png');
@@ -155,6 +155,7 @@ const Sign_In = ({ setUser }) => {
                     </TouchableOpacity>
                     
                     {/* 
+                    //this commented out section is for the Registration form
                     <TouchableOpacity
                         onPress={() => setUser(true)}
                         accessible={true}

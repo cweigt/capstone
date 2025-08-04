@@ -11,6 +11,7 @@ import { RSSFeedStyles as styles } from '@/styles/RSSFeed.styles';
 import { spacing } from '@/styles/theme';
 import { useTheme } from '@/context/ThemeContext';
 import * as WebBrowser from 'expo-web-browser';
+//this is displayed in both the home page and the saved articles page
 
 interface ArticleCardProps {
   title: string;
@@ -28,6 +29,8 @@ const handleOpenLink = async (url) => {
   await WebBrowser.openBrowserAsync(url);
 };
 
+//everything that each card will use in some way
+//this is the exported function as well that is used
 const ArticleCard: React.FC<ArticleCardProps> = ({
   title,
   link,
@@ -41,6 +44,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
 }) => {
   const { theme } = useTheme();
 
+  //this is the card itself
   return (
     <Card containerStyle={[styles.card, { backgroundColor: theme.background }]}>
       <View style={styles.cardHeaderRow}>

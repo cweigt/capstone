@@ -7,6 +7,8 @@ import {
  } from 'react-native';
 import { IconSymbol } from './ui/IconSymbol';
 
+//allows the user to manually change the theme as well if they don't want the system to do it
+//this component is rendered in the account page 
 const ToggleMode = () => {
     const  { mode, setMode, theme } = useTheme();
 

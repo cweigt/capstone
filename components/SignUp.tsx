@@ -33,6 +33,7 @@ const Sign_Up = ({ setUser }) => {
 
     const signUp = async() => {
         try {
+            //these are all the password checks to make sure it meets criteria
             if (password1 !== password2) {
                 setErrorMessage('Passwords do not match.');
                 return;
@@ -63,24 +64,27 @@ const Sign_Up = ({ setUser }) => {
                 return;
             } 
 
+            //tries to create the account once the password meets all checks
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password1);
             
-            // Update user profile
+            //update user profile
+            //for whatever reason, this needed to be explicity defined and written for it to work
+            //this udpates in Auth
             await updateProfile(userCredentials.user, {
                 displayName: `${firstName} ${lastName}`
             });
 
-            // Store user data in Realtime Database
+            //store user data in Realtime Database
             await set(ref(database, `users/${userCredentials.user.uid}`), {
                 email: email,
                 firstName: firstName,
                 lastName: lastName,
                 displayName: `${firstName} ${lastName}`,
                 createdAt: new Date().toISOString(),
-                photoURL: null
+                photoURL: null //defaulting to null because obviously there is nothing there in the user account
             });
 
-            setUser(userCredentials.user);
+            setUser(userCredentials.user); //automatically signs the user in after account creation
             setErrorMessage('');
             setPassword1('');
             setPassword2('');

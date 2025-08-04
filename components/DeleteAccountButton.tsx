@@ -12,12 +12,15 @@ const DeleteAccountButton = () => {
     const auth = getAuth();
     const database = getDatabase();
     const { theme } = useTheme();
+    //this modal shows up for the user to enter password if not recently authenticated
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [pendingDelete, setPendingDelete] = useState(false);
 
+    //deletes the account off of firebase… both the authentication and realtime database
+    //only executes once the user is authenticated 
     const actuallyDeleteAccount = async () => {
         const user = auth.currentUser;
         if (!user) return;
@@ -25,11 +28,10 @@ const DeleteAccountButton = () => {
             //delete all user data
             const userRef = ref(database, `users/${user.uid}`);
             await remove(userRef);
-            //Delete Firebase Authentication account
+            //delete Firebase Authentication account
             await deleteUser(user);
-            // Sign out the user after deletion
+            //sign out the user after deletion
             await signOut(auth);
-            // Optionally redirect to login or sign-up screen here
         } catch (error: any) {
             if (error.code === 'auth/requires-recent-login') {
                 setShowPasswordModal(true);
@@ -40,14 +42,16 @@ const DeleteAccountButton = () => {
         }
     };
 
+    //this is handling reauthentication
     const handleReauthAndDelete = async () => {
         setError("");
-        const user = auth.currentUser;
+        const user = auth.currentUser; //takes the email and password
         if (!user || !user.email) {
             setError("User not found or missing email.");
             return;
         }
         try {
+            //tries to reauthenticate the user with the email and entered password
             const credential = EmailAuthProvider.credential(user.email, password);
             await reauthenticateWithCredential(user, credential);
             setShowPasswordModal(false);
@@ -59,7 +63,7 @@ const DeleteAccountButton = () => {
         }
     };
 
-    // delete confirmation function
+    //delete confirmation function
     const confirmDelete = () => {
         Alert.alert(
             'Delete Account',
@@ -125,6 +129,7 @@ const DeleteAccountButton = () => {
                         </View>
                         {error ? <Text style={[styles.errorMessage, { color: theme.error }]}>{error}</Text> : null}
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                            {/*this gives you an oppurtunity to cancel if you don't remember your password*/}
                             <TouchableOpacity onPress={() => { setShowPasswordModal(false); setPassword(""); setError(""); setPendingDelete(false); }} style={{ marginRight: 16 }}
                                 accessible={true}
                                 accessibilityLabel="Cancel"
