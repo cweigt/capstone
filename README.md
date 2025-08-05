@@ -136,15 +136,15 @@ PROJECT STRUCTURE BELOW.
 
 📄 .gitignore — ignored files list  
 ⚙️ app.config.js — main app settings  
-- ⚙️ app.json — simplified app metadata  
-- ⚙️ eas.json — build info  
-- ⚙️ eslint.config.mjs — lint rules  
-- ⚙️ firebase.js — Firebase init  
-- ⚙️ metro.config.js — Expo config  
-- 📄 package-lock.json — dependency versions  
-- 📄 package.json — dependencies list  
-- 📄 README.md — this file  
-- ⚙️ tsconfig.json — TypeScript config  
+⚙️ app.json — simplified app metadata  
+⚙️ eas.json — build info  
+⚙️ eslint.config.mjs — lint rules  
+⚙️ firebase.js — Firebase init  
+⚙️ metro.config.js — Expo config  
+📄 package-lock.json — dependency versions  
+📄 package.json — dependencies list  
+📄 README.md — this file  
+⚙️ tsconfig.json — TypeScript config  
 
 </details>
 
