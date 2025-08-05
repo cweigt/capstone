@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React, { useState } from 'react';
-// import { ParallaxScrollView } from '@/components/ParallaxScrollView';
 import SignUp from '@/components/SignUp';
 import SignIn from '@/components/SignIn';
 import { useAuth } from '@/context/AuthContext';
@@ -16,9 +15,11 @@ import { ROUTES } from '@/constants/Routes';
 import { AccountStyles as styles } from '@/styles/Account.styles';
 import { auth } from '@/firebase';
 import DisplayImage from '@/components/DisplayImage';
-import DeleteAccountButton from '@/components/DeleteAccountButton';
 import { useTheme } from '@/context/ThemeContext';
 import ToggleMode from '@/components/ToggleMode';
+
+//this is the sign up page that is used to render both the sign up and sign in components
+//based on current user in auth detection
 
 const Sign_Up = () => {
     const [showSignUp, setShowSignUp] = useState(false);

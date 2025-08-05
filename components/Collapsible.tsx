@@ -1,3 +1,5 @@
+//this is not used, we have our own way to collapse things based on what the target element is
+
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { CollapsibleStyles as styles } from '../styles/Collapsible.styles';

@@ -2,15 +2,15 @@ import 'dotenv/config';
 
 export default {
     "expo": {
-        "name": "Aurora Agent",
+        "name": "Aurora Agent", //this is the name of the app
         "slug": "aurora-agent",
-        "version": "1.0.0",
+        "version": "1.0.0", //this is the current version of the app
         "orientation": "portrait",
-        "icon": "./assets/images/icon.png",
+        "icon": "./assets/images/icon.png", //this is the icon that is used in the app
         "scheme": "myapp",
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
-        "ios": {
+        "ios": { //everything for iOS goes here
             "googleServicesFile": "./keys/Firebase/GoogleService-Info.plist",
             "supportsTablet": true,
             "bundleIdentifier": process.env.IOS_BUNDLE_ID || "com.aurorawdc.auroramobile",
@@ -25,7 +25,7 @@ export default {
                 process.env.IOS_ASSOCIATED_DOMAIN || "applinks:aurorawdc.com"
             ]
         },
-        "android": {
+        "android": { //everything for Android
             "googleServicesFile": "./keys/Firebase/google-services.json",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/adaptive-icon.png",
@@ -33,7 +33,7 @@ export default {
             },
             "package": "com.aurorawdc.auroramobile"
         },
-        "web": {
+        "web": { //some web stuff here
             "bundler": "metro",
             "output": "static",
             "favicon": "./assets/images/favicon.png"
@@ -60,7 +60,8 @@ export default {
             "eas": {
                 "projectId": "842fb628-dfeb-4e71-8392-32f190b2dba5"
             },
-            "firebaseApiKey": process.env.FIREBASE_API_KEY,
+            //another reference to the firebase keys
+            "firebaseApiKey": process.env.FIREBASE_API_KEY, 
             "firebaseAuthDomain": process.env.FIREBASE_AUTH_DOMAIN,
             "firebaseduburl": process.env.FIREBASE_DB_URL,
             "firebaseProjectId": process.env.FIREBASE_PID,

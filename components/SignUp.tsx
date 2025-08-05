@@ -75,6 +75,10 @@ const Sign_Up = ({ setUser }) => {
             });
 
             //store user data in Realtime Database
+            //email: john.smith@gmail.com
+            //firstName: John
+            //lastName: Smith
+            //displayName: John Smith
             await set(ref(database, `users/${userCredentials.user.uid}`), {
                 email: email,
                 firstName: firstName,

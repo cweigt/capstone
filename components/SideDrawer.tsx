@@ -94,7 +94,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isVisible, onClose, children, f
         <View style={[styles.header, { borderBottomColor: theme.border }]}>
           <View style={styles.headerTop}>
             <Image
-              source={getLogoSource()}
+              source={getLogoSource()} //determining what logo to render based on color mode
               style={styles.headerLogo}
               resizeMode="contain"
             />

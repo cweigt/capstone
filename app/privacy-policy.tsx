@@ -22,15 +22,16 @@ const PrivacyPolicy = () => {
         <View style={{ backgroundColor: theme.header, paddingTop: 60, paddingBottom: 20, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity 
             onPress={() => router.back()}
-            style={{ position: 'absolute', left: 15, zIndex: 1 }}
+            style={{ width: 80 }}
           >
-            <Text style={{ color: theme.back, fontSize: spacing.md, fontWeight: '600', marginTop: 40 }}>
+            <Text style={{ color: theme.back, fontSize: spacing.md, fontWeight: '600' }}>
               ← Back
             </Text>
           </TouchableOpacity>
           <Text style={{ color: theme.text, fontSize: spacing.lg, fontWeight: '600', textAlign: 'center', flex: 1 }}>
             Privacy Policy
           </Text>
+          <View style={{ width: 80 }} />
         </View>
         
         {/* White Underline */}
