@@ -134,8 +134,8 @@ PROJECT STRUCTURE BELOW.
 
 </details>
 
-- 📄 .gitignore — ignored files list  
-- ⚙️ app.config.js — main app settings  
+📄 .gitignore — ignored files list  
+⚙️ app.config.js — main app settings  
 - ⚙️ app.json — simplified app metadata  
 - ⚙️ eas.json — build info  
 - ⚙️ eslint.config.mjs — lint rules  
