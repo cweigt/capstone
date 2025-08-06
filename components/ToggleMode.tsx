@@ -5,7 +5,7 @@ import {
     TouchableOpacity,
     Text,
  } from 'react-native';
-import { IconSymbol } from './ui/IconSymbol';
+import { IconSymbol } from './ui/IconSymbol.ios';
 
 //allows the user to manually change the theme as well if they don't want the system to do it
 //this component is rendered in the account page 
@@ -29,6 +29,7 @@ const ToggleMode = () => {
             <IconSymbol 
                 name={mode === 'dark' ? 'sun.max' : 'moon'} 
                 size={24} 
+                color={mode === 'dark' ? '#FFD700' : theme.primary}
             />
         </TouchableOpacity>
     );

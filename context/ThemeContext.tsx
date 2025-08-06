@@ -12,14 +12,14 @@ type Theme = typeof lightTheme;
 
 interface ThemeContextType {
   theme: Theme;
-  mode: 'light' | 'dark';
-  setMode: (mode: 'light' | 'dark') => void;
-  isManualOverride: boolean;
+  mode: 'light' | 'dark'; //determining the two modes 
+  setMode: (mode: 'light' | 'dark') => void; //mode is either light or dark 
+  isManualOverride: boolean; //useful for user preference of the mode
 }
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: lightTheme,
-  mode: 'light',
+  mode: 'light', 
   setMode: () => {},
   isManualOverride: false,
 });
@@ -29,13 +29,16 @@ const MANUAL_OVERRIDE_KEY = '@manual_override';
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const systemColorScheme = useColorScheme();
+  //allows the mode to be switched based on the system colors on initial load
   const [mode, setMode] = useState<'light' | 'dark'>(systemColorScheme === 'dark' ? 'dark' : 'light');
+  //manual override only activates when you hit the switch button the first time
   const [isManualOverride, setIsManualOverride] = useState(false);
+  //currentUser is used to track who is logged in to store their preference state
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const auth = getAuth();
   const database = getDatabase();
 
-  // Listen for auth state changes
+  //listen for auth state changes
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user?.uid || null);
@@ -44,7 +47,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribeAuth();
   }, []);
 
-  // Load saved theme preference on app start
+  //load saved theme preference on app start
   useEffect(() => {
     const loadSavedTheme = async () => {
       try {
@@ -63,7 +66,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
             setIsManualOverride(false);
           }
         } else {
-          // No user logged in - use system preference
+          //no user logged in - use system preference
+          //this does mean that if you chose light mode and you log out, the sign in page is 
+            //the one that matches your system, so it could be dark
           setMode(systemColorScheme === 'dark' ? 'dark' : 'light');
           setIsManualOverride(false);
         }
@@ -78,7 +83,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     };
 
     loadSavedTheme();
-  }, [systemColorScheme, currentUser]);
+  }, [systemColorScheme, currentUser]); //checks everytime system color changes or user changes
 
   // Listen for theme changes in database when user is logged in
   useEffect(() => {
@@ -100,15 +105,19 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const setManualMode = async (newMode: 'light' | 'dark') => {
     try {
       if (currentUser) {
-        // User is logged in - save to database
+        //user is logged in - save to database
         const userRef = ref(database, `users/${currentUser}/themePreference`);
         await set(userRef, {
+          //saving the mode, manual override state, and date updated 
           mode: newMode,
           isManualOverride: true,
           updatedAt: new Date().toISOString()
         });
       } else {
-        // No user logged in - save to AsyncStorage (fallback)
+        //no user logged in - save to AsyncStorage (fallback)
+        //just in case Firebase doesn't work, AsyncStorage will take over, although that has it's own 
+          //problems if multiple people use the same device
+        //*this fallback has never been used
         await AsyncStorage.setItem(THEME_PREFERENCE_KEY, newMode);
         await AsyncStorage.setItem(MANUAL_OVERRIDE_KEY, 'true');
       }
@@ -117,13 +126,13 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       setIsManualOverride(true);
     } catch (error) {
       console.log('Error saving theme preference:', error);
-      // Still update local state even if save fails
+      //still update local state even if save fails
       setMode(newMode);
       setIsManualOverride(true);
     }
   };
 
-  // Update to system preference if not manually overridden
+  //update to system preference if not manually overridden
   useEffect(() => {
     if (!isManualOverride && systemColorScheme) {
       setMode(systemColorScheme === 'dark' ? 'dark' : 'light');

@@ -35,7 +35,7 @@ const Sign_In = ({ setUser }) => {
     };
     const signIn = async() => {
         try {
-            //creating account in Authentication
+            //signing in to Authentication
             const userCredentials = await signInWithEmailAndPassword(auth, email, password);
             setUser(userCredentials.user);
             //clearing the text fields

@@ -41,7 +41,7 @@ const Name_Change = () => {
       
       //update Authentication profile when user clicks "save name"
       await updateProfile(auth.currentUser, {
-        displayName: displayName
+        displayName: displayName //John Smith
       });
 
       //reload user to get updated profile
@@ -52,9 +52,9 @@ const Name_Change = () => {
       //update Realtime Database - only update name fields
       //all the other fields remain because of th e UID access, was a bug that needed fixing
       await update(ref(database, `users/${auth.currentUser.uid}`), {
-        firstName: firstName,
-        lastName: lastName,
-        displayName: displayName
+        firstName: firstName, //John
+        lastName: lastName, //Smith
+        displayName: displayName //John Smith
       });
 
       //clearing out the fields and replacing the with the name placeholders

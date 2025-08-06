@@ -1,50 +1,154 @@
-# Welcome to your Expo app 👋
+To begin:
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+1. Install dependencies: 'npm install'
+2. Run: 'npm start'… click "S" on keyboard to swap between Expo and development client
 
-## Get started
+PROJECT STRUCTURE BELOW.
+**Hidden files not included.**
+**Brief descriptions will be provided.**
+**For more detail, view the comments in those files.**
 
-1. Install dependencies
+<details>
+<summary>📂 project-root</summary>
 
-   ```bash
-   npm install
-   ```
+<details>
+<summary>📂 app</summary>
 
-2. Start the app
+<details>
+<summary>📂 tabs</summary>
 
-   ```bash
-    npx expo start
-   ```
+<details>
+<summary>📂 account</summary>
 
-In the output, you'll find options to open the app in a
+- 📄 _layout.tsx — initializes account stack  
+- 📄 index.tsx — sign in/up controller (unused in invite-only)  
+- 📄 profile.tsx — profile page components  
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+</details>
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- 📄 _layout.tsx — nav bar controller  
+- 📄 index.tsx — feed & article fetching  
+- 📄 savedArticles.tsx — user's saved articles  
 
-## Get a fresh project
+</details>
 
-When you're ready, run:
+- 📄 _layout.tsx — global app layout  
+- 📄 +not-found.tsx — fallback for unknown routes  
+- 📄 eula — EULA page wrapper  
+- 📄 privacy-policy — privacy policy page wrapper  
+- 📄 settings — edit profile (name, password)  
 
-```bash
-npm run reset-project
-```
+</details>
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+<details>
+<summary>📂 assets</summary>
 
-## Learn more
+- 🖼️ fonts — app fonts  
+- 🖼️ images — icons, logos  
 
-To learn more about developing your project with Expo, look at the following resources:
+<details>
+<summary>📂 Legal</summary>
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- 📜 EULA.tsx — rendered in eula page  
+- 📜 Policy.tsx — rendered in privacy policy page  
 
-## Join the community
+</details>
+</details>
 
-Join our community of developers creating universal apps.
+<details>
+<summary>📂 components</summary>
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- 🧪 tests — minor snapshots and text tests  
+
+<details>
+<summary>📂 ui</summary>
+
+- 🧩 IconSymbol.ios.tsx — iOS-specific icons  
+- 🧩 IconSymbol.tsx — Android/web icons  
+- 🧩 TabBarBackground.ios.tsx — bottom nav bar (iOS)  
+- 🧩 TabBarBackground.tsx — bottom nav bar (Android/web)  
+
+</details>
+
+- 🧩 ArticleCard.tsx — displays articles in cards  
+- 🧩 Collapsible.tsx — unused animation component  
+- 🧩 DeleteAccountButton.tsx — account deletion logic  
+- 🧩 DisplayImage.tsx — renders user profile pic  
+- 🧩 ExternalLink.tsx — handles in-app navigation  
+- 🧩 HapticTab.tsx — custom tab animation  
+- 🧩 NameChange.tsx — updates name  
+- 🧩 ParallaxScrollView.tsx — scroll & layout controller  
+- 🧩 ResetPassword.tsx — password reset with current password  
+- 🧩 Search.tsx — feed searching  
+- 🧩 SideDrawer.tsx — feed selection drawer  
+- 🧩 SignIn.tsx — sign in & recovery  
+- 🧩 SignUp.tsx — account creation (not used)  
+- 🧩 ThemeWrapper.tsx — theme context wrapper  
+- 🧩 ToggleMode.tsx — light/dark mode toggle  
+- 🧩 UploadImage.tsx — image picker for profile  
+
+</details>
+
+<details>
+<summary>📂 constants</summary>
+
+- 📄 Routes.ts — routing system  
+
+</details>
+
+<details>
+<summary>📂 context</summary>
+
+- 📄 AuthContext.tsx — tracks auth via Firebase  
+- 📄 ImageContext.tsx — pulls profile photo from Firebase  
+- 📄 ThemeContext.tsx — handles theme settings  
+
+</details>
+
+<details>
+<summary>🔑 keys</summary>
+
+- 🔐 Contains keys for Android, iOS, Firebase  
+
+</details>
+
+<details>
+<summary>📂 scripts</summary>
+
+- ⚙️ reset-project.js — resets to blank state (⚠️ destructive)  
+
+</details>
+
+<details>
+<summary>🎨 styles</summary>
+
+- 🎨 theme.ts — shared styling rules  
+- 🎨 *(each page/component has its own style file)*  
+
+</details>
+
+<details>
+<summary>🧰 utils</summary>
+
+- 📄 decodeHTML.ts — converts HTML entities to readable text  
+
+</details>
+
+📄 .gitignore — ignored files list  
+⚙️ app.config.js — main app settings  
+⚙️ app.json — simplified app metadata  
+⚙️ eas.json — build info  
+⚙️ eslint.config.mjs — lint rules  
+⚙️ firebase.js — Firebase init  
+⚙️ metro.config.js — Expo config  
+📄 package-lock.json — dependency versions  
+📄 package.json — dependencies list  
+📄 README.md — this file  
+⚙️ tsconfig.json — TypeScript config  
+
+</details>
+
+
+
+
+

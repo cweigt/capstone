@@ -25,6 +25,7 @@ interface ArticleCardProps {
   showSavedIcon?: boolean;
 }
 
+//this opens the link in the in app browser for a more user friendly experience
 const handleOpenLink = async (url) => {
   await WebBrowser.openBrowserAsync(url);
 };
@@ -76,6 +77,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             </Text>
           </TouchableOpacity>
         )}
+        {/*there is a share option when opening the article in the in app web browser, this could be something to delete in the future*/}
         <TouchableOpacity style={styles.actionButton}
           onPress={() => Alert.alert('This feature is currently in development!')}
           accessible={true}
