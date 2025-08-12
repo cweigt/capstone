@@ -1,3 +1,11 @@
+/*
+  @component: ResetPassword
+  @description: handles password reset when a user is already signed in
+
+  @example
+  <ResetPassword/>
+*/
+
 import { 
     View, 
     Text, 

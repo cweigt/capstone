@@ -1,4 +1,13 @@
-//this is to eliminate weird letters to make the cards more readable
+/*
+  @utility: decodeHTML
+  @description: eliminiates weird characters from the article card
+
+  @props {string} html: takes in the HTML that needs to be changed
+
+  @example… from app/(tabs)/index.tsx
+  const description = decodeHtml(extract('description'));
+*/
+
 const decodeHtml = (html: string) => {
     if(!html) return '';
 

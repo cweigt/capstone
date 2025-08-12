@@ -1,3 +1,11 @@
+/*
+  @component: NameChange
+  @description: handles a user account name change
+
+  @example
+  <NameChange/>
+*/
+
 import { 
     View, 
     Text,

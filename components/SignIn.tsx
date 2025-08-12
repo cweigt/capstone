@@ -1,3 +1,13 @@
+/*
+  @component: SignIn
+  @description: handles a user sign in
+
+  @props {function} setUser: changes the user currently in Auth
+
+  @example… from app/(tabs)/account/index.tsx
+  <SignIn setUser={setShowSignUp} />
+*/
+
 import { 
     View, 
     Text, 

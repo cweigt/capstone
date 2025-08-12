@@ -1,3 +1,13 @@
+/*
+  @component: SignUp
+  @description: handles the creation of a new account
+
+  @props {function} setUser: sets current user in Auth once account is created
+
+  @xample… from app/(tabs)/account/index.tsx
+  <SignUp setUser={setShowSignUp} />
+*/
+
 import { 
     ScrollView, 
     View, 

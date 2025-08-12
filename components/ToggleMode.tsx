@@ -1,3 +1,11 @@
+/*
+  @component: ToggleMode
+  @description: used to change from light mode to dark mode
+
+  @example… from app/(tabs)/account/index.tsx
+  <ToggleMode/>
+*/
+
 import React from 'react';
 import { ToggleModeStyles as styles } from '@/styles/ToggleMode.styles';
 import { useTheme } from '@/context/ThemeContext';

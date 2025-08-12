@@ -1,3 +1,32 @@
+/*
+  @component: ArticleCard
+  @description: displays feed information in a card like style from an external XML file
+
+  @prop {string} title: brings in the title of the article
+  @prop {string} link: the link for viewing the article in the in app browser
+  @prop {string} author: the source/author of the article
+  @prop {string} pubDate: the date in which the article was published
+  @prop {string} description?: short article explanation
+  @prop {boolean} saved?: article saved status or not, detemrines whether it is in saved articles
+  @prop {function} onSave?: takes in the toggleSave function and is used to change saved state
+  @prop {function} onShare?: placeholder for any future share actions, currently takes nothing
+
+  @example… from app/(tabs)/index.tsx
+  <ArticleCard
+    title= Citi CEO Visits Mexico During Banamex Stake Talks, Bloomberg News Reports
+    link= https://srnnews.com/citi-ceo-visits-mexico-during-banamex-stake-talks-bloomberg-news-reports/
+    author= SRN News
+    pubDate= Tue, 12 Aug 2025 08:00:08 +0000
+    description= -Citigroup CEO Jane Fraser is in Mexico City for talks with President Claudia Sheinbaum that include the
+      potential public listing of the bank's retail unit Banamex, Bloomberg News reported on Monday, citing people familiar with the matter.
+
+    saved= {true}
+    showSavedIcon= {true}
+    onSave={() => toggleSave(item)}
+    onShare={() => {}}
+  />
+*/
+
 import React from 'react';
 import { 
   View, 

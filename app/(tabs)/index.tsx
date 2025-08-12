@@ -382,14 +382,7 @@ const HomeScreen = () => {
         {feedOptions.map((feed, index) => (
           <TouchableOpacity
             key={index}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: 8,
-              marginVertical: 4,
-              borderRadius: 8,
-              backgroundColor: selectedFeed === feed.value ? theme.containerColor : 'transparent'
-            }}
+            style={[styles.feedOptions, {backgroundColor: selectedFeed === feed.value ? theme.containerColor : 'transparent'}]}
             onPress={() => handleFeedSelect(feed.value)}
             activeOpacity={1}
           >

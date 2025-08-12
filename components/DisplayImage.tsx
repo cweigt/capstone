@@ -1,3 +1,11 @@
+/* 
+  @component: DisplayImage
+  @description: handles the image display for a profile photo
+
+  @example
+  <DisplayImage/>
+*/
+
 import React from 'react';
 import { 
     Image, 

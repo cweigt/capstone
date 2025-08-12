@@ -99,4 +99,11 @@ export const HomeStyles = StyleSheet.create({
         color: colors.text,
         textAlign: 'center',
     },
+    feedOptions: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 8,
+        marginVertical: 4,
+        borderRadius: 8,
+    },
 }); 

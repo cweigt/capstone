@@ -1,3 +1,11 @@
+/*
+  @component: UploadImage
+  @description: handles the image upload of a user profile photo using Expo Image Picker
+
+  @example
+  <UploadImage/>
+*/
+
 import React from 'react';
 import { 
     Image, 

@@ -1,11 +1,26 @@
+/*
+  @component: DeleteAccountButton
+  @description: handles the delete account process
+
+  @example
+  <DeleteAccountButton/>
+*/
+
 import React, { useState } from "react";
-import { Alert, TouchableOpacity, Text, Modal, View, TextInput } from "react-native";
+import { 
+    Alert, 
+    TouchableOpacity, 
+    Text, 
+    Modal, 
+    View, 
+    TextInput 
+} from "react-native";
 import { deleteUser, getAuth, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import { getDatabase, ref, remove } from "firebase/database";
 //import { AccountStyles as styles } from '@/styles/Account.styles';
 import {DeleteAccountButtonStyles as styles} from '@/styles/DeleteAccountButton.styles';
 import { Ionicons } from '@expo/vector-icons';
-import {signOut} from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { useTheme } from '@/context/ThemeContext';
 
 const DeleteAccountButton = () => {

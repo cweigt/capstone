@@ -1,3 +1,37 @@
+/*
+  @component: SideDrawer
+  @description: this displays the slide in menu to control selected feeds
+
+  @props {boolean} isVisible: whether or not to show the side drawer
+  @props {function} onClose: determines what to do when the drawer is closing
+  @props {content} children: this contains each option for the feed being passed in
+  @props {integer} feedNum: tracks how many feeds are available to select from the menu
+
+  @example… from app/(tabs)/index.tsx
+  <SideDrawer
+    isVisible={isDrawerVisible}
+    onClose={() => setIsDrawerVisible(false)}
+    feedNum={feedNum}
+  >
+    {feedOptions.map((feed, index) => (
+      <TouchableOpacity
+        key={index}
+        style={[styles.feedOptions, {backgroundColor: selectedFeed === feed.value ? theme.containerColor : 'transparent'}]}
+        onPress={() => handleFeedSelect(feed.value)}
+        activeOpacity={1}
+      >
+        <Text style={{
+          fontSize: 13,
+          fontWeight: selectedFeed === feed.value ? '600' : '400',
+          color: theme.text
+        }}>
+          {feed.label}
+        </Text>
+      </TouchableOpacity>
+    ))}
+  </SideDrawer>
+*/
+
 import React, { useEffect, useRef, useState } from 'react';
 import { 
   View, 

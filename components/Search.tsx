@@ -1,3 +1,22 @@
+/*
+  @component: Search
+  @description: allows the user to search all feeds 
+
+  @props {string} value: stores what the user types in as the search criteria
+  @props {function} onChangeText: what to do when the text is changed in the search bar
+  @props {boolean} showSearchBar: whether to show the search bar or not
+  @props {function} setShowSearchBar: used to change the showSearchBar state
+
+  @example… from app/(tabs)/index.tsx
+  <Search 
+    value={searchQuery} 
+    onChangeText={setSearchQuery} 
+    showSearchBar={showSearchBar} 
+    setShowSearchBar={setShowSearchBar} 
+  />
+
+*/
+
 import React, { useRef, useEffect } from 'react';
 import { 
     View, 
